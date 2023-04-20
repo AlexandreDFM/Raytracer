@@ -14,7 +14,13 @@ namespace RayTracer {
     class Ray {
         public:
             Ray();
+            Ray(Math::Point3D origin, Math::Vector3D direction);
+            Ray(const Ray &other);
+            Ray(const Ray &&other);
             ~Ray();
+            Ray operator+(const Ray &other);
+            Ray operator+=(const Ray &other);
+            Ray operator-(const Ray &other);
         Math::Point3D origin;
         Math::Vector3D direction;
         protected:
