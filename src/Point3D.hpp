@@ -9,8 +9,6 @@
 #define POINT3D_HPP_
 
 #include "Vector3D.hpp"
-#include <cmath>
-#include <iostream>
 
 namespace Math {
     class Point3D {

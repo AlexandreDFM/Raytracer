@@ -8,6 +8,12 @@
 #ifndef VECTOR3D_HPP_
 #define VECTOR3D_HPP_
 
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <iostream>
+
 namespace Math {
     class Vector3D {
         public:
