@@ -5,29 +5,33 @@
 ## Makefile
 ##
 
-NAME	=	raytracer
+NAME		=	raytracer
 
-SRC	=	main.cpp				\
-		src/Camera.cpp			\
-		src/Point3D.cpp			\
-		src/Ray.cpp				\
-		src/Rectangle3D.cpp		\
-		src/Sphere.cpp			\
-		src/Vector3D.cpp		\
+INCLUDE		=	-I./Interface
 
-OBJ	=	$(SRC:.cpp=.o)
+SRC			=	Main.cpp				\
+				src/Camera.cpp			\
+				src/Point3D.cpp			\
+				src/Ray.cpp				\
+				src/Rectangle3D.cpp		\
+				src/Sphere.cpp			\
+				src/Vector3D.cpp		\
 
-CXXFLAGS	=	-Wall -Wextra -Werror -I./include
+OBJ			=	$(SRC:.cpp=.o)
 
-all:	$(NAME)
+LDFLAGS		=	-lcsfml-graphics -lcsfml-window -lcsfml-system -lm
 
-$(NAME):	$(OBJ)
-	$(CXX) -o $(NAME) $(OBJ) $(CXXFLAGS)
+CXXFLAGS	=	-Wall -Wextra -Werror $(INCLUDE)
+
+all:			$(NAME)
+
+$(NAME):		$(OBJ)
+				$(CXX) -o $(NAME) $(OBJ) $(CXXFLAGS) $(LDFLAGS)
 
 clean:
-	rm -f $(OBJ)
+				rm -f $(OBJ)
 
-fclean:	clean
-	rm -f $(NAME)
+fclean:			clean
+				rm -f $(NAME)
 
-re:	fclean all
+re:				fclean all

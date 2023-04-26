@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** B-OOP-400-NCE-4-1-raytracer-alexandre-kevin.de-freitas-martins
 ** File description:
-** main
+** Main.cpp
 */
 
 #include "src/Vector3D.hpp"
@@ -12,7 +12,7 @@
 #include "src/Ray.hpp"
 #include "src/Rectangle3D.hpp"
 
-int main ()
+int main()
 {
     RayTracer::Camera cam;
     RayTracer::Sphere s(RayTracer::Point3D(0,0,-1),0.5);

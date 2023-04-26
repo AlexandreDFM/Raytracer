@@ -1,0 +1,10 @@
+.idea
+.vscode
+*.aux
+*.log
+*.out
+*.fdb_latexmk
+*.fls
+*.markdown.in
+*.markdown.lua
+src/_markdown_documentation

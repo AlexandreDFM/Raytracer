@@ -53,3 +53,5 @@ namespace RayTracer {
         return *this;
     }
 }
+
+//Design patern / Factory / Interface / Archi!!!! /PPM /
