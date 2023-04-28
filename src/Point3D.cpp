@@ -54,4 +54,11 @@ namespace Math {
         return Point3D(this->x - other.x, this->y - other.y, this->z - other.z);
     }
 
+    Point3D Point3D::operator=(const Point3D &other)
+    {
+        this->x = other.x;
+        this->y = other.y;
+        this->z = other.z;
+        return *this;
+    }
 }

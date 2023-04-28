@@ -24,7 +24,12 @@ namespace RayTracer {
 
     Ray::Ray(const Ray &other)
     {
-        Ray tmp(other.origin, other.direction);
+        this->origin.x = other.origin.x;
+        this->origin.y = other.origin.y;
+        this->origin.z = other.origin.z;
+        this->direction.x = other.direction.x;
+        this->direction.y = other.direction.y;
+        this->direction.z = other.direction.z;
     }
 
     Ray::Ray(const Ray &&other)

@@ -21,6 +21,7 @@ namespace Math {
             Point3D operator+(const Vector3D &other);
             Point3D operator+=(const Vector3D &other);
             Point3D operator-(const Vector3D &other);
+            Point3D operator =(const Point3D &other);
 
         double x;
         double y;

@@ -35,6 +35,7 @@ namespace Math {
             Vector3D operator *= (const double &other);
             Vector3D operator /  (const double &other);
             Vector3D operator /= (const double &other);
+            Vector3D operator =  (const Vector3D &other);
             double dot(const Vector3D &other);
 
         double x;

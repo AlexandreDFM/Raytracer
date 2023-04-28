@@ -14,18 +14,23 @@
 
 int main()
 {
+    double width = 720;
+    double height = 480;
+
     RayTracer::Camera cam;
-    RayTracer::Sphere s(RayTracer::Point3D(0,0,-1),0.5);
-    for (/* go through the Y axis */) {
-        for (/* go through the X axis */) {
-            double u = /* get a certain amount of X */;
-            double v = /* get a certain amount of Y */;
+    RayTracer::Sphere s(Math::Point3D(0,0, -1),0.5);
+    for (int i = 0; i < height - 1; i++) {
+        for (int j = 0; j < width; j++) {
+            double u = double(j) / (width);
+            double v = double(i) / (height);
             RayTracer::Ray r = cam.ray(u , v );
             if (s.hits(r)) {
-            // something
+                std::cout << "X";
             } else {
-            // something else
+                std::cout << " ";
             }
         }
+            std::cout << std::endl;
     }
+    std::cout << std::endl;
 }

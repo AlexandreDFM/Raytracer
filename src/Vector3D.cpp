@@ -25,7 +25,9 @@ namespace Math {
 
     Vector3D::Vector3D(const Vector3D &other)
     {
-        Vector3D tmp(other.x, other.y, other.z);
+        this->x = other.x;
+        this->y = other.y;
+        this->z = other.z;
     }
 
     Vector3D::Vector3D(const Vector3D &&other)
@@ -120,6 +122,13 @@ namespace Math {
         return *this;
     }
 
+    Vector3D Vector3D::operator=(const Vector3D &other)
+    {
+        this->x = other.x;
+        this->y = other.y;
+        this->z = other.z;
+        return *this;
+    }
     double Vector3D::dot(const Vector3D &other)
     {
         return (sqrt(pow(this->x, 2) + pow(this->y, 2) + pow(this->z, 2)) * sqrt(pow(other.x, 2) + pow(other.y, 2) + pow(other.z, 2)));

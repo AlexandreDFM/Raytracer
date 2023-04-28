@@ -23,14 +23,32 @@ namespace RayTracer {
 
     bool Sphere::hits(Ray ray)
     {
-        double Radius = ray.direction.x * ray.direction.x + ray.direction.y * ray.direction.y + ray.direction.z * ray.direction.z;
+        // std::cout << this->radius << std::endl;
+        double a = ray.direction.x * ray.direction.x + ray.direction.y * ray.direction.y + ray.direction.z * ray.direction.z;
         double b = 2 * (ray.direction.x * (ray.origin.x - this->origin.x) + ray.direction.y * (ray.origin.y - this->origin.y) + ray.direction.z * (ray.origin.z - this->origin.z));
         double c = (ray.origin.x - this->origin.x) * (ray.origin.x - this->origin.x) + (ray.origin.y - this->origin.y) * (ray.origin.y - this->origin.y) + (ray.origin.z - this->origin.z) * (ray.origin.z - this->origin.z) - this->radius * this->radius;
-        double delta = b * b - 4 * Radius * c;
-        if (delta < 0)
+        double discriminant = b * b - 4 * a * c;
+        // std::cout << "a: " << a << std::endl;
+        // std::cout << "b: " << b << std::endl;
+        // std::cout << "c: " << c << std::endl;
+        // std::cout << "Discriminant: " << discriminant << std::endl;
+        if (discriminant < 0)
             return false;
-        else
-            return true;
+        return true;
+        // double Radius = ray.direction.x * ray.direction.x + ray.direction.y * ray.direction.y + ray.direction.z * ray.direction.z;
+        // std::cout << "Radius: " << Radius << std::endl;
+        // double b = 2 * (ray.direction.x * (ray.origin.x - this->origin.x) + ray.direction.y * (ray.origin.y - this->origin.y) + ray.direction.z * (ray.origin.z - this->origin.z));
+        // std::cout << "b: " << b << std::endl;
+        // double c = (ray.origin.x - this->origin.x) * (ray.origin.x - this->origin.x) + (ray.origin.y - this->origin.y) * (ray.origin.y - this->origin.y) + (ray.origin.z - this->origin.z) * (ray.origin.z - this->origin.z) - this->radius * this->radius;
+        // std::cout << "c: " << c << std::endl;
+        // double delta = b * b - 4 * Radius * c;
+        // if (delta < 0) {
+        //     return false;
+        // }
+        // else {
+        //     std::cout << "Delta: " << delta << std::endl;
+        //     return true;
+        // }
 
     }
 }

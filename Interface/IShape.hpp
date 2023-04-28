@@ -8,10 +8,13 @@
 #ifndef ISHAPE
 	#define ISHAPE
 
+#include "../src/Ray.hpp"
+#include "../src/Point3D.hpp"
+#include "../src/Vector3D.hpp"
 class IShape {
 	public:
 		~IShape() = default;
-        virtual bool hits(Ray ray) = 0;
+        virtual bool hits(RayTracer::Ray ray) = 0;
 };
 
 #endif /*ISHAPE*/

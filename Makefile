@@ -19,7 +19,7 @@ SRC			=	Main.cpp				\
 
 OBJ			=	$(SRC:.cpp=.o)
 
-LDFLAGS		=	-lcsfml-graphics -lcsfml-window -lcsfml-system -lm
+LDFLAGS		=
 
 CXXFLAGS	=	-Wall -Wextra -Werror $(INCLUDE)
 

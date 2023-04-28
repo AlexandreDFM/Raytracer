@@ -11,11 +11,17 @@ Rectangle3D::Rectangle3D()
 {
 }
 
+Rectangle3D::Rectangle3D(Math::Point3D origin, Math::Vector3D bottom_side, Math::Vector3D left_side) : origin(origin), bottom_side(bottom_side), left_side(left_side)
+{
+}
+
 Rectangle3D::~Rectangle3D()
 {
 }
 
 Math::Point3D Rectangle3D::pointAt(double u, double v)
 {
-    return Math::Point3D(this->origin.x + u * this->bottom_side.x + v * this->left_side.x, this->origin.y + u * this->bottom_side.y + v * this->left_side.y, this->origin.z + u * this->bottom_side.z + v * this->left_side.z);
+    return Math::Point3D(this->origin.x + u * this->bottom_side.x + v * this->left_side.x,
+                        this->origin.y + u * this->bottom_side.y + v * this->left_side.y,
+                        this->origin.z + u * this->bottom_side.z + v * this->left_side.z);
 }
