@@ -5,12 +5,11 @@
 ** Main.cpp
 */
 
-#include "src/Vector3D.hpp"
-#include "src/Point3D.hpp"
-#include "src/Camera.hpp"
-#include "src/Sphere.hpp"
-#include "src/Ray.hpp"
-#include "src/Rectangle3D.hpp"
+#include "Vector3D.hpp"
+#include "Point3D.hpp"
+#include "Camera.hpp"
+#include "Primitives/Sphere.hpp"
+#include "Ray.hpp"
 
 int main()
 {

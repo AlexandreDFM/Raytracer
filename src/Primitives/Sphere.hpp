@@ -7,9 +7,9 @@
 
 #ifndef SPHERE_HPP_
 #define SPHERE_HPP_
-#include "Point3D.hpp"
-#include "Vector3D.hpp"
-#include "Ray.hpp"
+#include "../Point3D.hpp"
+#include "../Vector3D.hpp"
+#include "../Ray.hpp"
 
 namespace RayTracer {
     class Sphere {
