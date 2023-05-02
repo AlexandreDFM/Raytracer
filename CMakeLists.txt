@@ -18,7 +18,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g3")
 # Primitives libraries
 
 add_library("sphere" SHARED src/Primitives/Sphere.cpp src/Primitives/Sphere.hpp)
-set_target_properties("sphere" PROPERTIES PREFIX "arcade_")
+set_target_properties("sphere" PROPERTIES PREFIX "raytracer_")
 
 add_executable( raytracer
         src/Main.cpp
