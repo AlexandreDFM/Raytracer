@@ -6,7 +6,8 @@
 */
 
 #ifndef RAY_HPP_
-#define RAY_HPP_
+    #define RAY_HPP_
+
 #include "Point3D.hpp"
 #include "Vector3D.hpp"
 

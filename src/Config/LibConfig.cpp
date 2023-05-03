@@ -7,10 +7,18 @@
 
 #include "LibConfig.hpp"
 
-LibConfig::LibConfig()
-{
-}
+namespace RayTracer {
+    LibConfig::LibConfig(const std::string &configPath) {
+        try {
+            this->_cfg.readFile(configPath.c_str());
+        } catch (const libconfig::FileIOException &fioex) {
+            std::cerr << "I/O error while reading file." << std::endl;
+        } catch (const libconfig::ParseException &pex) {
+            std::cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()
+                      << " - " << pex.getError() << std::endl;
+        }
+    }
 
-LibConfig::~LibConfig()
-{
+    LibConfig::~LibConfig() {
+    }
 }

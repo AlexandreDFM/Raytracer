@@ -8,15 +8,20 @@
 #ifndef LIBCONFIG
 	#define LIBCONFIG
 
-    #include <libconfig.h++>
+#include <iostream>
+#include <string>
+#include <libconfig.h++>
 
-class LibConfig {
-	public:
-		LibConfig();
-		~LibConfig();
-
-	protected:
-	private:
-};
+namespace RayTracer {
+    class LibConfig {
+    public:
+        LibConfig(const std::string &configPath);
+        ~LibConfig();
+        void run();
+    private:
+        std::string _configPath;
+        libconfig::Config _cfg;
+    };
+}
 
 #endif /*LIBCONFIG*/
