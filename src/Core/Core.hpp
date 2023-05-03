@@ -23,7 +23,7 @@
 namespace RayTracer {
     class Core {
     public:
-        Core(const std::string &configPath);
+        Core(const std::string &configPath, const std::string &libPath);
         ~Core();
         void run();
     private:

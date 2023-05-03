@@ -12,25 +12,29 @@
 #include <iostream>
 #include <string>
 
+#include "../Exception/Library.hpp"
+
 namespace RayTracer {
     class Wrapper {
-    public:
-        Wrapper();
+        public:
+            Wrapper();
 
-        ~Wrapper();
+            ~Wrapper();
 
-        template<typename T>
-        T *getFunction(const std::string &name)
-        {
-            T *function = reinterpret_cast<T *>(dlsym(_handle, name.c_str()));
-            if (!function)
-                std::cerr << "Cannot load symbol: " << dlerror() << '\n';
-            return function;
-        }
+            void loadLib(const std::string &path);
 
-    protected:
-    private:
-        void *_handle = nullptr;
+            template<typename T>
+            T *getFunction(const std::string &name)
+            {
+                T *function = reinterpret_cast<T *>(dlsym(_handle, name.c_str()));
+                if (!function)
+                    std::cerr << "Cannot load symbol: " << dlerror() << '\n';
+                return function;
+            }
+
+        protected:
+        private:
+            void *_handle = nullptr;
     };
 }
 

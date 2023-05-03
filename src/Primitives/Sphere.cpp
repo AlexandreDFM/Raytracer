@@ -7,6 +7,8 @@
 
 #include "Sphere.hpp"
 
+#include <utility>
+
 
 namespace RayTracer {
     Sphere::Sphere(Math::Point3D origin, double radius)
@@ -51,4 +53,14 @@ namespace RayTracer {
         // }
 
     }
+}
+
+extern "C" RayTracer::Sphere *createObject(const Math::Point3D& origin, double radius)
+{
+    return new RayTracer::Sphere(origin, radius);
+}
+
+extern "C" char *getType()
+{
+    return (char *)"Sphere";
 }

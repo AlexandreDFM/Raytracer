@@ -8,7 +8,7 @@
 #include "Core.hpp"
 
 namespace RayTracer {
-    Core::Core(const std::string &configPath) {
+    Core::Core(const std::string &configPath, const std::string &libPath) {
         this->_configHelper = new LibConfig(configPath);
         auto cameraResolutionWidth = this->_configHelper->get<int>("camera.resolution.width");
         auto cameraResolutionwHeight = this->_configHelper->get<int>("camera.resolution.height");
@@ -24,6 +24,8 @@ namespace RayTracer {
         this->_camera = std::make_unique<Camera>();
         this->_camera->origin = cameraPosition;
         // Créer les objets
+        Factory factory(libPath);
+        std::shared_ptr<IShape>sphere = factory.createComponent("Sphere", "sphere1");
         // Créer les lumières
     }
 
