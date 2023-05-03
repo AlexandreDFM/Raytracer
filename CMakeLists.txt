@@ -37,5 +37,5 @@ add_executable( raytracer
         src/Rectangle3D.hpp
         src/Vector3D.cpp
         src/Vector3D.hpp
-        )
+        src/Wrapper/Wrapper.hpp)
 target_link_libraries(raytracer sfml-graphics sfml-window sfml-system sfml-audio "dl" "config" "sphere")
