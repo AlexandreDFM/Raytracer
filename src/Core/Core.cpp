@@ -9,12 +9,22 @@
 
 namespace RayTracer {
     Core::Core(const std::string &configPath) {
-        // Charger le fichier de config
         this->_configHelper = new LibConfig(configPath);
-
+        auto cameraResolutionWidth = this->_configHelper->get<int>("camera.resolution.width");
+        auto cameraResolutionwHeight = this->_configHelper->get<int>("camera.resolution.height");
+        auto cameraFov = this->_configHelper->get<float>("camera.fieldOfView");
+        auto cameraPosX = this->_configHelper->get<float>("camera.position.x");
+        auto cameraPosY = this->_configHelper->get<float>("camera.position.y");
+        auto cameraPosZ = this->_configHelper->get<float>("camera.position.z");
+        auto cameraRotX = this->_configHelper->get<float>("camera.rotation.x");
+        auto cameraRotY = this->_configHelper->get<float>("camera.rotation.y");
+        auto cameraRotZ = this->_configHelper->get<float>("camera.rotation.z");
+        Math::Point3D cameraPosition = Math::Point3D(cameraPosX, cameraPosY, cameraPosZ);
+        Math::Vector3D cameraRotation = Math::Vector3D(cameraRotX, cameraRotY, cameraRotZ);
+        this->_camera = std::make_unique<Camera>();
+        this->_camera->origin = cameraPosition;
         // Créer les objets
         // Créer les lumières
-        // Créer les caméras
     }
 
     Core::~Core() {
