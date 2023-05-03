@@ -5,16 +5,19 @@
 ** Main.cpp
 */
 
-#include "Vector3D.hpp"
-#include "Point3D.hpp"
-#include "Camera.hpp"
-#include "Primitives/Sphere.hpp"
 #include "Ray.hpp"
+#include "Camera.hpp"
+#include "Point3D.hpp"
+#include "Vector3D.hpp"
 #include "Core/Core.hpp"
+#include "Primitives/Sphere.hpp"
+#include "Exception/Usage/Usage.hpp"
 
 int main(int argc, char **argv)
 {
+    Usage::CheckUsage(argc, argv);
     RayTracer::Core core("assets/Scene/Scene1", "lib/");
+
     double width = 720;
     double height = 480;
 

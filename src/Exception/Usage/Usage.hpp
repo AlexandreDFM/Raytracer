@@ -8,28 +8,29 @@
 #ifndef USAGE_HPP_
     #define USAGE_HPP_
 
-    #include <iostream>
     #include <string>
+    #include <iostream>
+    #include <filesystem>
 
 class Usage {
     public:
-        class Error {
+        class Error : public std::exception {
             public:
                 //////////////////////// ErrorTypes ////////////////////////
                 enum ErrorType {
-                    LIB,
-                    GAME
+                    PATH,
+                    NOT_ENOUGH_ARGS,
+                    TOO_MANY_ARGS,
+                    UNKNOWN
                 };
-                Error(ErrorType type);
-                const std::string &what() const;
+                explicit Error(ErrorType type = UNKNOWN) noexcept;
+                ~Error() noexcept override = default;
+                [[nodiscard]] const char *what() const noexcept override;
             private:
-                std::string _message;
+                ErrorType _errorType;
         };
-        Usage();
         static void CheckUsage(int ac, char **av);
         static void DisplayUsage();
-        void CheckLib(char **av);
-        void CheckGame(char **av);
 };
 
 #endif /* !USAGE_HPP_ */

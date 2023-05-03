@@ -7,21 +7,23 @@
 
 #include "Usage.hpp"
 
-Usage::Error::Error(ErrorType type)
+Usage::Error::Error(ErrorType type) noexcept
 {
-    switch (type) {
-        case LIB:
-            _message = "Error: Library not found";
-            break;
-        case GAME:
-            _message = "Error: Game not found";
-            break;
-    }
+    _errorType = type;
 }
 
-const std::string &Usage::Error::what() const
+const char *Usage::Error::what() const noexcept
 {
-    return _message;
+    switch (_errorType) {
+        case PATH:
+            return "Error: Invalid path";
+        case NOT_ENOUGH_ARGS:
+            return "Error: Not enough arguments";
+        case TOO_MANY_ARGS:
+            return "Error: Too many arguments";
+        default:
+            return "Error: Unknown error";
+    }
 }
 
 void Usage::DisplayUsage()
@@ -33,20 +35,14 @@ void Usage::DisplayUsage()
 void Usage::CheckUsage(int ac, char **av)
 {
     if (ac != 2) {
-        Usage::DisplayUsage();
-        exit(84);
-//        throw Usage::Error(Usage::Error::LIB);
-    }
-    if (std::string(av[1]) == "--help") {
         DisplayUsage();
-        exit (0);
+        throw Error(Error::NOT_ENOUGH_ARGS);
     }
-}
-
-void Usage::CheckLib(char **av)
-{
-    std::string lib = av[1];
-    if (lib.find(".so") == std::string::npos) {
-        DisplayUsage(); throw Usage::Error(Usage::Error::LIB);
+    if (std::string(av[1]) == "--help" || std::string(av[1]) == "-h") {
+        DisplayUsage();
+        exit(0);
+    }
+    if (!std::filesystem::exists(av[1])) {
+        throw Error(Usage::Error::PATH);
     }
 }
