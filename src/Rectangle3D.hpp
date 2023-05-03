@@ -11,7 +11,7 @@
 #include "Point3D.hpp"
 #include "Vector3D.hpp"
 #include "Ray.hpp"
-#include "Sphere.hpp"
+#include "Primitives/Sphere.hpp"
 
 class Rectangle3D {
     public:
