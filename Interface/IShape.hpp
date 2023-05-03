@@ -8,9 +8,16 @@
 #ifndef ISHAPE
 	#define ISHAPE
 
-#include "../src/Ray.hpp"
-#include "../src/Point3D.hpp"
-#include "../src/Vector3D.hpp"
+    #include <map>
+    #include <vector>
+    #include <memory>
+    #include <string>
+    #include <iostream>
+    #include <functional>
+    #include "../src/Ray.hpp"
+    #include "../src/Point3D.hpp"
+    #include "../src/Vector3D.hpp"
+
 class IShape {
 	public:
 		~IShape() = default;
