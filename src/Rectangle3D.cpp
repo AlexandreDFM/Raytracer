@@ -7,15 +7,7 @@
 
 #include "Rectangle3D.hpp"
 
-Rectangle3D::Rectangle3D()
-{
-}
-
 Rectangle3D::Rectangle3D(Math::Point3D origin, Math::Vector3D bottom_side, Math::Vector3D left_side) : origin(origin), bottom_side(bottom_side), left_side(left_side)
-{
-}
-
-Rectangle3D::~Rectangle3D()
 {
 }
 

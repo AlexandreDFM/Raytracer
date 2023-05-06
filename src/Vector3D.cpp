@@ -6,7 +6,6 @@
 */
 
 #include "Vector3D.hpp"
-#include <cmath>
 
 namespace Math {
     Vector3D::Vector3D()
@@ -30,13 +29,9 @@ namespace Math {
         this->z = other.z;
     }
 
-    Vector3D::Vector3D(const Vector3D &&other)
+    Vector3D::Vector3D(const Vector3D &&other) noexcept
     {
         Vector3D tmp(std::move(other.x), std::move(other.y), std::move(other.z));
-    }
-
-    Vector3D::~Vector3D()
-    {
     }
 
     double Vector3D::length()
@@ -129,6 +124,7 @@ namespace Math {
         this->z = other.z;
         return *this;
     }
+
     double Vector3D::dot(const Vector3D &other)
     {
         return (sqrt(pow(this->x, 2) + pow(this->y, 2) + pow(this->z, 2)) * sqrt(pow(other.x, 2) + pow(other.y, 2) + pow(other.z, 2)));

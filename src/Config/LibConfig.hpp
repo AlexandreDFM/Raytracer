@@ -8,15 +8,15 @@
 #ifndef LIBCONFIG
 	#define LIBCONFIG
 
-#include <iostream>
-#include <string>
-#include <libconfig.h++>
+    #include <string>
+    #include <iostream>
+    #include <libconfig.h++>
 
 namespace RayTracer {
     class LibConfig {
     public:
-        LibConfig(const std::string &configPath);
-        ~LibConfig();
+        explicit LibConfig(const std::string &configPath);
+        ~LibConfig() = default;
         template<typename T>
         T get(const std::string &path) {
             T value;

@@ -7,20 +7,13 @@
 
 #include "Sphere.hpp"
 
-#include <utility>
-
-
 namespace RayTracer {
-    Sphere::Sphere(Math::Point3D origin, double radius)
+    Sphere::Sphere(const Math::Point3D &origin, double radius)
     {
         this->origin.x = origin.x;
         this->origin.y = origin.y;
         this->origin.z = origin.z;
         this->radius = radius;
-    }
-
-    Sphere::~Sphere()
-    {
     }
 
     bool Sphere::hits(Ray ray)
@@ -34,8 +27,7 @@ namespace RayTracer {
         // std::cout << "b: " << b << std::endl;
         // std::cout << "c: " << c << std::endl;
         // std::cout << "Discriminant: " << discriminant << std::endl;
-        if (discriminant < 0)
-            return false;
+        if (discriminant < 0) return false;
         return true;
         // double Radius = ray.direction.x * ray.direction.x + ray.direction.y * ray.direction.y + ray.direction.z * ray.direction.z;
         // std::cout << "Radius: " << Radius << std::endl;

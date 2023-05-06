@@ -6,3 +6,15 @@
 */
 
 #include "AShape.hpp"
+
+namespace RayTracer {
+    AShape::AShape()
+    {
+        radius = 0;
+    }
+
+    bool AShape::hits(Ray ray)
+    {
+        return false;
+    }
+}

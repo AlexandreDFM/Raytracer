@@ -5,18 +5,17 @@
 ** Library.hpp
 */
 #ifndef LIBRARY_HPP_
-#define LIBRARY_HPP_
+    #define LIBRARY_HPP_
 
-#include <dlfcn.h>
-#include <iostream>
-#include <string>
-#include <exception>
+    #include <string>
+    #include <dlfcn.h>
+    #include <utility>
+    #include <iostream>
+    #include <exception>
 
 class LibraryOpenException : public std::exception {
     public:
-        LibraryOpenException(const std::string &message) : _message(message) {};
-
-        ~LibraryOpenException() = default;
+        explicit LibraryOpenException(std::string message) : _message(std::move(message)) {};
 
         [[nodiscard]] const char *what() const noexcept override { return _message.c_str(); };
     private:
@@ -25,9 +24,7 @@ class LibraryOpenException : public std::exception {
 
 class UnknownLibraryException : public std::exception {
     public:
-        UnknownLibraryException(const std::string &message) : _message(message) {};
-
-        ~UnknownLibraryException() = default;
+        explicit UnknownLibraryException(std::string message) : _message(std::move(message)) {};
 
         [[nodiscard]] const char *what() const noexcept override { return _message.c_str(); };
     private:

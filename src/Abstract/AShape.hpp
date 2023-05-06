@@ -8,20 +8,16 @@
 #ifndef ASHAPE
 	#define ASHAPE
 
-#include "../Vector3D.hpp"
-#include "../Point3D.hpp"
-#include "../Ray.hpp"
+#include "IShape.hpp"
 
 namespace RayTracer {
-    class AShape {
-    public:
-        ~AShape() = default;
-
-        virtual bool hits(Ray ray) = 0;
-
-    protected:
-        Math::Point3D origin;
-        double radius;
+    class AShape : public IShape {
+        public:
+            AShape();
+            bool hits(Ray ray) override;
+        protected:
+            double radius;
+            Math::Point3D origin;
     };
 }
 

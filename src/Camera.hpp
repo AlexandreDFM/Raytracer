@@ -6,15 +6,15 @@
 */
 
 #ifndef CAMERA_HPP_
-#define CAMERA_HPP_
+    #define CAMERA_HPP_
 
-#include "Rectangle3D.hpp"
+    #include "Rectangle3D.hpp"
 
 namespace RayTracer {
     class Camera {
         public:
             Camera();
-            ~Camera();
+            ~Camera() = default;
             Ray ray(double u, double v);
 
             Math::Point3D origin;

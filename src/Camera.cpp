@@ -12,10 +12,6 @@ namespace RayTracer {
     {
     }
 
-    Camera::~Camera()
-    {
-    }
-
     Ray Camera::ray(double u, double v)
     {
         Math::Point3D direction = this->screen.pointAt(u, v);

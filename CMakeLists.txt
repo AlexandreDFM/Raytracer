@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(arcade)
+project(raytracer)
 
 include_directories(
+        src
         src/Interface
+        src/Abstract
 )
 
 find_package(SFML 2.5 COMPONENTS window system graphics audio REQUIRED)
@@ -14,6 +16,15 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../lib")
 set(CMAKE_SHARED_LIBRARY_PREFIX "raytracer_")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g3")
+
+# Graphics libraries
+
+# SFML
+
+add_library("sfml" SHARED src/Libraries/Graphical/SFML/SFML.cpp src/Libraries/Graphical/SFML/SFML.hpp src/Abstract/ADisplay.cpp src/Abstract/ADisplay.hpp)
+set_target_properties("sfml" PROPERTIES PREFIX "raytracer_")
+target_link_libraries("sfml" sfml-graphics sfml-window sfml-system sfml-audio)
+
 
 # Primitives libraries
 
@@ -45,5 +56,8 @@ add_executable( raytracer
         src/Core/Core.cpp
         src/Core/Core.hpp
         src/Exception/Library.hpp
-        src/Exception/FactoryException.hpp src/Wrapper/Wrapper.cpp)
-target_link_libraries(raytracer sfml-graphics sfml-window sfml-system sfml-audio "dl" config++)
+        src/Exception/FactoryException.hpp
+        src/Wrapper/Wrapper.cpp
+        src/Abstract/ADisplay.cpp
+)
+target_link_libraries(raytracer "sfml" sfml-graphics sfml-window sfml-system sfml-audio "dl" config++)

@@ -8,9 +8,6 @@
 #include "Wrapper.hpp"
 
 namespace RayTracer {
-    Wrapper::Wrapper()
-    {
-    }
 
     Wrapper::~Wrapper()
     {

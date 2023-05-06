@@ -18,7 +18,4 @@ namespace RayTracer {
                       << " - " << pex.getError() << std::endl;
         }
     }
-
-    LibConfig::~LibConfig() {
-    }
 }

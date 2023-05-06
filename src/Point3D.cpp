@@ -15,10 +15,6 @@ namespace Math {
         this->z = 0;
     }
 
-    Point3D::~Point3D()
-    {
-    }
-
     Point3D::Point3D(double x, double y, double z)
     {
         this->x = x;
@@ -36,12 +32,12 @@ namespace Math {
         Point3D tmp(std::move(other.x), std::move(other.y), std::move(other.z));
     }
 
-    Point3D Point3D::operator+(const Vector3D &other)
+    Point3D Point3D::operator +(const Vector3D &other)
     {
         return Point3D(this->x + other.x, this->y + other.y, this->z + other.z);
     }
 
-    Point3D Point3D::operator+=(const Vector3D &other)
+    Point3D Point3D::operator +=(const Vector3D &other)
     {
         this->x += other.x;
         this->y += other.y;
@@ -49,12 +45,12 @@ namespace Math {
         return *this;
     }
 
-    Point3D Point3D::operator-(const Vector3D &other)
+    Point3D Point3D::operator -(const Vector3D &other)
     {
         return Point3D(this->x - other.x, this->y - other.y, this->z - other.z);
     }
 
-    Point3D Point3D::operator=(const Point3D &other)
+    Point3D Point3D::operator = (const Point3D &other)
     {
         this->x = other.x;
         this->y = other.y;

@@ -6,19 +6,19 @@
 */
 
 #ifndef SPHERE_HPP_
-#define SPHERE_HPP_
-#include "../Point3D.hpp"
-#include "../Vector3D.hpp"
-#include "../Ray.hpp"
+    #define SPHERE_HPP_
+
+    #include "AShape.hpp"
+
 
 namespace RayTracer {
-    class Sphere {
+    class Sphere : public AShape {
         public:
-            Sphere(Math::Point3D origin, double radius);
-            ~Sphere();
-            bool hits(Ray ray);
-        Math::Point3D origin;
-        double radius;
+            Sphere(const Math::Point3D& origin, double radius);
+            bool hits(Ray ray) override;
+
+            Math::Point3D origin;
+            double radius;
     };
 }
 

@@ -8,10 +8,6 @@
 #include "Ray.hpp"
 
 namespace RayTracer {
-    Ray::Ray()
-    {
-    }
-
     Ray::Ray(Math::Point3D origin, Math::Vector3D direction)
     {
         this->origin.x = origin.x;
@@ -35,10 +31,6 @@ namespace RayTracer {
     Ray::Ray(const Ray &&other)
     {
         Ray tmp(std::move(other.origin), std::move(other.direction));
-    }
-
-    Ray::~Ray()
-    {
     }
 
     Ray Ray::operator+(const Ray &other)

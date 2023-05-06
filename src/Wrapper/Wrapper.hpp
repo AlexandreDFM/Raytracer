@@ -8,16 +8,12 @@
 #ifndef WRAPPER_HPP_
 	#define WRAPPER_HPP_
 
-#include <dlfcn.h>
-#include <iostream>
-#include <string>
-
-#include "../Exception/Library.hpp"
+    #include "../Exception/Library.hpp"
 
 namespace RayTracer {
     class Wrapper {
         public:
-            Wrapper();
+            Wrapper() = default;
 
             ~Wrapper();
 
@@ -31,8 +27,6 @@ namespace RayTracer {
                     std::cerr << "Cannot load symbol: " << dlerror() << '\n';
                 return function;
             }
-
-        protected:
         private:
             void *_handle = nullptr;
     };

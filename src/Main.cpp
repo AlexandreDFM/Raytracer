@@ -5,12 +5,8 @@
 ** Main.cpp
 */
 
-#include "Ray.hpp"
 #include "Camera.hpp"
-#include "Point3D.hpp"
-#include "Vector3D.hpp"
 #include "Core/Core.hpp"
-#include "Primitives/Sphere.hpp"
 #include "Exception/Usage/Usage.hpp"
 
 int main(int argc, char **argv)

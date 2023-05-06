@@ -5,26 +5,27 @@
 ** Rectangle3D
 */
 
-#ifndef RECTANGLE3D_HPP_
-#define RECTANGLE3D_HPP_
+#ifndef RECTANGLE3D
+    #define RECTANGLE3D
 
-#include "Point3D.hpp"
-#include "Vector3D.hpp"
-#include "Ray.hpp"
-#include "Primitives/Sphere.hpp"
+    #include "Ray.hpp"
+    #include "Point3D.hpp"
+    #include "Vector3D.hpp"
+    #include "Primitives/Sphere.hpp"
 
 class Rectangle3D {
     public:
-        Rectangle3D();
+        //////////////////////// Constructors ////////////////////////
+        Rectangle3D() = default;
         Rectangle3D(Math::Point3D origin, Math::Vector3D bottom_side, Math::Vector3D left_side);
-        ~Rectangle3D();
+        //////////////////////// Destructors ////////////////////////
+        ~Rectangle3D() = default;
         Math::Point3D pointAt(double u, double v);
 
+        //////////////////////// Attributes ////////////////////////
         Math::Point3D origin;
         Math::Vector3D bottom_side;
         Math::Vector3D left_side;
-    protected:
-    private:
 };
 
-#endif /* !RECTANGLE3D_HPP_ */
+#endif /* !RECTANGLE3D */

@@ -6,23 +6,31 @@
 */
 
 #ifndef VECTOR3D_HPP_
-#define VECTOR3D_HPP_
+    #define VECTOR3D_HPP_
 
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <cmath>
-#include <iostream>
+    #include <cmath>
+    #include <string>
+    #include <vector>
+    #include <iostream>
+    #include <algorithm>
 
 namespace Math {
     class Vector3D {
         public:
+            //////////////////////// Constructors ////////////////////////
             Vector3D();
             Vector3D(const Vector3D &other);
-            Vector3D (const Vector3D &&other);
+            Vector3D(const Vector3D &&other) noexcept;
             Vector3D(double x, double y, double z);
-            ~Vector3D();
+
+            //////////////////////// Destructors ////////////////////////
+            ~Vector3D() = default;
+
+            //////////////////////// Methods ////////////////////////
             double length();
+            double dot(const Vector3D &other);
+
+            //////////////////////// Operators ////////////////////////
             Vector3D operator +  (const Vector3D &other);
             Vector3D operator += (const Vector3D &other);
             Vector3D operator -  (const Vector3D &other);
@@ -36,14 +44,12 @@ namespace Math {
             Vector3D operator /  (const double &other);
             Vector3D operator /= (const double &other);
             Vector3D operator =  (const Vector3D &other);
-            double dot(const Vector3D &other);
 
-        double x;
-        double y;
-        double z;
-        protected:
-        private:
+            //////////////////////// Attributes ////////////////////////
+            double x;
+            double y;
+            double z;
     };
-} // namespace Math
+}
 
 #endif /* !VECTOR3D_HPP_ */

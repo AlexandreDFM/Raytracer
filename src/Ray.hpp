@@ -8,25 +8,31 @@
 #ifndef RAY_HPP_
     #define RAY_HPP_
 
-#include "Point3D.hpp"
-#include "Vector3D.hpp"
+    #include "Point3D.hpp"
+    #include "Vector3D.hpp"
 
 namespace RayTracer {
     class Ray {
         public:
-            Ray();
+            //////////////////////// Constructors ////////////////////////
+            Ray() = default;
             Ray(Math::Point3D origin, Math::Vector3D direction);
             Ray(const Ray &other);
             Ray(const Ray &&other);
-            ~Ray();
+
+            //////////////////////// Destructors ////////////////////////
+            ~Ray() = default;
+
+            //////////////////////// Operators ////////////////////////
             Ray operator+(const Ray &other);
             Ray operator+=(const Ray &other);
             Ray operator-(const Ray &other);
-        Math::Point3D origin;
-        Math::Vector3D direction;
-        protected:
-        private:
+
+            //////////////////////// Attributes ////////////////////////
+            Math::Point3D origin;
+            Math::Vector3D direction;
     };
 
 }
+
 #endif /* !RAY_HPP_ */

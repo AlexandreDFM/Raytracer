@@ -15,14 +15,10 @@ Usage::Error::Error(ErrorType type) noexcept
 const char *Usage::Error::what() const noexcept
 {
     switch (_errorType) {
-        case PATH:
-            return "Error: Invalid path";
-        case NOT_ENOUGH_ARGS:
-            return "Error: Not enough arguments";
-        case TOO_MANY_ARGS:
-            return "Error: Too many arguments";
-        default:
-            return "Error: Unknown error";
+        case PATH:              return "Error: Invalid path";
+        case NOT_ENOUGH_ARGS:   return "Error: Not enough arguments";
+        case TOO_MANY_ARGS:     return "Error: Too many arguments";
+        default:                return "Error: Unknown error";
     }
 }
 

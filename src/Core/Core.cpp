@@ -29,10 +29,6 @@ namespace RayTracer {
         // Créer les lumières
     }
 
-    Core::~Core() {
-        // de
-    }
-
     void Core::run() {
         // Boucle de rendu
         // Pour chaque caméra
