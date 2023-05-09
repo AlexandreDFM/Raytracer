@@ -22,7 +22,7 @@ namespace RayTracer {
     };
 }
 
-extern "C" RayTracer::Sphere *createObject(const Math::Point3D& origin, double radius);
+extern "C" RayTracer::Sphere *entryPoint(const Math::Point3D& origin, double radius);
 extern "C" char *getType();
 
 #endif /* !SPHERE_HPP_ */

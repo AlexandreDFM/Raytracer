@@ -23,14 +23,14 @@ namespace RayTracer {
                     if (entry.path().extension() == ".so" || entry.path().extension() == ".dylib") {
                         std::cout << "Loading library: " << entry.path() << std::endl;
                         wrapper.loadLib(entry.path());
-                        auto createObject = wrapper.getFunction < std::shared_ptr<IShape>(
-                        const std::string &)>("createObject");
+                        auto entryPoint = wrapper.getFunction < std::shared_ptr<IShape>(
+                        const std::string &)>("entryPoint");
                         auto getType = wrapper.getFunction<const char *()>("getType");
-                        if (!createObject || !getType)
+                        if (!entryPoint || !getType)
                             throw new FactoryUnknownComponent("Invalid library: " + entry.path().string());
                         std::string type = getType();
                         std::cout << "Loaded type: " << type << std::endl;
-                        this->_factoryMap[type] = createObject;
+                        this->_factoryMap[type] = entryPoint;
                     }
                 }
             }

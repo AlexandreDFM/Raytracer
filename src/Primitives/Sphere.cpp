@@ -47,7 +47,7 @@ namespace RayTracer {
     }
 }
 
-extern "C" RayTracer::Sphere *createObject(const Math::Point3D& origin, double radius)
+extern "C" RayTracer::Sphere *entryPoint(const Math::Point3D& origin, double radius)
 {
     return new RayTracer::Sphere(origin, radius);
 }

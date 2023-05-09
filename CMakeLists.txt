@@ -29,7 +29,7 @@ target_link_libraries("sfml" sfml-graphics sfml-window sfml-system sfml-audio)
 # Primitives libraries
 
 # Sphere
-add_library("sphere" SHARED src/Primitives/Sphere.cpp src/Primitives/Sphere.hpp)
+add_library("sphere" SHARED src/Abstract/AShape.cpp src/Abstract/AShape.hpp src/Primitives/Sphere.cpp src/Primitives/Sphere.hpp)
 set_target_properties("sphere" PROPERTIES PREFIX "raytracer_")
 
 add_executable( raytracer
@@ -60,4 +60,4 @@ add_executable( raytracer
         src/Wrapper/Wrapper.cpp
         src/Abstract/ADisplay.cpp
 )
-target_link_libraries(raytracer "sfml" sfml-graphics sfml-window sfml-system sfml-audio "dl" config++)
+target_link_libraries(raytracer "sfml" "dl" config++)
