@@ -13,7 +13,7 @@
 namespace RayTracer {
     class Ray {
         public:
-            Ray() {}
+            Ray() = default;
             Ray(const point3& origin, const Vector3D& direction)
                 : orig(origin), dir(direction)
             {}

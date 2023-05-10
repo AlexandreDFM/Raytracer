@@ -4,7 +4,6 @@
 *.so
 *.dylib
 *.out
-*.ppm
 raytracer
 build
 cmake-build-debug

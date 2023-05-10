@@ -8,10 +8,9 @@
 #ifndef FACTORY_HPP_
 	#define FACTORY_HPP_
 
-
     #include "IShape.hpp"
-    #include "../Wrapper/Wrapper.hpp"
-    #include "../Exception/FactoryException.hpp"
+    #include "Wrapper/Wrapper.hpp"
+    #include "Exception/FactoryException.hpp"
 
 namespace RayTracer {
     class Factory {

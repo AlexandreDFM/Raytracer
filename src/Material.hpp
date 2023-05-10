@@ -16,9 +16,8 @@ class Lambertian : public material {
     public:
         Lambertian(const color& a) : albedo(a) {}
 
-        virtual bool scatter(
-            const RayTracer::Ray& r_in, const hit_record& rec, color& attenuation, RayTracer::Ray& scattered
-        ) const override {
+        virtual bool scatter(const RayTracer::Ray& r_in, const hit_record& rec, color& attenuation, RayTracer::Ray& scattered) const override
+        {
             auto scatter_direction = rec.normal + random_unit_vector();
 
             // Catch degenerate scatter direction

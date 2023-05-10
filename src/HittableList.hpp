@@ -1,3 +1,10 @@
+/*
+** EPITECH PROJECT, 2023
+** raytracer
+** File description:
+** HittableList.hpp
+*/
+
 #ifndef HITTABLE_LIST_H
     #define HITTABLE_LIST_H
 
@@ -14,13 +21,22 @@ using std::make_shared;
 namespace RayTracer {
     class HittableList : public IShape {
     public:
-        HittableList() {}
+        HittableList() = default;
 
-        HittableList(shared_ptr<IShape> object) { add(object); }
+        HittableList(shared_ptr<IShape> object)
+        {
+            add(object);
+        }
 
-        void clear() { objects.clear(); }
+        void clear()
+        {
+            objects.clear();
+        }
 
-        void add(shared_ptr<IShape> object) { objects.push_back(object); }
+        void add(shared_ptr<IShape> object)
+        {
+            objects.push_back(object);
+        }
 
         virtual bool hit(const Ray &r, double t_min, double t_max, hit_record &rec) const override;
 
