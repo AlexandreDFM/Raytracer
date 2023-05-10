@@ -40,7 +40,6 @@ add_executable( raytracer
         src/Exception/Usage/Usage.cpp
         src/Exception/Usage/Usage.hpp
         src/Camera.hpp
-        src/Ray.cpp
         src/Ray.hpp
         src/Color.hpp
         src/Rectangle3D.cpp
@@ -57,9 +56,8 @@ add_executable( raytracer
         src/Exception/FactoryException.hpp
         src/Wrapper/Wrapper.cpp
         src/Abstract/ADisplay.cpp
-        src/rtweekend.hpp
         src/struct.hpp
-        src/hittable_list.hpp
+        src/HittableList.hpp
         src/Material.hpp
-)
+        src/Math/Math.cpp src/Math/Math.hpp)
 target_link_libraries(raytracer "sfml" "dl" config++)

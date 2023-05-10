@@ -2,6 +2,7 @@
 .idea
 *.o
 *.so
+*.dylib
 *.out
 *.ppm
 raytracer

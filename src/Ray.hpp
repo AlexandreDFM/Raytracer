@@ -6,15 +6,15 @@
 */
 
 #ifndef RAY_H
-#define RAY_H
+    #define RAY_H
 
 #include "Vector3D.hpp"
 
 namespace RayTracer {
-    class ray {
+    class Ray {
         public:
-            ray() {}
-            ray(const point3& origin, const Vector3D& direction)
+            Ray() {}
+            Ray(const point3& origin, const Vector3D& direction)
                 : orig(origin), dir(direction)
             {}
 

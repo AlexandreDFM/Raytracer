@@ -9,9 +9,11 @@
     #define CAMERA_HPP_
 
     #include "Ray.hpp"
-    class camera {
+
+namespace RayTracer {
+    class Camera {
         public:
-            camera() {
+            Camera() {
                 auto aspect_ratio = 16.0 / 9.0;
                 auto viewport_height = 2.0;
                 auto viewport_width = aspect_ratio * viewport_height;
@@ -20,11 +22,11 @@
                 origin = point3(0, 0, 0);
                 horizontal = Vector3D(viewport_width, 0.0, 0.0);
                 vertical = Vector3D(0.0, viewport_height, 0.0);
-                lower_left_corner = origin - horizontal/2 - vertical/2 - Vector3D(0, 0, focal_length);
+                lower_left_corner = origin - horizontal / 2 - vertical / 2 - Vector3D(0, 0, focal_length);
             }
 
-            RayTracer::ray get_ray(double u, double v) const {
-                return RayTracer::ray(origin, lower_left_corner + u*horizontal + v*vertical - origin);
+            Ray getRay(double u, double v) const {
+                return Ray(origin, lower_left_corner + u*horizontal + v*vertical - origin);
             }
 
         private:
@@ -33,5 +35,7 @@
             Vector3D horizontal;
             Vector3D vertical;
     };
+}
+
 #endif
 

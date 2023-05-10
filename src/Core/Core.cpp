@@ -25,7 +25,7 @@
 //         this->_camera->origin = cameraPosition;
 //         // Créer les objets
 //         Factory factory(libPath);
-//         std::shared_ptr<IShape>sphere = factory.createComponent("Sphere", "sphere1");
+//         std::shared_ptr<IShape>Sphere = factory.createComponent("Sphere", "sphere1");
 //         // Créer les lumières
 //     }
 

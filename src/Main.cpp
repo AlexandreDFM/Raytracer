@@ -5,24 +5,24 @@
 ** Main
 */
 
-#include "rtweekend.hpp"
+#include "Math/Math.hpp"
 #include "Color.hpp"
-#include "Vector3D.hpp"
-#include "hittable_list.hpp"
+#include "HittableList.hpp"
 #include "./Primitives/Sphere.hpp"
 #include "Camera.hpp"
 #include "Material.hpp"
-
+#include "Interface/IShape.hpp"
 #include <iostream>
-color ray_color(const RayTracer::ray& r, const hittable& world, int depth) {
+
+color ray_color(const RayTracer::Ray& r, const RayTracer::IShape& world, int depth) {
     hit_record rec;
 
     // If we've exceeded the ray bounce limit, no more light is gathered.
     if (depth <= 0)
         return color(0,0,0);
 
-    if (world.hit(r, 0.001, infinity, rec)) {
-        RayTracer::ray scattered;
+    if (world.hit(r, 0.001, Math::infinity, rec)) {
+        RayTracer::Ray scattered;
         color attenuation;
         if (rec.mat_ptr->scatter(r, rec, attenuation, scattered))
             return attenuation * ray_color(scattered, world, depth-1);
@@ -46,23 +46,23 @@ int main() {
 
     // World
 
-    hittable_list world;
+    RayTracer::HittableList world;
 
-    auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
-    auto material_center = make_shared<lambertian>(color(0.7, 0.3, 0.3));
-    // auto material_left   = make_shared<metal>(color(0.8, 0.8, 0.8));
-    // auto material_right  = make_shared<metal>(color(0.8, 0.6, 0.2));
-    auto material_left   = make_shared<metal>(color(0.8, 0.8, 0.8), 0.3);
-    auto material_right  = make_shared<metal>(color(0.8, 0.6, 0.2), 1.0);
+    auto material_ground = std::make_shared<Lambertian>(color(0.8, 0.8, 0.0));
+    auto material_center = std::make_shared<Lambertian>(color(0.7, 0.3, 0.3));
+    // auto material_left   = std::make_shared<metal>(color(0.8, 0.8, 0.8));
+    // auto material_right  = std::make_shared<metal>(color(0.8, 0.6, 0.2));
+    auto material_left   = std::make_shared<metal>(color(0.8, 0.8, 0.8), 0.3);
+    auto material_right  = std::make_shared<metal>(color(0.8, 0.6, 0.2), 1.0);
 
-    world.add(make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
-    world.add(make_shared<sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center));
-    world.add(make_shared<sphere>(point3(-1.0,    0.0, -1.0),   0.5, material_left));
-    world.add(make_shared<sphere>(point3( 1.0,    0.0, -1.0),   0.5, material_right));
+    world.add(std::make_shared<RayTracer::Sphere>(point3(0.0, -100.5, -1.0), 100.0, material_ground));
+    world.add(std::make_shared<RayTracer::Sphere>(point3(0.0, 0.0, -1.0), 0.5, material_center));
+    world.add(std::make_shared<RayTracer::Sphere>(point3(-1.0, 0.0, -1.0), 0.5, material_left));
+    world.add(std::make_shared<RayTracer::Sphere>(point3(1.0, 0.0, -1.0), 0.5, material_right));
 
     // Camera
 
-    camera cam;
+    RayTracer::Camera cam;
 
     // Render
 
@@ -73,9 +73,9 @@ int main() {
         for (int i = 0; i < image_width; ++i) {
             color pixel_color(0, 0, 0);
             for (int s = 0; s < samples_per_pixel; ++s) {
-                auto u = (i + random_double()) / (image_width-1);
-                auto v = (j + random_double()) / (image_height-1);
-                RayTracer::ray r = cam.get_ray(u, v);
+                auto u = (i + Math::random_double()) / (image_width-1);
+                auto v = (j + Math::random_double()) / (image_height-1);
+                RayTracer::Ray r = cam.getRay(u, v);
                 pixel_color += ray_color(r, world, max_depth);
             }
             write_color(std::cout, pixel_color, samples_per_pixel);
