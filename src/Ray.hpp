@@ -1,38 +1,34 @@
 /*
 ** EPITECH PROJECT, 2023
-** B-OOP-400-NCE-4-1-bsraytracer-roman.lopes
+** B-OOP-400-NCE-4-1-raytracer-alexandre-kevin.de-freitas-martins
 ** File description:
 ** Ray
 */
 
-#ifndef RAY_HPP_
-    #define RAY_HPP_
+#ifndef RAY_H
+#define RAY_H
 
-    #include "Point3D.hpp"
-    #include "Vector3D.hpp"
+#include "Vector3D.hpp"
 
 namespace RayTracer {
-    class Ray {
+    class ray {
         public:
-            //////////////////////// Constructors ////////////////////////
-            Ray() = default;
-            Ray(Math::Point3D origin, Math::Vector3D direction);
-            Ray(const Ray &other);
-            Ray(const Ray &&other);
+            ray() {}
+            ray(const point3& origin, const Vector3D& direction)
+                : orig(origin), dir(direction)
+            {}
 
-            //////////////////////// Destructors ////////////////////////
-            ~Ray() = default;
+            point3 origin() const  { return orig; }
+            Vector3D direction() const { return dir; }
 
-            //////////////////////// Operators ////////////////////////
-            Ray operator+(const Ray &other);
-            Ray operator+=(const Ray &other);
-            Ray operator-(const Ray &other);
+            point3 at(double t) const {
+                return orig + t*dir;
+            }
 
-            //////////////////////// Attributes ////////////////////////
-            Math::Point3D origin;
-            Math::Vector3D direction;
+        public:
+            point3 orig;
+            Vector3D dir;
     };
-
 }
 
-#endif /* !RAY_HPP_ */
+#endif

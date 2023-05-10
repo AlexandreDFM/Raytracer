@@ -3,6 +3,7 @@
 *.o
 *.so
 *.out
+*.ppm
 raytracer
 build
 cmake-build-debug

@@ -8,7 +8,7 @@
 #ifndef ADISPLAYMODULE_HPP_
 	#define ADISPLAYMODULE_HPP_
 
-    #include "IDisplay.hpp"
+    #include "../Interface/IDisplay.hpp"
 
 namespace RayTracer {
     class ADisplay : public IDisplay {
