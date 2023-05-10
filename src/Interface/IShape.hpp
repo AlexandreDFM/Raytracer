@@ -8,17 +8,17 @@
 #ifndef ISHAPE
 	#define ISHAPE
 
-    #include "Ray.hpp"
-    #include "Struct.hpp"
-    #include "Point3D.hpp"
-    #include "Vector3D.hpp"
+//     #include "../Ray.hpp"
+//     #include "Struct.hpp"
+//     #include "../Point3D.hpp"
+//     #include "../Vector3D.hpp"
 
-namespace RayTracer {
-    class IShape {
-        public:
-            virtual ~IShape() = default;
-            virtual bool hits(Ray ray) = 0;
-    };
-}
+// namespace RayTracer {
+//     class IShape {
+//         public:
+//             virtual ~IShape() = default;
+//             virtual bool hits(Ray ray) = 0;
+//     };
+// }
 
 #endif /*ISHAPE*/

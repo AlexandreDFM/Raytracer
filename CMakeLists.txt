@@ -39,16 +39,14 @@ add_executable( raytracer
         src/Abstract/AShape.hpp
         src/Exception/Usage/Usage.cpp
         src/Exception/Usage/Usage.hpp
-        src/Camera.cpp
         src/Camera.hpp
-        src/Point3D.cpp
-        src/Point3D.hpp
         src/Ray.cpp
         src/Ray.hpp
+        src/Color.hpp
         src/Rectangle3D.cpp
         src/Rectangle3D.hpp
-        src/Vector3D.cpp
         src/Vector3D.hpp
+        src/Primitives/Sphere.hpp
         src/Wrapper/Wrapper.hpp
         src/Factory/Factory.hpp
         src/Config/LibConfig.hpp
@@ -59,5 +57,9 @@ add_executable( raytracer
         src/Exception/FactoryException.hpp
         src/Wrapper/Wrapper.cpp
         src/Abstract/ADisplay.cpp
+        src/rtweekend.hpp
+        src/struct.hpp
+        src/hittable_list.hpp
+        src/Material.hpp
 )
 target_link_libraries(raytracer "sfml" "dl" config++)

@@ -8,17 +8,17 @@
 #ifndef ASHAPE
 	#define ASHAPE
 
-#include "IShape.hpp"
+// #include "../Interface/IShape.hpp"
 
-namespace RayTracer {
-    class AShape : public IShape {
-        public:
-            AShape();
-            bool hits(Ray ray) override;
-        protected:
-            double radius;
-            Math::Point3D origin;
-    };
-}
+// namespace RayTracer {
+//     class AShape : public IShape {
+//         public:
+//             AShape();
+//             bool hits(Ray ray) override;
+//         protected:
+//             double radius;
+//             Math::Point3D origin;
+//     };
+// }
 
 #endif /*ASHAPE*/
