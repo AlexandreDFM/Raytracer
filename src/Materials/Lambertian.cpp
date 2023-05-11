@@ -26,3 +26,14 @@ namespace RayTracer {
         return true;
     }
 }
+
+extern "C" RayTracer::Lambertian *entryPoint(const color &a, double f)
+{
+    (void) f;
+    return new RayTracer::Lambertian(a);
+}
+
+extern "C" char *getType()
+{
+    return (char *)"material_lambertian";
+}

@@ -9,6 +9,7 @@
 
 namespace RayTracer {
     Core::Core(const std::string &configPath, const std::string &libPath) {
+        this->_factory = new NewFactory(libPath);
         this->_configHelper = new LibConfig(configPath);
         auto cameraResolutionWidth = this->_configHelper->get<int>("camera.resolution.width");
         auto cameraResolutionwHeight = this->_configHelper->get<int>("camera.resolution.height");
@@ -29,8 +30,6 @@ namespace RayTracer {
 
         // Créer les objets
 
-        std::shared_ptr<IMaterial> material = std::make_shared<Lambertian>(color(0.8, 0.8, 0.0));
-
         for (int i = 0, length = this->_configHelper->getLength("primitives.spheres"); i < length; i++) {
             auto x = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "x", i);
             auto y = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "y", i);
@@ -41,8 +40,8 @@ namespace RayTracer {
             auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "color.g", i);
             auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "color.b", i);
             auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "fuzz", i);
-            auto materialComponent = RayTracer::Factory::createMaterial(materialType, point3 (colorR, colorG, colorB), fuzz);
-            this->_world.add(RayTracer::Factory::createPrimitive("sphere", point3(x, y, z), r, materialComponent));
+            auto materialComponent = this->_factory->createMaterial(materialType, color(colorR, colorG, colorB), fuzz);
+            this->_world.add(this->_factory->createPrimitive("sphere", point3(x, y, z), r, materialComponent));
         }
 
         // Créer les lumières

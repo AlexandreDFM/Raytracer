@@ -23,4 +23,7 @@ namespace RayTracer {
         };
 }
 
+extern "C" RayTracer::Metal *entryPoint(const color &a, double f);
+extern "C" char *getType();
+
 #endif /*METAL_*/

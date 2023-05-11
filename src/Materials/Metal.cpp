@@ -21,3 +21,13 @@ namespace RayTracer {
         return (dot(scattered.direction(), rec.normal) > 0);
     }
 }
+
+extern "C" RayTracer::Metal *entryPoint(const color &a, double f)
+{
+    return new RayTracer::Metal(a, f);
+}
+
+extern "C" char *getType()
+{
+    return (char *)"material_metal";
+}

@@ -17,7 +17,7 @@ namespace RayTracer {
             Sphere() {};
             Sphere(point3 cen, double r, std::shared_ptr<IMaterial> m)
                     : center(cen), radius(r), mat_ptr(m) {};
-            virtual bool hit(
+            bool hit(
                     const RayTracer::Ray &r, double t_min, double t_max, hit_record &rec) const override;
             point3 center;
             double radius;
@@ -50,7 +50,7 @@ namespace RayTracer {
         return true;
     }
 }
-//extern "C" Sphere *entryPoint(const Math::Point3D& origin, double radius);
+extern "C" RayTracer::IShape *entryPoint(point3 center, double radius, std::shared_ptr<RayTracer::IMaterial> mat_ptr);
 extern "C" char *getType();
 
 #endif /* SPHERE_H */

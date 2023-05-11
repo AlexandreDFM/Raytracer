@@ -12,11 +12,10 @@
     #include "Camera.hpp"
     #include "Color.hpp"
     #include "HittableList.hpp"
-    #include "Factory/Factory.hpp"
-    #include "Materials/Metal.hpp"
+    #include "Factory/NewFactory.hpp"
     #include "Config/LibConfig.hpp"
-    #include "Materials/Lambertian.hpp"
-    #include "Primitives/Sphere.hpp"
+    #include "Vector3D.hpp"
+    #include "IMaterial.hpp"
 
 namespace RayTracer {
     class Core {
@@ -26,6 +25,7 @@ namespace RayTracer {
             ~Core() = default;
             void run();
         private:
+            NewFactory *_factory;
             LibConfig *_configHelper;
             std::vector<IShape *> _shapes;
             RayTracer::HittableList _world;

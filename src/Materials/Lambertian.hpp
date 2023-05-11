@@ -20,4 +20,7 @@ namespace RayTracer {
     };
 }
 
+extern "C" RayTracer::Lambertian *entryPoint(const color &a, double f);
+extern "C" char *getType();
+
 #endif /*LAMBERTIAN_HPP_*/
