@@ -8,29 +8,23 @@
 #ifndef SPHERE_H
     #define SPHERE_H
 
-#include "struct.hpp"
-#include "Vector3D.hpp"
 #include "Ray.hpp"
 #include "IShape.hpp"
 
 namespace RayTracer {
     class Sphere : public IShape {
-    public:
-        Sphere() {}
-
-        Sphere(point3 cen, double r, shared_ptr<material> m)
-                : center(cen), radius(r), mat_ptr(m) {};
-
-        virtual bool hit(
-                const RayTracer::Ray &r, double t_min, double t_max, hit_record &rec) const override;
-
-    public:
-        point3 center;
-        double radius;
-        shared_ptr<material> mat_ptr;
+        public:
+            Sphere() {};
+            Sphere(point3 cen, double r, std::shared_ptr<IMaterial> m)
+                    : center(cen), radius(r), mat_ptr(m) {};
+            virtual bool hit(
+                    const RayTracer::Ray &r, double t_min, double t_max, hit_record &rec) const override;
+            point3 center;
+            double radius;
+            std::shared_ptr<IMaterial> mat_ptr;
     };
 
-    bool Sphere::hit(const RayTracer::Ray &r, double t_min, double t_max, hit_record &rec) const {
+    inline bool Sphere::hit(const RayTracer::Ray &r, double t_min, double t_max, hit_record &rec) const {
         Vector3D oc = r.origin() - center;
         auto a = r.direction().length_squared();
         auto half_b = dot(oc, r.direction());

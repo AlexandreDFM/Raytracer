@@ -5,14 +5,12 @@
     #include "Ray.hpp"
     #include "Math/Math.hpp"
 
-struct hit_record;
-
-class material {
+class IMaterial {
     public:
         virtual bool scatter(const RayTracer::Ray & r_in, const hit_record& rec, color& attenuation, RayTracer::Ray& scattered) const = 0;
 };
 
-class Lambertian : public material {
+class Lambertian : public IMaterial {
     public:
         Lambertian(const color& a) : albedo(a) {}
 
@@ -33,9 +31,9 @@ class Lambertian : public material {
         color albedo;
 };
 
-class metal : public material {
+class Metal : public IMaterial {
     public:
-        metal(const color& a, double f) : albedo(a), fuzz(f < 1 ? f : 1) {}
+        Metal(const color& a, double f) : albedo(a), fuzz(f < 1 ? f : 1) {}
 
         virtual bool scatter(
             const RayTracer::Ray& r_in, const hit_record& rec, color& attenuation, RayTracer::Ray& scattered

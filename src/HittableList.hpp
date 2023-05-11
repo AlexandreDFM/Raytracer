@@ -10,41 +10,35 @@
 
     #include <memory>
     #include <vector>
-
-    #include "struct.hpp"
     #include "Interface/IShape.hpp"
-
-
-using std::shared_ptr;
-using std::make_shared;
 
 namespace RayTracer {
     class HittableList : public IShape {
-    public:
-        HittableList() = default;
+        public:
+            HittableList() = default;
 
-        HittableList(shared_ptr<IShape> object)
-        {
-            add(object);
-        }
+            HittableList(std::shared_ptr<IShape> object)
+            {
+                add(object);
+            }
 
-        void clear()
-        {
-            objects.clear();
-        }
+            void clear()
+            {
+                objects.clear();
+            }
 
-        void add(shared_ptr<IShape> object)
-        {
-            objects.push_back(object);
-        }
+            void add(std::shared_ptr<IShape> object)
+            {
+                objects.push_back(object);
+            }
 
-        virtual bool hit(const Ray &r, double t_min, double t_max, hit_record &rec) const override;
+            virtual bool hit(const Ray &r, double t_min, double t_max, hit_record &rec) const override;
 
-    public:
-        std::vector<shared_ptr<IShape>> objects;
+        public:
+            std::vector<std::shared_ptr<IShape>> objects;
     };
 
-    bool HittableList::hit(const Ray &r, double t_min, double t_max, hit_record &rec) const {
+    inline bool HittableList::hit(const Ray &r, double t_min, double t_max, hit_record &rec) const {
         hit_record temp_rec;
         bool hit_anything = false;
         auto closest_so_far = t_max;

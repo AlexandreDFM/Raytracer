@@ -14,8 +14,8 @@
 
 class Math {
     public:
-        Math();
-        ~Math();
+        Math() = default;
+        ~Math() = default;
         constexpr static const double infinity = std::numeric_limits<double>::infinity();
         constexpr static const double pi = 3.1415926535897932385;
         static double degrees_to_radians(double degrees) {

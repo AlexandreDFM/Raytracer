@@ -39,15 +39,17 @@ add_executable( raytracer
         src/Abstract/AShape.hpp
         src/Exception/Usage/Usage.cpp
         src/Exception/Usage/Usage.hpp
+        src/Camera.cpp
         src/Camera.hpp
         src/Ray.hpp
         src/Color.hpp
         src/Rectangle3D.cpp
         src/Rectangle3D.hpp
+        src/Vector3D.cpp
         src/Vector3D.hpp
         src/Primitives/Sphere.hpp
         src/Wrapper/Wrapper.hpp
-        src/Factory/Factory.hpp
+        src/Factory/NewFactory.hpp
         src/Config/LibConfig.hpp
         src/Config/LibConfig.cpp
         src/Core/Core.cpp
@@ -56,7 +58,6 @@ add_executable( raytracer
         src/Exception/FactoryException.hpp
         src/Wrapper/Wrapper.cpp
         src/Abstract/ADisplay.cpp
-        src/struct.hpp
         src/HittableList.hpp
         src/Material.hpp
         src/Math/Math.cpp src/Math/Math.hpp)
