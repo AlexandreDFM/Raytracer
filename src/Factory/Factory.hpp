@@ -14,6 +14,7 @@
 
     #include "Materials/Metal.hpp"
     #include "Materials/Lambertian.hpp"
+    #include "Materials/Dielectric.hpp"
 
 namespace RayTracer {
     class Factory {
@@ -43,7 +44,8 @@ namespace RayTracer {
             {
                 static MaterialFactoryMap materialFactoryMap = {
                         {"lambertian", [](color color, double fuzz) { return std::make_shared<Lambertian>(color); }},
-                        {"metal", [](color color, double fuzz) { return std::make_shared<Metal>(color, fuzz); }}
+                        {"metal", [](color color, double fuzz) { return std::make_shared<Metal>(color, fuzz); }},
+                        {"dielectric", [](color color, double fuzz) { return std::make_shared<Dielectric>(fuzz); }}
                 };
                 return materialFactoryMap;
             };

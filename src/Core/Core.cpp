@@ -10,26 +10,28 @@
 namespace RayTracer {
     Core::Core(const std::string &configPath, const std::string &libPath) {
         this->_configHelper = new LibConfig(configPath);
+
+        // Créer la Caméra
+
         auto cameraResolutionWidth = this->_configHelper->get<int>("camera.resolution.width");
-        auto cameraResolutionwHeight = this->_configHelper->get<int>("camera.resolution.height");
+        auto cameraResolutionHeight = this->_configHelper->get<int>("camera.resolution.height");
         auto cameraFov = this->_configHelper->get<float>("camera.fieldOfView");
-        // auto cameraPosX = this->_configHelper->get<float>("camera.position.x");
-        // auto cameraPosY = this->_configHelper->get<float>("camera.position.y");
-        // auto cameraPosZ = this->_configHelper->get<float>("camera.position.z");
-        // auto cameraRotX = this->_configHelper->get<float>("camera.rotation.x");
-        // auto cameraRotY = this->_configHelper->get<float>("camera.rotation.y");
-        // auto cameraRotZ = this->_configHelper->get<float>("camera.rotation.z");
-        // Math::Point3D cameraPosition = Math::Point3D(cameraPosX, cameraPosY, cameraPosZ);
-        // Vector3D cameraRotation = Math::Vector3D(cameraRotX, cameraRotY, cameraRotZ);
-        this->_camera = std::make_unique<Camera>();
-        this->_camera->setResolution(cameraResolutionWidth, cameraResolutionwHeight);
-        this->_camera->setFov(cameraFov);
-        // this->_camera->setRotation(cameraRotation);
-        // this->_camera->origin = cameraPosition;
+        float aspectRatio = (float) cameraResolutionWidth / (float) cameraResolutionHeight;
+        auto cameraPosX = this->_configHelper->get<float>("camera.position.x");
+        auto cameraPosY = this->_configHelper->get<float>("camera.position.y");
+        auto cameraPosZ = this->_configHelper->get<float>("camera.position.z");
+        auto cameraRotX = this->_configHelper->get<float>("camera.rotation.x");
+        auto cameraRotY = this->_configHelper->get<float>("camera.rotation.y");
+        auto cameraRotZ = this->_configHelper->get<float>("camera.rotation.z");
+        auto cameraVUpX = this->_configHelper->get<float>("camera.vectorUp.x");
+        auto cameraVUpY = this->_configHelper->get<float>("camera.vectorUp.y");
+        auto cameraVUpZ = this->_configHelper->get<float>("camera.vectorUp.z");
+        point3 cameraPosition = point3(cameraPosX, cameraPosY, cameraPosZ);
+        point3 cameraRotation = point3(cameraRotX, cameraRotY, cameraRotZ);
+        Vector3D cameraVectorUp = Vector3D(cameraVUpX, cameraVUpY, cameraVUpZ);
+        this->_camera = std::make_unique<Camera>(cameraResolutionWidth, cameraResolutionHeight, cameraPosition, cameraRotation, cameraVectorUp, cameraFov, aspectRatio);
 
         // Créer les objets
-
-        std::shared_ptr<IMaterial> material = std::make_shared<Lambertian>(color(0.8, 0.8, 0.0));
 
         for (int i = 0, length = this->_configHelper->getLength("primitives.spheres"); i < length; i++) {
             auto x = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "x", i);
@@ -63,7 +65,7 @@ namespace RayTracer {
         }
         Vector3D unit_direction = unit_vector(r.direction());
         auto t = 0.5*(unit_direction.y() + 1.0);
-        return (1.0-t)*color(1.0, 1.0, 1.0) + t*color(0.5, 0.7, 1.0);
+        return (1.0-t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0);
     }
 
 

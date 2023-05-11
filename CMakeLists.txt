@@ -52,6 +52,8 @@ add_executable( raytracer
         src/Materials/Metal.hpp
         src/Materials/Lambertian.cpp
         src/Materials/Lambertian.hpp
+        src/Materials/Dielectric.cpp
+        src/Materials/Dielectric.hpp
         src/Wrapper/Wrapper.hpp
         src/Factory/NewFactory.hpp
         src/Config/LibConfig.hpp
@@ -63,5 +65,6 @@ add_executable( raytracer
         src/Wrapper/Wrapper.cpp
         src/Abstract/ADisplay.cpp
         src/HittableList.hpp
-        src/Math/Math.cpp src/Math/Math.hpp)
+        src/Math/Math.cpp src/Math/Math.hpp
+)
 target_link_libraries(raytracer "sfml" "dl" config++)

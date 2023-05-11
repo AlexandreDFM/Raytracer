@@ -8,36 +8,32 @@
 #include "Camera.hpp"
 
 namespace RayTracer {
-    Camera::Camera() {
-        auto aspect_ratio = 16.0 / 9.0;
-        auto viewport_height = 2.0;
+    Camera::Camera(int width, int height, point3 lookFrom, point3 lookAt, Vector3D vectorUp, double fov, double aspect_ratio)
+    {
+        auto theta = Math::degrees_to_radians(fov);
+        auto h = tan(theta / 2);
+        auto viewport_height = 2.0 * h;
         auto viewport_width = aspect_ratio * viewport_height;
-        auto focal_length = 1.0;
 
-        origin = point3(0, 0, 0);
-        horizontal = Vector3D(viewport_width, 0.0, 0.0);
-        vertical = Vector3D(0.0, viewport_height, 0.0);
-        lower_left_corner = origin - horizontal / 2 - vertical / 2 - Vector3D(0, 0, focal_length);
+        auto w = unit_vector(lookFrom - lookAt);
+        auto u = unit_vector(cross(vectorUp, w));
+        auto v = cross(w, u);
+
+        this->_width = width;
+        this->_height = height;
+        this->_origin = lookFrom;
+        this->_horizontal = viewport_width * u;
+        this->_vertical = viewport_height * v;
+        this->_lower_left_corner = this->_origin - this->_horizontal/2 - this->_vertical / 2 - w;
     }
 
     Ray Camera::getRay(double u, double v) const {
-        return Ray(origin, lower_left_corner + u * horizontal + v * vertical - origin);
-    }
-
-    void Camera::setResolution(int width, int height)
-    {
-        this->horizontal = Vector3D(width, 0.0, 0.0);
-        this->vertical = Vector3D(0.0, height, 0.0);
-    }
-
-    void Camera::setFov(float fov)
-    {
-        this->lower_left_corner = origin - horizontal / 2 - vertical / 2 - Vector3D(0, 0, fov);
+        return Ray(this->_origin, this->_lower_left_corner + u * this->_horizontal + v * this->_vertical - this->_origin);
     }
 
     void Camera::getResolution(int &width, int &height) const
     {
-        width = this->horizontal.x();
-        height = this->vertical.y();
+        width = this->_width;
+        height = this->_height;
     }
 }

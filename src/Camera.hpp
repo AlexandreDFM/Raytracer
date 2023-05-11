@@ -13,16 +13,16 @@
 namespace RayTracer {
     class Camera {
         public:
-            Camera();
+            Camera(int width, int height, point3 lookFrom, point3 lookAt, Vector3D vectorUp, double fov, double aspect_ratio);
             [[nodiscard]] Ray getRay(double u, double v) const;
-            void setResolution(int width, int height);
-            void setFov(float fov);
             void getResolution(int &width, int &height) const;
         private:
-            point3 origin;
-            point3 lower_left_corner;
-            Vector3D horizontal;
-            Vector3D vertical;
+            int _width;
+            int _height;
+            point3 _origin;
+            point3 _lower_left_corner;
+            Vector3D _horizontal;
+            Vector3D _vertical;
     };
 }
 
