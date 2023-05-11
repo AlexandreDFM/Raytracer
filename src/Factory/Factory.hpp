@@ -9,8 +9,11 @@
 	#define FACTORY
 
     #include "IShape.hpp"
-    #include "Material.hpp"
+    #include "IMaterial.hpp"
     #include "Primitives/Sphere.hpp"
+
+    #include "Materials/Metal.hpp"
+    #include "Materials/Lambertian.hpp"
 
 namespace RayTracer {
     class Factory {
@@ -33,6 +36,27 @@ namespace RayTracer {
                     exit(84);
                 }
                 return it->second(center, radius, material);
+            };
+
+            typedef std::map<std::string, std::function<std::shared_ptr<IMaterial>(color color, double fuzz)>> MaterialFactoryMap;
+            static MaterialFactoryMap& getMaterialFactoryMap()
+            {
+                static MaterialFactoryMap materialFactoryMap = {
+                        {"lambertian", [](color color, double fuzz) { return std::make_shared<Lambertian>(color); }},
+                        {"metal", [](color color, double fuzz) { return std::make_shared<Metal>(color, fuzz); }}
+                };
+                return materialFactoryMap;
+            };
+
+            static std::shared_ptr<IMaterial> createMaterial(const std::string &type, color color, double fuzz)
+            {
+                MaterialFactoryMap& materialFactoryMap = getMaterialFactoryMap();
+                auto it = materialFactoryMap.find(type);
+                if (it == materialFactoryMap.end()) {
+                    std::cerr << "Error: Component " << type << " not found" << std::endl;
+                    exit(84);
+                }
+                return it->second(color, fuzz);
             };
     };
 }

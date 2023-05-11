@@ -48,6 +48,10 @@ add_executable( raytracer
         src/Vector3D.cpp
         src/Vector3D.hpp
         src/Primitives/Sphere.hpp
+        src/Materials/Metal.cpp
+        src/Materials/Metal.hpp
+        src/Materials/Lambertian.cpp
+        src/Materials/Lambertian.hpp
         src/Wrapper/Wrapper.hpp
         src/Factory/NewFactory.hpp
         src/Config/LibConfig.hpp
@@ -59,6 +63,5 @@ add_executable( raytracer
         src/Wrapper/Wrapper.cpp
         src/Abstract/ADisplay.cpp
         src/HittableList.hpp
-        src/Material.hpp
         src/Math/Math.cpp src/Math/Math.hpp)
 target_link_libraries(raytracer "sfml" "dl" config++)

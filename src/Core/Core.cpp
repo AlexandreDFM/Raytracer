@@ -28,10 +28,6 @@ namespace RayTracer {
         // this->_camera->origin = cameraPosition;
 
         // Créer les objets
-        auto material_ground = std::make_shared<Lambertian>(color(0.8, 0.8, 0.0));
-        auto material_center = std::make_shared<Lambertian>(color(0.7, 0.3, 0.3));
-        auto material_left   = std::make_shared<Metal>(color(0.8, 0.8, 0.8), 0.3);
-        auto material_right  = std::make_shared<Metal>(color(0.8, 0.6, 0.2), 1.0);
 
         std::shared_ptr<IMaterial> material = std::make_shared<Lambertian>(color(0.8, 0.8, 0.0));
 
@@ -40,12 +36,14 @@ namespace RayTracer {
             auto y = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "y", i);
             auto z = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "z", i);
             auto r = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "r", i);
-            this->_world.add(RayTracer::Factory::createPrimitive("sphere", point3(x, y, z), r, material));
+            auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.spheres", "material", i);
+            auto colorR = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "color.r", i);
+            auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "color.g", i);
+            auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "color.b", i);
+            auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "fuzz", i);
+            auto materialComponent = RayTracer::Factory::createMaterial(materialType, point3 (colorR, colorG, colorB), fuzz);
+            this->_world.add(RayTracer::Factory::createPrimitive("sphere", point3(x, y, z), r, materialComponent));
         }
-//        this->_world.add(std::make_shared<RayTracer::Sphere>(point3(0.0, -100.5, -1.0), 100.0, material_ground));
-//        this->_world.add(std::make_shared<RayTracer::Sphere>(point3(0.0, 0.0, -1.0), 0.5, material_center));
-//        this->_world.add(std::make_shared<RayTracer::Sphere>(point3(-1.0, 0.0, -1.0), 0.5, material_left));
-//        this->_world.add(std::make_shared<RayTracer::Sphere>(point3(1.0, 0.0, -1.0), 0.5, material_right));
 
         // Créer les lumières
     }

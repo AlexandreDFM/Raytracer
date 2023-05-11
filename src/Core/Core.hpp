@@ -11,14 +11,12 @@
     #include "IShape.hpp"
     #include "Camera.hpp"
     #include "Color.hpp"
-    #include "Material.hpp"
-    #include "Primitives/Sphere.hpp"
-//    #include "Rectangle3D.hpp"
     #include "HittableList.hpp"
-//    #include "Wrapper/Wrapper.hpp"
-//    #include "NewFactory/NewFactory.hpp"
     #include "Factory/Factory.hpp"
+    #include "Materials/Metal.hpp"
     #include "Config/LibConfig.hpp"
+    #include "Materials/Lambertian.hpp"
+    #include "Primitives/Sphere.hpp"
 
 namespace RayTracer {
     class Core {

@@ -22,32 +22,36 @@ namespace RayTracer {
                 T value;
                 try {
                     this->_cfg.lookupValue(path, value);
+                    return value;
                 } catch (const libconfig::SettingNotFoundException &nfex) {
                     std::cerr << "No '" << path << "' setting in configuration file." << std::endl;
                 }
-                return value;
+                return T();
             }
             int getLength(const std::string &path) {
                 try {
                     this->_cfg.lookup(path);
+                    return this->_cfg.lookup(path).getLength();
                 } catch (const libconfig::SettingNotFoundException &nfex) {
                     std::cerr << "No '" << path << "' setting in configuration file." << std::endl;
                 }
-                return this->_cfg.lookup(path).getLength();
+                return 0;
             }
             template<typename T>
-            T getLineValueFromArray(const std::string &pathArray, const std::string &path, int index) {
+            T getLineValueFromArray(const std::string& pathArray, const std::string& path, int index) {
                 T value;
                 try {
-                    const libconfig::Setting &array = this->_cfg.lookup(pathArray);
-                    const libconfig::Setting &line = array[index];
-                    line.lookupValue(path, value);
-                } catch (const libconfig::SettingNotFoundException &nfex) {
+                    const libconfig::Setting& array = this->_cfg.lookup(pathArray);
+                    const libconfig::Setting& line = array[index];
+                    const libconfig::Setting& valueSetting = line.lookup(path);
+                    value = static_cast<T>(valueSetting);
+                } catch (const libconfig::SettingNotFoundException& nfex) {
                     std::cerr << "No '" << path << "' setting in configuration file." << std::endl;
                 }
                 return value;
             }
-        private:
+
+    private:
             std::string _configPath;
             libconfig::Config _cfg;
     };
