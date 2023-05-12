@@ -7,8 +7,8 @@
 
 #include "Plane.hpp"
 
-namespace RayTracer {
-    Plane::Plane() {}
-
-    Plane::~Plane() {}
-}
+//namespace RayTracer {
+//    Plane::Plane() {}
+//
+//    Plane::~Plane() {}
+//}

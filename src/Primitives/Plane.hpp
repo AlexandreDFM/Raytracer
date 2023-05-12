@@ -14,11 +14,10 @@
 namespace RayTracer {
     class Plane : public IShape {
     public:
-        Plane();
+        Plane() {};
         Plane(point3 pos, std::shared_ptr<IMaterial> m)
                 : center(pos), mat_ptr(m) {};
         virtual bool hit(const RayTracer::Ray &r, double t_min, double t_max, hit_record &rec) const override;
-        ~Plane();
         point3 center;
         std::shared_ptr<IMaterial> mat_ptr;
     };
