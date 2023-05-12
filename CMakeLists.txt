@@ -29,6 +29,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g3")
 add_library("sphere" SHARED src/Abstract/AShape.cpp src/Abstract/AShape.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Primitives/Sphere.cpp src/Primitives/Sphere.hpp)
 set_target_properties("sphere" PROPERTIES PREFIX "raytracer_")
 
+add_library("plane" SHARED src/Abstract/AShape.cpp src/Abstract/AShape.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Primitives/Plane.cpp src/Primitives/Plane.hpp)
+set_target_properties("plane" PROPERTIES PREFIX "raytracer_")
 
 #Materials libraries
 # Lambertian

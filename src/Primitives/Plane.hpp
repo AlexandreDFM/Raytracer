@@ -8,19 +8,18 @@
 #ifndef PLANE_HPP_
 	#define PLANE_HPP_
 
-#include "Ray.hpp"
-#include "IShape.hpp"
+    #include "Ray.hpp"
+    #include "IPrimitive.hpp"
 
 namespace RayTracer {
-    class Plane : public IShape {
-    public:
-        Plane();
-        Plane(point3 pos, std::shared_ptr<IMaterial> m)
-                : center(pos), mat_ptr(m) {};
-        virtual bool hit(const RayTracer::Ray &r, double t_min, double t_max, hit_record &rec) const override;
-        ~Plane();
-        point3 center;
-        std::shared_ptr<IMaterial> mat_ptr;
+    class Plane : public IPrimitive {
+        public:
+            Plane(point3 pos, double radius, std::shared_ptr<IMaterial> m);
+            bool hit(const RayTracer::Ray &r, double t_min, double t_max, hit_record &rec) const override;
+
+        public:
+            point3 center;
+            std::shared_ptr<IMaterial> mat_ptr;
     };
 
 //    bool intersectDisk(const Vec3f &n, const Vec3f &p0, const float &radius, const Vec3f &l0, const Vec3 &l)
@@ -53,10 +52,10 @@ namespace RayTracer {
 
     inline bool Plane::hit(const RayTracer::Ray &r, double t_min, double t_max, RayTracer::hit_record &rec) const
     {
-        float denom = dot(r.direction(), center);
+        double denom = dot(r.direction(), center);
         if (denom > 1e-6) {
-            point3 p0l0 = center - r.origin();
-            float t = dot(p0l0, center) / denom;
+            point3 p = center - r.origin();
+            double t = dot(p, center) / denom;
             if (t >= 0) {
                 rec.t = t;
                 rec.p = r.at(rec.t);
@@ -66,6 +65,11 @@ namespace RayTracer {
             }
         }
         return false;
+    }
+
+    extern "C" {
+        IPrimitive *entryPoint(point3 center, double radius, std::shared_ptr<RayTracer::IMaterial> mat_ptr);
+        char *getType();
     }
 }
 #endif /*PLANE_HPP_*/

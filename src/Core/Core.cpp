@@ -48,6 +48,17 @@ namespace RayTracer {
             this->_world.add(this->_factory->createPrimitive("sphere", point3(x, y, z), r, materialComponent));
         }
 
+        for (int i = 0, length = this->_configHelper->getLength("primitives.planes"); i < length; i++) {
+            auto position = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "position", i);
+            auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.planes", "material", i);
+            auto colorR = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.r", i);
+            auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.g", i);
+            auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.b", i);
+            auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "fuzz", i);
+            auto materialComponent = this->_factory->createMaterial(materialType, color(colorR, colorG, colorB), fuzz);
+            this->_world.add(this->_factory->createPrimitive("plane", point3(0, position, 0), 0, materialComponent));
+        }
+
         // Créer les lumières
     }
 
