@@ -1,46 +1,105 @@
-// /*
-// ** EPITECH PROJECT, 2023
-// ** arcade
-// ** File description:
-// ** Core.cpp
-// */
+/*
+** EPITECH PROJECT, 2023
+** arcade
+** File description:
+** Core.cpp
+*/
 
-// #include "Core.hpp"
+#include "Core.hpp"
 
-// namespace RayTracer {
-//     Core::Core(const std::string &configPath, const std::string &libPath) {
-//         this->_configHelper = new LibConfig(configPath);
-//         auto cameraResolutionWidth = this->_configHelper->get<int>("camera.resolution.width");
-//         auto cameraResolutionwHeight = this->_configHelper->get<int>("camera.resolution.height");
-//         auto cameraFov = this->_configHelper->get<float>("camera.fieldOfView");
-//         auto cameraPosX = this->_configHelper->get<float>("camera.position.x");
-//         auto cameraPosY = this->_configHelper->get<float>("camera.position.y");
-//         auto cameraPosZ = this->_configHelper->get<float>("camera.position.z");
-//         auto cameraRotX = this->_configHelper->get<float>("camera.rotation.x");
-//         auto cameraRotY = this->_configHelper->get<float>("camera.rotation.y");
-//         auto cameraRotZ = this->_configHelper->get<float>("camera.rotation.z");
-//         Math::Point3D cameraPosition = Math::Point3D(cameraPosX, cameraPosY, cameraPosZ);
-//         Math::Vector3D cameraRotation = Math::Vector3D(cameraRotX, cameraRotY, cameraRotZ);
-//         this->_camera = std::make_unique<Camera>();
-//         this->_camera->origin = cameraPosition;
-//         // Créer les objets
-//         Factory factory(libPath);
-//         std::shared_ptr<IShape>Sphere = factory.createComponent("Sphere", "sphere1");
-//         // Créer les lumières
-//     }
+namespace RayTracer {
+    Core::Core(const std::string &configPath, const std::string &libPath) {
+        this->_factory = new NewFactory(libPath);
+        this->_configHelper = new LibConfig(configPath);
 
-//     void Core::run() {
-//         // Boucle de rendu
-//         // Pour chaque caméra
-//         //  Pour chaque pixel
-//         //      Pour chaque objet
-//         //          Calculer l'intersection
-//         //          Si intersection et distance < distance min alors
-//         //              distance min = distance
-//         //              objet le plus proche = objet
-//         //      Si objet le plus proche alors
-//         //          Calculer la couleur
-//         //          Dessiner le pixel
-//         //  Afficher l'image
-//     }
-// }
+        // Créer la Caméra
+
+        auto cameraResolutionWidth = this->_configHelper->get<int>("camera.resolution.width");
+        auto cameraResolutionHeight = this->_configHelper->get<int>("camera.resolution.height");
+        auto cameraFov = this->_configHelper->get<float>("camera.fieldOfView");
+        float aspectRatio = (float) cameraResolutionWidth / (float) cameraResolutionHeight;
+        auto cameraPosX = this->_configHelper->get<float>("camera.position.x");
+        auto cameraPosY = this->_configHelper->get<float>("camera.position.y");
+        auto cameraPosZ = this->_configHelper->get<float>("camera.position.z");
+        auto cameraRotX = this->_configHelper->get<float>("camera.rotation.x");
+        auto cameraRotY = this->_configHelper->get<float>("camera.rotation.y");
+        auto cameraRotZ = this->_configHelper->get<float>("camera.rotation.z");
+        auto cameraVUpX = this->_configHelper->get<float>("camera.vectorUp.x");
+        auto cameraVUpY = this->_configHelper->get<float>("camera.vectorUp.y");
+        auto cameraVUpZ = this->_configHelper->get<float>("camera.vectorUp.z");
+        point3 cameraPosition = point3(cameraPosX, cameraPosY, cameraPosZ);
+        point3 cameraRotation = point3(cameraRotX, cameraRotY, cameraRotZ);
+        Vector3D cameraVectorUp = Vector3D(cameraVUpX, cameraVUpY, cameraVUpZ);
+        this->_camera = std::make_unique<Camera>(cameraResolutionWidth, cameraResolutionHeight, cameraPosition, cameraRotation, cameraVectorUp, cameraFov, aspectRatio);
+
+        // Créer les objets
+
+        for (int i = 0, length = this->_configHelper->getLength("primitives.spheres"); i < length; i++) {
+            auto x = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "x", i);
+            auto y = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "y", i);
+            auto z = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "z", i);
+            auto r = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "r", i);
+            auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.spheres", "material", i);
+            auto colorR = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "color.r", i);
+            auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "color.g", i);
+            auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "color.b", i);
+            auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "fuzz", i);
+            auto materialComponent = this->_factory->createMaterial(materialType, color(colorR, colorG, colorB), fuzz);
+            this->_world.add(this->_factory->createPrimitive("sphere", point3(x, y, z), r, materialComponent));
+        }
+
+        for (int i = 0, length = this->_configHelper->getLength("primitives.planes"); i < length; i++) {
+            auto position = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "position", i);
+            auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.planes", "material", i);
+            auto colorR = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.r", i);
+            auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.g", i);
+            auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.b", i);
+            auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "fuzz", i);
+            auto materialComponent = this->_factory->createMaterial(materialType, color(colorR, colorG, colorB), fuzz);
+            this->_world.add(this->_factory->createPrimitive("plane", point3(0, position, 0), 0, materialComponent));
+        }
+
+        // Créer les lumières
+    }
+
+    color Core::RayColor(const RayTracer::Ray& r, const RayTracer::IPrimitive& world, int depth)
+    {
+        hit_record rec;
+        // If we've exceeded the ray bounce limit, no more light is gathered.
+        if (depth <= 0)
+            return color(0,0,0);
+        if (world.hit(r, 0.001, Math::infinity, rec)) {
+            RayTracer::Ray scattered;
+            color attenuation;
+            if (rec.mat_ptr->scatter(r, rec, attenuation, scattered))
+                return attenuation * RayColor(scattered, world, depth-1);
+            return color(0,0,0);
+        }
+        Vector3D unit_direction = unit_vector(r.direction());
+        auto t = 0.5*(unit_direction.y() + 1.0);
+        return (1.0-t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0);
+    }
+
+
+    void Core::run() {
+        int width, height;
+        const int max_depth = 50;
+        const int samples_per_pixel = 100;
+        this->_camera->getResolution(width, height);
+        std::cout << "P3\n" << width << ' ' << height << "\n255\n";
+        for (int j = height - 1; j >= 0; --j) {
+            std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
+            for (int i = 0; i < width; ++i) {
+                color pixel_color(0, 0, 0);
+                for (int s = 0; s < samples_per_pixel; ++s) {
+                    auto u = (i + Math::random_double()) / (width - 1);
+                    auto v = (j + Math::random_double()) / (height - 1);
+                    RayTracer::Ray r = this->_camera->getRay(u, v);
+                    pixel_color += RayColor(r, this->_world, max_depth);
+                }
+                Color::write_color(std::cout, pixel_color, samples_per_pixel);
+            }
+        }
+        std::cerr << "\nDone.\n";
+    }
+}

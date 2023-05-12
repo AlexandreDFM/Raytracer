@@ -18,46 +18,62 @@ set(CMAKE_SHARED_LIBRARY_PREFIX "raytracer_")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g3")
 
 # Graphics libraries
-
 # SFML
-
-add_library("sfml" SHARED src/Abstract/ADisplay.cpp src/Abstract/ADisplay.hpp src/Libraries/Graphical/SFML/SFML.cpp src/Libraries/Graphical/SFML/SFML.hpp)
-set_target_properties("sfml" PROPERTIES PREFIX "raytracer_")
-target_link_libraries("sfml" sfml-graphics sfml-window sfml-system sfml-audio)
+#add_library("sfml" SHARED src/Abstract/ADisplay.cpp src/Abstract/ADisplay.hpp src/Libraries/Graphical/SFML/SFML.cpp src/Libraries/Graphical/SFML/SFML.hpp)
+#set_target_properties("sfml" PROPERTIES PREFIX "raytracer_")
+#target_link_libraries("sfml" sfml-graphics sfml-window sfml-system sfml-audio)
 
 
 # Primitives libraries
-
 # Sphere
-add_library("sphere" SHARED src/Abstract/AShape.cpp src/Abstract/AShape.hpp src/Primitives/Sphere.cpp src/Primitives/Sphere.hpp)
+add_library("sphere" SHARED src/Abstract/AShape.cpp src/Abstract/AShape.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Primitives/Sphere.cpp src/Primitives/Sphere.hpp)
 set_target_properties("sphere" PROPERTIES PREFIX "raytracer_")
 
-add_executable( raytracer
+add_library("plane" SHARED src/Abstract/AShape.cpp src/Abstract/AShape.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Primitives/Plane.cpp src/Primitives/Plane.hpp)
+set_target_properties("plane" PROPERTIES PREFIX "raytracer_")
+
+#Materials libraries
+# Lambertian
+add_library("lambertian" SHARED src/Interface/IPrimitive.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Color.hpp src/Materials/Lambertian.cpp src/Materials/Lambertian.hpp)
+set_target_properties("lambertian" PROPERTIES PREFIX "raytracer_")
+
+# Metal
+add_library("metal" SHARED src/Interface/IPrimitive.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Color.hpp src/Materials/Metal.cpp src/Materials/Metal.hpp)
+set_target_properties("metal" PROPERTIES PREFIX "raytracer_")
+
+add_library("dielectric" SHARED src/Interface/IPrimitive.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Color.hpp src/Materials/Dielectric.cpp src/Materials/Dielectric.hpp)
+set_target_properties("dielectric" PROPERTIES PREFIX "raytracer_")
+
+
+add_executable(
+        raytracer
         src/Main.cpp
-        src/Interface/IShape.hpp
+        src/Interface/IPrimitive.hpp
         src/Abstract/AShape.cpp
         src/Abstract/AShape.hpp
         src/Exception/Usage/Usage.cpp
         src/Exception/Usage/Usage.hpp
+        src/Camera.cpp
         src/Camera.hpp
         src/Ray.hpp
         src/Color.hpp
         src/Rectangle3D.cpp
         src/Rectangle3D.hpp
+        src/Vector3D.cpp
         src/Vector3D.hpp
         src/Primitives/Sphere.hpp
         src/Wrapper/Wrapper.hpp
-        src/Factory/Factory.hpp
+        src/Factory/NewFactory.hpp
         src/Config/LibConfig.hpp
         src/Config/LibConfig.cpp
-        src/Core/Core.cpp
-        src/Core/Core.hpp
         src/Exception/Library.hpp
         src/Exception/FactoryException.hpp
         src/Wrapper/Wrapper.cpp
         src/Abstract/ADisplay.cpp
-        src/struct.hpp
         src/HittableList.hpp
-        src/Material.hpp
-        src/Math/Math.cpp src/Math/Math.hpp)
-target_link_libraries(raytracer "sfml" "dl" config++)
+        src/Math/Math.cpp
+        src/Math/Math.hpp
+        src/Core/Core.cpp
+)
+
+target_link_libraries(raytracer sfml-graphics sfml-window sfml-system sfml-audio "dl" config++)

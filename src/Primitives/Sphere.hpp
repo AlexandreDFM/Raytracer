@@ -8,29 +8,22 @@
 #ifndef SPHERE_H
     #define SPHERE_H
 
-#include "struct.hpp"
-#include "Vector3D.hpp"
 #include "Ray.hpp"
-#include "IShape.hpp"
+#include "IPrimitive.hpp"
 
 namespace RayTracer {
-    class Sphere : public IShape {
-    public:
-        Sphere() {}
+    class Sphere : public IPrimitive {
+        public:
+            Sphere(point3 cen, double r, std::shared_ptr<IMaterial> m);
+            bool hit(const RayTracer::Ray &r, double t_min, double t_max, hit_record &rec) const override;
 
-        Sphere(point3 cen, double r, shared_ptr<material> m)
-                : center(cen), radius(r), mat_ptr(m) {};
-
-        virtual bool hit(
-                const RayTracer::Ray &r, double t_min, double t_max, hit_record &rec) const override;
-
-    public:
-        point3 center;
-        double radius;
-        shared_ptr<material> mat_ptr;
+        public:
+                point3 center;
+                double radius;
+                std::shared_ptr<IMaterial> mat_ptr;
     };
 
-    bool Sphere::hit(const RayTracer::Ray &r, double t_min, double t_max, hit_record &rec) const {
+    inline bool Sphere::hit(const RayTracer::Ray &r, double t_min, double t_max, hit_record &rec) const {
         Vector3D oc = r.origin() - center;
         auto a = r.direction().length_squared();
         auto half_b = dot(oc, r.direction());
@@ -55,8 +48,11 @@ namespace RayTracer {
         rec.mat_ptr = mat_ptr;
         return true;
     }
+
+    extern "C" {
+        IPrimitive *entryPoint(point3 center, double radius, std::shared_ptr<RayTracer::IMaterial> mat_ptr);
+        char *getType();
+    }
 }
-//extern "C" Sphere *entryPoint(const Math::Point3D& origin, double radius);
-extern "C" char *getType();
 
 #endif /* SPHERE_H */

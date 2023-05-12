@@ -22,16 +22,16 @@
     #include <functional>
 
 namespace RayTracer {
-    enum Color {
-        BLACK = 1,
-        RED,
-        GREEN,
-        BLUE,
-        WHITE,
-        MAGENTA,
-        CYAN,
-        YELLOW,
-    };
+//    enum Color {
+//        BLACK = 1,
+//        RED,
+//        GREEN,
+//        BLUE,
+//        WHITE,
+//        MAGENTA,
+//        CYAN,
+//        YELLOW,
+//    };
 
     enum EventType {
         NOTHING,
@@ -75,7 +75,7 @@ namespace RayTracer {
     struct Drawable {
         int x;
         int y;
-        Color color;
+//        Color color;
         char draw;
         enum Direction rotation = NO_DIRECTION;
         struct Rect rect = {0, 0, 0, 0};
@@ -85,7 +85,7 @@ namespace RayTracer {
         int x;
         int y;
         int size;
-        Color color;
+//        Color color;
         std::string text;
         std::string font;
         enum Direction rotation = NO_DIRECTION;
