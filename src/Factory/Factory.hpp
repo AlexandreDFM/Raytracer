@@ -36,6 +36,8 @@ namespace RayTracer {
                             _materialsLibraries[type.substr(9)] = entry.path().string();
                         else if (strncmp(type.c_str(), "light", 5) == 0)
                             _lightsLibraries[type.substr(6)] = entry.path().string();
+                        else if (strncmp(type.c_str(), "display", 7) == 0)
+                            _displaysLibraries[type.substr(8)] = entry.path().string();
                         else
                             throw new FactoryUnknownComponent("Invalid library: " + entry.path().string());
                     }
@@ -77,13 +79,26 @@ namespace RayTracer {
                 return std::shared_ptr<ILight>(entryPoint(pos, direction, intensity));
             };
 
+            std::shared_ptr<IDisplay> createDisplay(const std::string &type, int width, int height, int cameraResolutionWidth, int cameraResolutionHeight, int fps, std::string &title) {
+                if (_displaysLibraries.find(type) == _displaysLibraries.end())
+                    throw new FactoryUnknownComponent("Unknown material: " + type);
+                this->_displayWrappers.push_back(Wrapper());
+                this->_displayWrappers.back().loadLib(this->_displaysLibraries[type]);
+                auto entryPoint = this->_displayWrappers.back().getFunction<IDisplay *(int, int, int, int, int, std::string)>("entryPoint");
+                if (!entryPoint)
+                    throw new FactoryUnknownComponent("Invalid library: " + this->_displaysLibraries[type]);
+                return std::shared_ptr<IDisplay>(entryPoint(width, height, cameraResolutionWidth, cameraResolutionHeight, fps, title));
+            };
+
         private:
             std::string _libPath;
             std::map<std::string, std::string> _primitivesLibraries;
             std::map<std::string, std::string> _materialsLibraries;
+            std::map<std::string, std::string> _displaysLibraries;
             std::map<std::string, std::string> _lightsLibraries;
             std::list<Wrapper> _primitiveWrappers;
             std::list<Wrapper> _materialWrappers;
+            std::list<Wrapper> _displayWrappers;
             std::list<Wrapper> _lightWrappers;
     };
 }

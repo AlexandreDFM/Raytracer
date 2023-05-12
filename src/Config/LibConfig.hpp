@@ -17,6 +17,15 @@ namespace RayTracer {
         public:
             explicit LibConfig(const std::string &configPath);
             ~LibConfig() = default;
+            bool isSet(const std::string &path) {
+                try {
+                    this->_cfg.lookup(path);
+                    return true;
+                } catch (const libconfig::SettingNotFoundException &nfex) {
+                    std::cerr << "No '" << path << "' setting in configuration file." << std::endl;
+                }
+                return false;
+            }
             template<typename T>
             T get(const std::string &path) {
                 T value;
