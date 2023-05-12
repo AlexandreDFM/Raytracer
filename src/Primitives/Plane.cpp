@@ -14,9 +14,9 @@ namespace RayTracer {
     }
 
     extern "C" {
-        IPrimitive *entryPoint(point3 center, double radius, std::shared_ptr<RayTracer::IMaterial> mat_ptr)
+        IPrimitive *entryPoint(point3 center, std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> mat_ptr)
         {
-            return new RayTracer::Plane(center, radius, mat_ptr);
+            return new RayTracer::Plane(center, variables[0], mat_ptr);
         }
 
         char *getType()

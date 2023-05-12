@@ -45,7 +45,23 @@ namespace RayTracer {
             auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "color.b", i);
             auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "fuzz", i);
             auto materialComponent = this->_factory->createMaterial(materialType, color(colorR, colorG, colorB), fuzz);
-            this->_world.add(this->_factory->createPrimitive("sphere", point3(x, y, z), r, materialComponent));
+            this->_world.add(this->_factory->createPrimitive("sphere", point3(x, y, z), std::vector<double>({r}), materialComponent));
+        }
+
+        for (int i = 0, length = this->_configHelper->getLength("primitives.rectangles"); i < length; i++) {
+            auto x0 = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "x0", i);
+            auto x1 = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "x1", i);
+            auto y0 = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "y0", i);
+            auto y1 = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "y1", i);
+            auto k = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "k", i);
+            auto colorR = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "color.r", i);
+            auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "color.g", i);
+            auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "color.b", i);
+            auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "fuzz", i);
+            auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.rectangles", "material", i);
+            auto materialComponent = this->_factory->createMaterial(materialType, color(colorR, colorG, colorB), fuzz);
+            this->_world.add(this->_factory->createPrimitive("rectangle", point3(0, 0, 0), std::vector<double>({x0, x1, y0, y1, k}), materialComponent));
+
         }
 
         // Créer les plans
@@ -58,7 +74,7 @@ namespace RayTracer {
             auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.b", i);
             auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "fuzz", i);
             auto materialComponent = this->_factory->createMaterial(materialType, color(colorR, colorG, colorB), fuzz);
-            this->_world.add(this->_factory->createPrimitive("plane", point3(0, position, 0), 0, materialComponent));
+            this->_world.add(this->_factory->createPrimitive("plane", point3(0, position, 0), std::vector<double>({0}), materialComponent));
         }
 
         // Créer les lumières

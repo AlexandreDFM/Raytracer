@@ -32,6 +32,10 @@ set_target_properties("sphere" PROPERTIES PREFIX "raytracer_")
 add_library("plane" SHARED src/Abstract/AShape.cpp src/Abstract/AShape.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Primitives/Plane.cpp src/Primitives/Plane.hpp)
 set_target_properties("plane" PROPERTIES PREFIX "raytracer_")
 
+# Rectangle
+add_library("rectangle" SHARED src/Abstract/AShape.cpp src/Abstract/AShape.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Math/AxisAlignement.hpp src/Primitives/Rectangle.cpp src/Primitives/Rectangle.hpp)
+set_target_properties("rectangle" PROPERTIES PREFIX "raytracer_")
+
 #Materials libraries
 # Lambertian
 add_library("lambertian" SHARED src/Interface/IPrimitive.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Color.hpp src/Materials/Lambertian.cpp src/Materials/Lambertian.hpp)
