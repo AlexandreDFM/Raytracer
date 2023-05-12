@@ -9,7 +9,7 @@
 
 namespace RayTracer {
     Core::Core(const std::string &configPath, const std::string &libPath) {
-        this->_factory = new NewFactory(libPath);
+        this->_factory = new Factory(libPath);
         this->_configHelper = new LibConfig(configPath);
 
         // Créer la Caméra
@@ -48,6 +48,8 @@ namespace RayTracer {
             this->_world.add(this->_factory->createPrimitive("sphere", point3(x, y, z), r, materialComponent));
         }
 
+        // Créer les plans
+
         for (int i = 0, length = this->_configHelper->getLength("primitives.planes"); i < length; i++) {
             auto position = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "position", i);
             auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.planes", "material", i);
@@ -60,6 +62,25 @@ namespace RayTracer {
         }
 
         // Créer les lumières
+
+        for (int i = 0, length = this->_configHelper->getLength("lights.point"); i < length; i++) {
+            auto x = this->_configHelper->getLineValueFromArray<double>("lights.point", "x", i);
+            auto y = this->_configHelper->getLineValueFromArray<double>("lights.point", "y", i);
+            auto z = this->_configHelper->getLineValueFromArray<double>("lights.point", "z", i);
+            auto intensity = this->_configHelper->getLineValueFromArray<double>("lights.point", "intensity", i);
+            this->_world.add(this->_factory->createLight("point", point3(x, y, z), point3(0, 0, 0), intensity));
+        }
+
+        for (int i = 0, length = this->_configHelper->getLength("lights.directional"); i < length; i++) {
+            auto x = this->_configHelper->getLineValueFromArray<double>("lights.directional", "x", i);
+            auto y = this->_configHelper->getLineValueFromArray<double>("lights.directional", "y", i);
+            auto z = this->_configHelper->getLineValueFromArray<double>("lights.directional", "z", i);
+            auto directionX = this->_configHelper->getLineValueFromArray<double>("lights.directional", "direction.x", i);
+            auto directionY = this->_configHelper->getLineValueFromArray<double>("lights.directional", "direction.y", i);
+            auto directionZ = this->_configHelper->getLineValueFromArray<double>("lights.directional", "direction.z", i);
+            auto intensity = this->_configHelper->getLineValueFromArray<double>("lights.directional", "intensity", i);
+            this->_world.add(this->_factory->createLight("directional", point3(x, y, z), point3(directionX, directionY, directionZ), intensity));
+        }
     }
 
     color Core::RayColor(const RayTracer::Ray& r, const RayTracer::IPrimitive& world, int depth)

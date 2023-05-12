@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** arcade
 ** File description:
-** NewFactory.hpp
+** Factory.hpp
 */
 
 #ifndef FACTORYEXCEPTION_HPP_

@@ -45,6 +45,19 @@ add_library("dielectric" SHARED src/Interface/IPrimitive.hpp src/Interface/IMate
 set_target_properties("dielectric" PROPERTIES PREFIX "raytracer_")
 
 
+# Lights libraries
+# Point
+add_library("point" SHARED src/Interface/ILight.hpp src/Vector3D.hpp src/Vector3D.cpp src/Color.hpp src/Lights/Point.cpp src/Lights/Point.hpp)
+set_target_properties("point" PROPERTIES PREFIX "raytracer_")
+
+# Directional
+add_library("directional" SHARED src/Interface/ILight.hpp src/Vector3D.hpp src/Vector3D.cpp src/Color.hpp src/Lights/Directional.hpp src/Lights/Directional.cpp)
+set_target_properties("directional" PROPERTIES PREFIX "raytracer_")
+
+# Ambient
+add_library("ambient" SHARED src/Interface/ILight.hpp src/Vector3D.hpp src/Vector3D.cpp src/Color.hpp src/Lights/Ambient.hpp src/Lights/Ambient.cpp)
+set_target_properties("ambient" PROPERTIES PREFIX "raytracer_")
+
 add_executable(
         raytracer
         src/Main.cpp
@@ -63,7 +76,7 @@ add_executable(
         src/Vector3D.hpp
         src/Primitives/Sphere.hpp
         src/Wrapper/Wrapper.hpp
-        src/Factory/NewFactory.hpp
+        src/Factory/Factory.hpp
         src/Config/LibConfig.hpp
         src/Config/LibConfig.cpp
         src/Exception/Library.hpp
@@ -74,6 +87,6 @@ add_executable(
         src/Math/Math.cpp
         src/Math/Math.hpp
         src/Core/Core.cpp
-)
+        src/Interface/ILight.hpp)
 
 target_link_libraries(raytracer sfml-graphics sfml-window sfml-system sfml-audio "dl" config++)

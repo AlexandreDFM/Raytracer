@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** B-OOP-400-NCE-4-1-tekspice-leo.viltard
 ** File description:
-** NewFactory.hpp
+** Factory.hpp
 */
 
 #ifndef FACTORY_HPP_
@@ -10,14 +10,15 @@
 
     #include "IPrimitive.hpp"
     #include "IMaterial.hpp"
+    #include "ILight.hpp"
     #include "Wrapper/Wrapper.hpp"
     #include "Exception/FactoryException.hpp"
     #include "Color.hpp"
 
 namespace RayTracer {
-    class NewFactory {
+    class Factory {
         public:
-            explicit NewFactory(const std::string &libPath) {
+            explicit Factory(const std::string &libPath) {
                 _libPath = libPath;
                 RayTracer::Wrapper wrapper;
                 for (const auto &entry: std::filesystem::directory_iterator(libPath)) {
@@ -33,13 +34,15 @@ namespace RayTracer {
                             _primitivesLibraries[type.substr(10)] = entry.path().string();
                         else if (strncmp(type.c_str(), "material", 8) == 0)
                             _materialsLibraries[type.substr(9)] = entry.path().string();
+                        else if (strncmp(type.c_str(), "light", 5) == 0)
+                            _lightsLibraries[type.substr(6)] = entry.path().string();
                         else
                             throw new FactoryUnknownComponent("Invalid library: " + entry.path().string());
                     }
                 }
             }
 
-            ~NewFactory() = default;
+            ~Factory() = default;
 
             std::shared_ptr<IPrimitive> createPrimitive(const std::string &type, point3 center, double radius, std::shared_ptr<IMaterial> &material) {
                 if (_primitivesLibraries.find(type) == _primitivesLibraries.end())
@@ -63,12 +66,25 @@ namespace RayTracer {
                 return std::shared_ptr<IMaterial>(entryPoint(point3(c.x(), c.y(), c.z()), fuzz));
             };
 
+            std::shared_ptr<ILight> createLight(const std::string &type, point3 pos, point3 direction, double intensity) {
+                if (_lightsLibraries.find(type) == _lightsLibraries.end())
+                    throw new FactoryUnknownComponent("Unknown light: " + type);
+                this->_lightWrappers.push_back(Wrapper());
+                this->_lightWrappers.back().loadLib(this->_lightsLibraries[type]);
+                auto entryPoint = this->_lightWrappers.back().getFunction<ILight *(point3, point3, double)>("entryPoint");
+                if (!entryPoint)
+                    throw new FactoryUnknownComponent("Invalid library: " + this->_lightsLibraries[type]);
+                return std::shared_ptr<ILight>(entryPoint(pos, direction, intensity));
+            };
+
         private:
             std::string _libPath;
             std::map<std::string, std::string> _primitivesLibraries;
             std::map<std::string, std::string> _materialsLibraries;
+            std::map<std::string, std::string> _lightsLibraries;
             std::list<Wrapper> _primitiveWrappers;
             std::list<Wrapper> _materialWrappers;
+            std::list<Wrapper> _lightWrappers;
     };
 }
 
