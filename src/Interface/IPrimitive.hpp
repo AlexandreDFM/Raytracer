@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** B-OOP-400-NCE-4-1-raytracer-alexandre-kevin.de-freitas-martins
 ** File description:
-** IShape.hpp
+** IPrimitive.hpp
 */
 
 #ifndef ISHAPE
@@ -27,9 +27,9 @@ namespace RayTracer {
         }
     };
 
-    class IShape {
+    class IPrimitive {
         public:
-            virtual ~IShape() = default;
+            virtual ~IPrimitive() = default;
             virtual bool hit(const RayTracer::Ray& r, double t_min, double t_max, hit_record& rec) const = 0;
     };
 }

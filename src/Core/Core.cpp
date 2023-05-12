@@ -9,6 +9,7 @@
 
 namespace RayTracer {
     Core::Core(const std::string &configPath, const std::string &libPath) {
+        this->_factory = new NewFactory(libPath);
         this->_configHelper = new LibConfig(configPath);
 
         // Créer la Caméra
@@ -43,14 +44,14 @@ namespace RayTracer {
             auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "color.g", i);
             auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "color.b", i);
             auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "fuzz", i);
-            auto materialComponent = RayTracer::Factory::createMaterial(materialType, point3 (colorR, colorG, colorB), fuzz);
-            this->_world.add(RayTracer::Factory::createPrimitive("sphere", point3(x, y, z), r, materialComponent));
+            auto materialComponent = this->_factory->createMaterial(materialType, color(colorR, colorG, colorB), fuzz);
+            this->_world.add(this->_factory->createPrimitive("sphere", point3(x, y, z), r, materialComponent));
         }
 
         // Créer les lumières
     }
 
-    color Core::RayColor(const RayTracer::Ray& r, const RayTracer::IShape& world, int depth)
+    color Core::RayColor(const RayTracer::Ray& r, const RayTracer::IPrimitive& world, int depth)
     {
         hit_record rec;
         // If we've exceeded the ray bounce limit, no more light is gathered.

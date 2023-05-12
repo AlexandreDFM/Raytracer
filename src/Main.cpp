@@ -8,8 +8,12 @@
 #include "Core/Core.hpp"
 #include "Exception/Usage/Usage.hpp"
 #include "HittableList.hpp"
+#include "Factory/NewFactory.hpp"
+#include "Interface/IPrimitive.hpp"
+#include "Interface/IMaterial.hpp"
+#include "Materials/Lambertian.hpp"
 
-//color ray_color(const RayTracer::Ray& r, const RayTracer::IShape& world, int depth) {
+//color ray_color(const RayTracer::Ray& r, const RayTracer::IPrimitive& world, int depth) {
 //    hit_record rec;
 //
 //    // If we've exceeded the ray bounce limit, no more light is gathered.
@@ -32,6 +36,11 @@
 int main(int argc, char **argv)
 {
     Usage::CheckUsage(argc, argv);
+    RayTracer::NewFactory factory("plugins");
+//    std::shared_ptr<RayTracer::IMaterial> material = factory.createMaterial("lambertian", color(0.8, 0.8, 0.0), 0.0);
+//    std::shared_ptr<RayTracer::IPrimitive> sphere = factory.createPrimitive("sphere", point3(0.0, 0.0, -1.0), 0.5, material);
+//    std::shared_ptr<RayTracer::IPrimitive> sphere = factory.createComponent("primitive_sphere", "sphere");
+//    sphere->init(point3(0.0, 0.0, -1.0), 0.5, std::make_shared<RayTracer::Lambertian>(color(0.7, 0.3, 0.3)));
     RayTracer::Core core(argv[1], "plugins");
     core.run();
 }

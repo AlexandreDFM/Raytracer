@@ -24,6 +24,11 @@ namespace RayTracer {
         private:
             static double reflectance(double cosine, double ref_idx);
     };
+
+    extern "C" {
+        Dielectric *entryPoint(const color &a, double f);
+        char *getType();
+    }
 }
 
 #endif /*DIELECTRIC*/

@@ -41,4 +41,17 @@ namespace RayTracer {
         r0 = r0*r0;
         return r0 + (1-r0)*pow((1 - cosine),5);
     }
+
+    extern "C" {
+        Dielectric *entryPoint(const color &a, double f)
+        {
+            (void) a;
+             return new Dielectric(f);
+        }
+
+        char *getType()
+        {
+            return (char *)"material_dielectric";
+        }
+    }
 }

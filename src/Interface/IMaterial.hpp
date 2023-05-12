@@ -9,12 +9,13 @@
 	#define IMATERIAL
 
     #include "Ray.hpp"
-    #include "IShape.hpp"
+    #include "IPrimitive.hpp"
     #include "Math/Math.hpp"
 
 namespace RayTracer {
     class IMaterial {
         public:
+            virtual ~IMaterial() = default;
             virtual bool scatter(const RayTracer::Ray & r_in, const RayTracer::hit_record& rec, color& attenuation, RayTracer::Ray& scattered) const = 0;
     };
 }

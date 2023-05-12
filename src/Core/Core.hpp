@@ -8,26 +8,26 @@
 #ifndef CORE_HPP_
     #define CORE_HPP_
 
-    #include "IShape.hpp"
+    #include "IPrimitive.hpp"
     #include "Camera.hpp"
     #include "Color.hpp"
     #include "HittableList.hpp"
-    #include "Factory/Factory.hpp"
-    #include "Materials/Metal.hpp"
+    #include "Factory/NewFactory.hpp"
     #include "Config/LibConfig.hpp"
-    #include "Materials/Lambertian.hpp"
-    #include "Primitives/Sphere.hpp"
+    #include "Vector3D.hpp"
+    #include "IMaterial.hpp"
 
 namespace RayTracer {
     class Core {
         public:
             Core(const std::string &configPath, const std::string &libPath);
-            color RayColor(const RayTracer::Ray& r, const RayTracer::IShape& world, int depth);
+            color RayColor(const RayTracer::Ray& r, const RayTracer::IPrimitive& world, int depth);
             ~Core() = default;
             void run();
         private:
+            NewFactory *_factory;
             LibConfig *_configHelper;
-            std::vector<IShape *> _shapes;
+            std::vector<IPrimitive *> _primitives;
             RayTracer::HittableList _world;
             std::unique_ptr<Camera> _camera;
     };

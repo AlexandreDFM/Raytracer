@@ -8,7 +8,7 @@
 #ifndef FACTORY
 	#define FACTORY
 
-    #include "IShape.hpp"
+    #include "IPrimitive.hpp"
     #include "IMaterial.hpp"
     #include "Primitives/Sphere.hpp"
 
@@ -19,7 +19,7 @@
 namespace RayTracer {
     class Factory {
         public:
-            typedef std::map<std::string, std::function<std::shared_ptr<IShape>(point3 center, double radius, std::shared_ptr<IMaterial> &material)>> FactoryMap;
+            typedef std::map<std::string, std::function<std::shared_ptr<IPrimitive>(point3 center, double radius, std::shared_ptr<IMaterial> &material)>> FactoryMap;
             static FactoryMap& getFactoryMap()
             {
                 static FactoryMap factoryMap = {
@@ -28,7 +28,7 @@ namespace RayTracer {
                 return factoryMap;
             };
 
-            static std::shared_ptr<IShape> createPrimitive(const std::string &type, point3 center, double radius, std::shared_ptr<IMaterial> &material)
+            static std::shared_ptr<IPrimitive> createPrimitive(const std::string &type, point3 center, double radius, std::shared_ptr<IMaterial> &material)
             {
                 FactoryMap& factoryMap = getFactoryMap();
                 auto it = factoryMap.find(type);
