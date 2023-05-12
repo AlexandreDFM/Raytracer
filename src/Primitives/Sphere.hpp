@@ -9,19 +9,18 @@
     #define SPHERE_H
 
 #include "Ray.hpp"
-#include "IShape.hpp"
+#include "IPrimitive.hpp"
 
 namespace RayTracer {
-    class Sphere : public IShape {
+    class Sphere : public IPrimitive {
         public:
-            Sphere() {};
-            Sphere(point3 cen, double r, std::shared_ptr<IMaterial> m)
-                    : center(cen), radius(r), mat_ptr(m) {};
-            bool hit(
-                    const RayTracer::Ray &r, double t_min, double t_max, hit_record &rec) const override;
-            point3 center;
-            double radius;
-            std::shared_ptr<IMaterial> mat_ptr;
+            Sphere(point3 cen, double r, std::shared_ptr<IMaterial> m);
+            bool hit(const RayTracer::Ray &r, double t_min, double t_max, hit_record &rec) const override;
+
+        public:
+                point3 center;
+                double radius;
+                std::shared_ptr<IMaterial> mat_ptr;
     };
 
     inline bool Sphere::hit(const RayTracer::Ray &r, double t_min, double t_max, hit_record &rec) const {
@@ -49,8 +48,11 @@ namespace RayTracer {
         rec.mat_ptr = mat_ptr;
         return true;
     }
+
+    extern "C" {
+        IPrimitive *entryPoint(point3 center, double radius, std::shared_ptr<RayTracer::IMaterial> mat_ptr);
+        char *getType();
+    }
 }
-extern "C" RayTracer::IShape *entryPoint(point3 center, double radius, std::shared_ptr<RayTracer::IMaterial> mat_ptr);
-extern "C" char *getType();
 
 #endif /* SPHERE_H */

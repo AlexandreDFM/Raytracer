@@ -20,10 +20,13 @@ namespace RayTracer {
         public:
             color albedo;
             double fuzz;
-        };
+    };
+
+    extern "C" {
+        Metal *entryPoint(const color &a, double f);
+        char *getType();
+    }
 }
 
-extern "C" RayTracer::Metal *entryPoint(const color &a, double f);
-extern "C" char *getType();
 
 #endif /*METAL_*/

@@ -8,10 +8,10 @@
 #ifndef ASHAPE
 	#define ASHAPE
 //
-//    #include "IShape.hpp"
+//    #include "IPrimitive.hpp"
 //
 // namespace RayTracer {
-//     class AShape : public IShape {
+//     class AShape : public IPrimitive {
 //         public:
 //             AShape() = default;
 //             bool hit(const RayTracer::Ray& r, double t_min, double t_max, hit_record& rec) const override = 0;

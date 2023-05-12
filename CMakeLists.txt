@@ -32,17 +32,21 @@ set_target_properties("sphere" PROPERTIES PREFIX "raytracer_")
 
 #Materials libraries
 # Lambertian
-add_library("lambertian" SHARED src/Interface/IShape.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Color.hpp src/Materials/Lambertian.cpp src/Materials/Lambertian.hpp)
+add_library("lambertian" SHARED src/Interface/IPrimitive.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Color.hpp src/Materials/Lambertian.cpp src/Materials/Lambertian.hpp)
 set_target_properties("lambertian" PROPERTIES PREFIX "raytracer_")
 
 # Metal
-add_library("metal" SHARED src/Interface/IShape.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Color.hpp src/Materials/Metal.cpp src/Materials/Metal.hpp)
+add_library("metal" SHARED src/Interface/IPrimitive.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Color.hpp src/Materials/Metal.cpp src/Materials/Metal.hpp)
 set_target_properties("metal" PROPERTIES PREFIX "raytracer_")
 
+add_library("dielectric" SHARED src/Interface/IPrimitive.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Color.hpp src/Materials/Dielectric.cpp src/Materials/Dielectric.hpp)
+set_target_properties("dielectric" PROPERTIES PREFIX "raytracer_")
 
-add_executable( raytracer
+
+add_executable(
+        raytracer
         src/Main.cpp
-        src/Interface/IShape.hpp
+        src/Interface/IPrimitive.hpp
         src/Abstract/AShape.cpp
         src/Abstract/AShape.hpp
         src/Exception/Usage/Usage.cpp
@@ -65,5 +69,9 @@ add_executable( raytracer
         src/Wrapper/Wrapper.cpp
         src/Abstract/ADisplay.cpp
         src/HittableList.hpp
-        src/Math/Math.cpp src/Math/Math.hpp src/Core/Core.cpp)
+        src/Math/Math.cpp
+        src/Math/Math.hpp
+        src/Core/Core.cpp
+)
+
 target_link_libraries(raytracer sfml-graphics sfml-window sfml-system sfml-audio "dl" config++)

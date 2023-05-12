@@ -10,14 +10,14 @@
 
     #include <memory>
     #include <vector>
-    #include "Interface/IShape.hpp"
+    #include "Interface/IPrimitive.hpp"
 
 namespace RayTracer {
-    class HittableList : public IShape {
+    class HittableList : public IPrimitive {
         public:
             HittableList() = default;
 
-            HittableList(std::shared_ptr<IShape> object)
+            HittableList(std::shared_ptr<IPrimitive> object)
             {
                 add(object);
             }
@@ -27,7 +27,7 @@ namespace RayTracer {
                 objects.clear();
             }
 
-            void add(std::shared_ptr<IShape> object)
+            void add(std::shared_ptr<IPrimitive> object)
             {
                 objects.push_back(object);
             }
@@ -35,7 +35,7 @@ namespace RayTracer {
             virtual bool hit(const Ray &r, double t_min, double t_max, hit_record &rec) const override;
 
         public:
-            std::vector<std::shared_ptr<IShape>> objects;
+            std::vector<std::shared_ptr<IPrimitive>> objects;
     };
 
     inline bool HittableList::hit(const Ray &r, double t_min, double t_max, hit_record &rec) const {

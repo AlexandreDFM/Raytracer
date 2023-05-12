@@ -8,17 +8,18 @@
 #ifndef FACTORY
 	#define FACTORY
 
-    #include "IShape.hpp"
+    #include "IPrimitive.hpp"
     #include "IMaterial.hpp"
     #include "Primitives/Sphere.hpp"
 
     #include "Materials/Metal.hpp"
     #include "Materials/Lambertian.hpp"
+    #include "Materials/Dielectric.hpp"
 
 namespace RayTracer {
     class Factory {
         public:
-            typedef std::map<std::string, std::function<std::shared_ptr<IShape>(point3 center, double radius, std::shared_ptr<IMaterial> &material)>> FactoryMap;
+            typedef std::map<std::string, std::function<std::shared_ptr<IPrimitive>(point3 center, double radius, std::shared_ptr<IMaterial> &material)>> FactoryMap;
             static FactoryMap& getFactoryMap()
             {
                 static FactoryMap factoryMap = {
@@ -27,7 +28,7 @@ namespace RayTracer {
                 return factoryMap;
             };
 
-            static std::shared_ptr<IShape> createPrimitive(const std::string &type, point3 center, double radius, std::shared_ptr<IMaterial> &material)
+            static std::shared_ptr<IPrimitive> createPrimitive(const std::string &type, point3 center, double radius, std::shared_ptr<IMaterial> &material)
             {
                 FactoryMap& factoryMap = getFactoryMap();
                 auto it = factoryMap.find(type);
@@ -43,7 +44,8 @@ namespace RayTracer {
             {
                 static MaterialFactoryMap materialFactoryMap = {
                         {"lambertian", [](color color, double fuzz) { return std::make_shared<Lambertian>(color); }},
-                        {"metal", [](color color, double fuzz) { return std::make_shared<Metal>(color, fuzz); }}
+                        {"metal", [](color color, double fuzz) { return std::make_shared<Metal>(color, fuzz); }},
+                        {"dielectric", [](color color, double fuzz) { return std::make_shared<Dielectric>(fuzz); }}
                 };
                 return materialFactoryMap;
             };

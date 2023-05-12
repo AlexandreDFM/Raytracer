@@ -18,9 +18,12 @@ namespace RayTracer {
         public:
             color albedo;
     };
+
+    extern "C" {
+        Lambertian *entryPoint(const color &a, double f);
+        char *getType();
+    }
 }
 
-extern "C" RayTracer::Lambertian *entryPoint(const color &a, double f);
-extern "C" char *getType();
 
 #endif /*LAMBERTIAN_HPP_*/

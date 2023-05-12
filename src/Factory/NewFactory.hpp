@@ -8,7 +8,7 @@
 #ifndef FACTORY_HPP_
 	#define FACTORY_HPP_
 
-    #include "IShape.hpp"
+    #include "IPrimitive.hpp"
     #include "IMaterial.hpp"
     #include "Wrapper/Wrapper.hpp"
     #include "Exception/FactoryException.hpp"
@@ -41,15 +41,15 @@ namespace RayTracer {
 
             ~NewFactory() = default;
 
-            std::shared_ptr<IShape> createPrimitive(const std::string &type, point3 center, double radius, std::shared_ptr<IMaterial> &material) {
+            std::shared_ptr<IPrimitive> createPrimitive(const std::string &type, point3 center, double radius, std::shared_ptr<IMaterial> &material) {
                 if (_primitivesLibraries.find(type) == _primitivesLibraries.end())
                     throw new FactoryUnknownComponent("Unknown primitive: " + type);
                 this->_primitiveWrappers.push_back(Wrapper());
                 this->_primitiveWrappers.back().loadLib(this->_primitivesLibraries[type]);
-                auto entryPoint = this->_primitiveWrappers.back().getFunction<IShape *(point3, double, std::shared_ptr<IMaterial>)>("entryPoint");
+                auto entryPoint = this->_primitiveWrappers.back().getFunction<IPrimitive *(point3, double, std::shared_ptr<IMaterial>)>("entryPoint");
                 if (!entryPoint)
                     throw new FactoryUnknownComponent("Invalid library: " + this->_primitivesLibraries[type]);
-                return std::shared_ptr<IShape>(entryPoint(center, radius, material));
+                return std::shared_ptr<IPrimitive>(entryPoint(center, radius, material));
             };
 
             std::shared_ptr<IMaterial> createMaterial(const std::string &type, color c, double fuzz) {

@@ -25,15 +25,18 @@ namespace RayTracer {
         attenuation = this->albedo;
         return true;
     }
+    extern "C" {
+        Lambertian *entryPoint(const color &a, double f)
+        {
+            (void) f;
+            return new Lambertian(a);
+        }
+
+        char *getType()
+        {
+            return (char *)"material_lambertian";
+        }
+    }
+
 }
 
-extern "C" RayTracer::Lambertian *entryPoint(const color &a, double f)
-{
-    (void) f;
-    return new RayTracer::Lambertian(a);
-}
-
-extern "C" char *getType()
-{
-    return (char *)"material_lambertian";
-}

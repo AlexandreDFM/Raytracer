@@ -9,7 +9,7 @@
 	#define IMATERIAL
 
     #include "Ray.hpp"
-    #include "IShape.hpp"
+    #include "IPrimitive.hpp"
     #include "Math/Math.hpp"
 
 namespace RayTracer {
