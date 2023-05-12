@@ -11,6 +11,7 @@
     #include <memory>
     #include <vector>
     #include "Interface/IPrimitive.hpp"
+    #include "Interface/ILight.hpp"
 
 namespace RayTracer {
     class HittableList : public IPrimitive {
@@ -32,10 +33,16 @@ namespace RayTracer {
                 objects.push_back(object);
             }
 
+            void add(std::shared_ptr<ILight> object)
+            {
+                lights.push_back(object);
+            }
+
             virtual bool hit(const Ray &r, double t_min, double t_max, hit_record &rec) const override;
 
         public:
             std::vector<std::shared_ptr<IPrimitive>> objects;
+            std::vector<std::shared_ptr<ILight>> lights;
     };
 
     inline bool HittableList::hit(const Ray &r, double t_min, double t_max, hit_record &rec) const {

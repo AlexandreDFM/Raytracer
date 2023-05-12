@@ -12,7 +12,7 @@
     #include "Camera.hpp"
     #include "Color.hpp"
     #include "HittableList.hpp"
-    #include "Factory/NewFactory.hpp"
+    #include "Factory/Factory.hpp"
     #include "Config/LibConfig.hpp"
     #include "Vector3D.hpp"
     #include "IMaterial.hpp"
@@ -25,9 +25,8 @@ namespace RayTracer {
             ~Core() = default;
             void run();
         private:
-            NewFactory *_factory;
+            Factory *_factory;
             LibConfig *_configHelper;
-            std::vector<IPrimitive *> _primitives;
             RayTracer::HittableList _world;
             std::unique_ptr<Camera> _camera;
     };
