@@ -23,27 +23,25 @@ namespace RayTracer {
     class SFML : public ADisplay {
         public:
             //////////////////////// Constructors ////////////////////////
-            SFML();
+            SFML(int width, int height, int cameraResolutionWidth, int cameraResolutionHeight, int fps, std::string &title);
             //////////////////////// Destructors ////////////////////////
             ~SFML() override = default;
             //////////////////////// Methods ////////////////////////
             void init(const std::map<char, std::string> &gameAssets) override;
             RayTracer::EventType getEvent() override;
+            void addPixel(int x, int y, double r, double g, double b, int samples_per_pixel) override;
             void update() override;
             void clear() override;
             void close() override;
-            void display(std::vector<Drawable>) override;
-            void display(std::vector<DrawableText>) override;
+            void display() override;
 
         private:
             //////////////////////// Attributes ////////////////////////
-            sf::Text text;
-            sf::Font font;
-            sf::Event event{};
-            int _spriteSize{};
-            sf::Sprite sprite;
-            sf::RenderWindow *window;
-            std::map<char, SFMLSprite> _spriteAssets;
+            sf::Image _image;
+            sf::Sprite _sprite;
+            sf::Event _event{};
+            sf::Texture _texture;
+            sf::RenderWindow *_window;
     };
 }
 

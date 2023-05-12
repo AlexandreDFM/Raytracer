@@ -12,10 +12,19 @@ namespace RayTracer {
      * This is a constructor for the SFML class that initializes the window and
      * event variables.
      */
-    SFML::SFML()
+    SFML::SFML(int width, int height, int cameraResolutionWidth, int cameraResolutionHeight, int fps, std::string &title)
     {
-        this->window = nullptr;
-        this->event = sf::Event();
+        this->_window = new sf::RenderWindow(sf::VideoMode(width, height), title);
+        this->_window->setFramerateLimit(fps);
+        this->_event = sf::Event();
+
+        this->_image.create(cameraResolutionWidth, cameraResolutionHeight, {128, 128, 128});
+        this->_texture.loadFromImage(this->_image);
+        this->_sprite.setTexture(this->_texture);
+
+        float x = (float) width / 2 - (float) cameraResolutionWidth / 2;
+        float y = (float) height / 2 - (float) cameraResolutionHeight / 2;
+        this->_sprite.setPosition(x, y);
     }
 
     /**
@@ -29,21 +38,8 @@ namespace RayTracer {
      */
     void SFML::init(const std::map<char, std::string> &gameAssets)
     {
-        this->window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "Raytracer");
-        this->window->setFramerateLimit(60);
-        this->font.loadFromFile("./Assets/Police/Poppins-Black.ttf");
-        this->text.setFont(this->font);
-        this->text.setCharacterSize(24);
-        this->text.setStyle(sf::Text::Bold);
-        this->_spriteSize = 40;
-        sf::IntRect rect = sf::IntRect(0, 0, this->_spriteSize, this->_spriteSize);
-        for (auto &asset : gameAssets) {
-            this->_spriteAssets[asset.first] = {sf::Texture(), sf::Sprite()};
-            this->_spriteAssets[asset.first].texture.loadFromFile(asset.second);
-            this->_spriteAssets[asset.first].sprite.setTexture(this->_spriteAssets[asset.first].texture);
-            this->_spriteAssets[asset.first].sprite.setTextureRect(rect);
-            this->_spriteAssets[asset.first].sprite.setOrigin(this->_spriteSize / 2, this->_spriteSize / 2);
-        }
+        this->_window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "Raytracer");
+        this->_window->setFramerateLimit(60);
     }
 
     /**
@@ -55,21 +51,26 @@ namespace RayTracer {
      * was pressed and returns the corresponding EventType value. If no event is
      * being polled, it returns EventType::NOTHING.
      */
-    EventType SFML::getEvent() {
-        while (this->window->pollEvent(this->event)) {
-            if (this->event.type == sf::Event::Closed) {
+    EventType SFML::getEvent()
+    {
+        while (this->_window->pollEvent(this->_event)) {
+            if (this->_event.type == sf::Event::Closed) {
+                this->_window->close();
+                this->isOpenWindow = false;
                 return EventType::CLOSE;
             }
-            if (this->event.type == sf::Event::KeyPressed) {
-                switch (this->event.key.code) {
-                    case sf::Keyboard::Escape: return EventType::CLOSE;
-                    case sf::Keyboard::Space:  return EventType::RESTART;
+            if (this->_event.type == sf::Event::KeyPressed) {
+                switch (this->_event.key.code) {
+                    case sf::Keyboard::Escape:
+                        this->_window->close();
+                        this->isOpenWindow = false;
+                        return EventType::CLOSE;
+                    case sf::Keyboard::Space:  return EventType::PAUSE;
                     case sf::Keyboard::L:      return EventType::LIBPREV;
                     case sf::Keyboard::M:      return EventType::LIBNEXT;
-                    case sf::Keyboard::O:      return EventType::GAMEPREV;
-                    case sf::Keyboard::P:      return EventType::GAMENEXT;
-                    case sf::Keyboard::T:      return EventType::SAVE;
-                    case sf::Keyboard::Y:      return EventType::MENU;
+                    case sf::Keyboard::T:
+                        this->_image.saveToFile("screenshots/screenshot.png");
+                        return EventType::SAVE;
                     default:                   return EventType::NOTHING;
                 }
             }
@@ -77,68 +78,26 @@ namespace RayTracer {
         return EventType::NOTHING;
     }
 
-    /**
-     * The function displays a vector of drawable objects using sprite assets and
-     * sets their position and rotation based on their properties.
-     *
-     * @param drawables A vector of Drawable objects that contain information
-     * about what to draw and where to draw it on the SFML window.
-     *
-     * @return If the `drawables` vector is empty, the function returns
-     * immediately without doing anything.
-     */
-    void SFML::display(std::vector<Drawable> drawables)
+    void SFML::addPixel(int x, int y, double r, double g, double b, int samples_per_pixel)
     {
-        if (drawables.empty()) return;
-        for (auto &drawable : drawables) {
-            for (auto &sprite : this->_spriteAssets) {
-                if (sprite.first == drawable.draw) {
-                    sf::IntRect rect = sf::IntRect(0, 0, drawable.rect.width, drawable.rect.height);
-                    sprite.second.sprite.setTextureRect(rect);
-                    sprite.second.sprite.setPosition({(float) drawable.x * this->_spriteSize, (float) drawable.y * this->_spriteSize});
-                    this->window->draw(sprite.second.sprite);
-                    if (drawable.draw != 'h' && drawable.draw != 'b') continue;
-                    switch (drawable.rotation) {
-                        case Direction::WEST:  sprite.second.sprite.setRotation(0);   break;
-                        case Direction::NORTH: sprite.second.sprite.setRotation(90);  break;
-                        case Direction::EAST:  sprite.second.sprite.setRotation(180); break;
-                        case Direction::SOUTH: sprite.second.sprite.setRotation(270); break;
-                        default:               sprite.second.sprite.setRotation(0);   break;
-                    }
-                }
-            }
-        }
+        auto scale = 1.0 / samples_per_pixel;
+
+        r = std::sqrt(scale * r);
+        g = std::sqrt(scale * g);
+        b = std::sqrt(scale * b);
+
+        r = 256 * std::clamp(r, 0.0, 0.999);
+        g = 256 * std::clamp(g, 0.0, 0.999);
+        b = 256 * std::clamp(b, 0.0, 0.999);
+
+        this->_image.setPixel(x, y, sf::Color((int) r, (int) g, (int) b));
     }
 
-    /**
-     * The function displays a vector of text objects with specified colors and
-     * positions on an SFML window.
-     *
-     * @param drawables A vector of DrawableText objects that contain information
-     * about the text to be displayed, its position, and color.
-     *
-     * @return If the `drawables` vector is empty, the function returns without
-     * doing anything.
-     */
-    void SFML::display(std::vector<DrawableText> drawables)
+    void SFML::display()
     {
-        if (drawables.empty()) return;
-        for (auto &drawable : drawables) {
-            this->text.setString(drawable.text);
-//            switch (drawable.color) {
-//                case Color::RED:     this->text.setFillColor(sf::Color::Red);     break;
-//                case Color::BLUE:    this->text.setFillColor(sf::Color::Blue);    break;
-//                case Color::BLACK:   this->text.setFillColor(sf::Color::Black);   break;
-//                case Color::WHITE:   this->text.setFillColor(sf::Color::White);   break;
-//                case Color::GREEN:   this->text.setFillColor(sf::Color::Green);   break;
-//                case Color::YELLOW:  this->text.setFillColor(sf::Color::Yellow);  break;
-//                case Color::CYAN:    this->text.setFillColor(sf::Color::Cyan);    break;
-//                case Color::MAGENTA: this->text.setFillColor(sf::Color::Magenta); break;
-//                default:             this->text.setFillColor(sf::Color::White);   break;
-//            }
-            this->text.setPosition({(float) drawable.x * this->_spriteSize, (float) drawable.y * this->_spriteSize});
-            this->window->draw(this->text);
-        }
+        this->_texture.loadFromImage(this->_image);
+        this->_sprite.setTexture(this->_texture);
+        this->_window->draw(this->_sprite);
     }
 
     /**
@@ -146,8 +105,7 @@ namespace RayTracer {
      */
     void SFML::update()
     {
-        this->window->display();
-
+        this->_window->display();
     }
 
     /**
@@ -155,7 +113,10 @@ namespace RayTracer {
      */
     void SFML::clear()
     {
-        this->window->clear(sf::Color::Black);
+        this->_window->clear(sf::Color::Black);
+        // Create Grey Transparent Background
+        sf::Color color = sf::Color(128, 128, 128, 50);
+        this->_window->clear(color);
     }
 
     /**
@@ -163,8 +124,8 @@ namespace RayTracer {
      */
     void SFML::close()
     {
-        this->window->close();
-        delete this->window;
+        this->_window->close();
+        delete this->_window;
     }
 
     /* The `extern "C"` block is used to specify that the functions inside it
@@ -183,9 +144,9 @@ namespace RayTracer {
          * @return A pointer to an object of type `ADisplay` that is created using
          * the `new` operator and initialized with a `SFML` object.
          */
-        ADisplay *entryPoint()
+        ADisplay *entryPoint(int width, int height, int cameraResolutionWidth, int cameraResolutionHeight, int fps, std::string title)
         {
-            return new SFML();
+            return new SFML(width, height, cameraResolutionWidth, cameraResolutionHeight, fps, title);
         }
 
         /**
@@ -197,7 +158,7 @@ namespace RayTracer {
          */
         char *getType()
         {
-            return (char *) "libSFML";
+            return (char *) "display_SFML";
         }
     }
 }

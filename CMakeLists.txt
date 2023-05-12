@@ -19,9 +19,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g3")
 
 # Graphics libraries
 # SFML
-#add_library("sfml" SHARED src/Abstract/ADisplay.cpp src/Abstract/ADisplay.hpp src/Libraries/Graphical/SFML/SFML.cpp src/Libraries/Graphical/SFML/SFML.hpp)
-#set_target_properties("sfml" PROPERTIES PREFIX "raytracer_")
-#target_link_libraries("sfml" sfml-graphics sfml-window sfml-system sfml-audio)
+add_library("sfml" SHARED src/Abstract/ADisplay.cpp src/Abstract/ADisplay.hpp src/Libraries/Graphical/SFML/SFML.cpp src/Libraries/Graphical/SFML/SFML.hpp)
+set_target_properties("sfml" PROPERTIES PREFIX "raytracer_")
+target_link_libraries("sfml" sfml-graphics sfml-window sfml-system sfml-audio)
 
 
 # Primitives libraries

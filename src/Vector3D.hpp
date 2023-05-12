@@ -8,7 +8,6 @@
 #ifndef Vector3D_H
     #define Vector3D_H
 
-    #include <cmath>
     #include <iostream>
     #include "Math/Math.hpp"
 

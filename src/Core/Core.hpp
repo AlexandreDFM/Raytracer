@@ -8,14 +8,15 @@
 #ifndef CORE_HPP_
     #define CORE_HPP_
 
-    #include "IPrimitive.hpp"
-    #include "Camera.hpp"
     #include "Color.hpp"
+    #include "Camera.hpp"
+    #include "Vector3D.hpp"
+    #include "IDisplay.hpp"
+    #include "IMaterial.hpp"
+    #include "IPrimitive.hpp"
     #include "HittableList.hpp"
     #include "Factory/Factory.hpp"
     #include "Config/LibConfig.hpp"
-    #include "Vector3D.hpp"
-    #include "IMaterial.hpp"
 
 namespace RayTracer {
     class Core {
@@ -24,11 +25,20 @@ namespace RayTracer {
             color RayColor(const RayTracer::Ray& r, const RayTracer::IPrimitive& world, int depth);
             ~Core() = default;
             void run();
+            void checkEvents(EventType type);
+            void graphicalLoop();
+            void standardRender();
+            void graphicalRender();
+            void loadDisplayModule(const std::string &libPath);
         private:
+            bool _isPaused = false;
             Factory *_factory;
+            bool haveGraphicalLib;
             LibConfig *_configHelper;
             RayTracer::HittableList _world;
             std::unique_ptr<Camera> _camera;
+            std::vector<IPrimitive *> _primitives;
+            std::shared_ptr<IDisplay> _displayModule;
     };
 }
 

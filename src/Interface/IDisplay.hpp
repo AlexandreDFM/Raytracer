@@ -19,8 +19,9 @@ namespace RayTracer {
             virtual void update() = 0;
             virtual void close() = 0;
             virtual void clear() = 0;
-            virtual void display(std::vector<Drawable>) = 0;
-            virtual void display(std::vector<DrawableText>) = 0;
+            virtual void display() = 0;
+            virtual bool isOpen() = 0;
+            virtual void addPixel(int x, int y, double r, double g, double b, int samples_per_pixel) = 0;
             //////////////////////// Getters //////////////////////////
             virtual RayTracer::EventType getEvent() = 0;
     };

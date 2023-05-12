@@ -18,10 +18,12 @@ namespace RayTracer {
             void update() override;
             void clear() override;
             void close() override;
-            void display(std::vector<Drawable> drawables) override;
-            void display(std::vector<DrawableText> drawables) override;
+            void display() override;
+            bool isOpen() override;
             //////////////////////// Getters //////////////////////////
             RayTracer::EventType getEvent() override;
+        protected:
+            bool isOpenWindow = true;
     };
 }
 

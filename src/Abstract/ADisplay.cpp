@@ -54,23 +54,13 @@ namespace RayTracer {
      * the class "ADisplay". The function does not use this parameter and simply
      * casts it to void, indicating that it is not being used in the function
      */
-    void ADisplay::display(std::vector<Drawable> drawables)
+    void ADisplay::display()
     {
-        (void) drawables;
     }
 
-    /**
-     * The function "display" takes in a vector of DrawableText objects and does
-     * nothing with it.
-     *
-     * @param drawables The parameter "drawables" is a vector of objects of type
-     * "DrawableText". It is passed as an argument to the member function
-     * "display" of the class "ADisplay". The function does not use this parameter
-     * and simply casts it to void, indicating that it is not being used in the
-     */
-    void ADisplay::display(std::vector<DrawableText> drawables)
+    bool ADisplay::isOpen()
     {
-        (void) drawables;
+        return isOpenWindow;
     }
 
     /**
