@@ -89,16 +89,14 @@ namespace RayTracer {
         // If we've exceeded the ray bounce limit, no more light is gathered.
         if (depth <= 0)
             return color(0,0,0);
-        if (world.hit(r, 0.001, Math::infinity, rec)) {
-            RayTracer::Ray scattered;
-            color attenuation;
-            if (rec.mat_ptr->scatter(r, rec, attenuation, scattered))
-                return attenuation * RayColor(scattered, world, depth-1);
+        if (!world.hit(r, 0.001, Math::infinity, rec))
             return color(0,0,0);
-        }
-        Vector3D unit_direction = unit_vector(r.direction());
-        auto t = 0.5*(unit_direction.y() + 1.0);
-        return (1.0-t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0);
+        RayTracer::Ray scattered;
+        color attenuation;
+        color emmited = rec.mat_ptr->emitted(rec.u, rec.v, rec.p);
+        if (!rec.mat_ptr->scatter(r, rec, attenuation, scattered))
+            return emmited;
+        return emmited + attenuation * RayColor(scattered, world, depth-1);
     }
 
 

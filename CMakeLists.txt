@@ -41,8 +41,13 @@ set_target_properties("lambertian" PROPERTIES PREFIX "raytracer_")
 add_library("metal" SHARED src/Interface/IPrimitive.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Color.hpp src/Materials/Metal.cpp src/Materials/Metal.hpp)
 set_target_properties("metal" PROPERTIES PREFIX "raytracer_")
 
+# Dielectric
 add_library("dielectric" SHARED src/Interface/IPrimitive.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Color.hpp src/Materials/Dielectric.cpp src/Materials/Dielectric.hpp)
 set_target_properties("dielectric" PROPERTIES PREFIX "raytracer_")
+
+# Diffuse Light
+add_library("diffuse_light" SHARED src/Interface/IPrimitive.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Color.hpp src/Materials/DiffuseLight.cpp src/Materials/DiffuseLight.hpp)
+set_target_properties("diffuse_light" PROPERTIES PREFIX "raytracer_")
 
 
 # Lights libraries

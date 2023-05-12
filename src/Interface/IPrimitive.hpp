@@ -18,6 +18,8 @@ namespace RayTracer {
     struct hit_record {
         point3 p;
         double t;
+        double u;
+        double v;
         bool front_face;
         Vector3D normal;
         std::shared_ptr<RayTracer::IMaterial> mat_ptr;
