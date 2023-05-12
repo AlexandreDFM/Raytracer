@@ -11,6 +11,7 @@
     #include "IPrimitive.hpp"
     #include "IMaterial.hpp"
     #include "Primitives/Sphere.hpp"
+    #include "Primitives/Plane.hpp"
 
     #include "Materials/Metal.hpp"
     #include "Materials/Lambertian.hpp"
@@ -24,6 +25,7 @@ namespace RayTracer {
             {
                 static FactoryMap factoryMap = {
                         {"sphere", [](point3 center, double radius, std::shared_ptr<IMaterial> &material) { return std::make_shared<Sphere>(center, radius, material); }},
+                        {"plane", [](point3 center, double radius, std::shared_ptr<IMaterial> &material) { return std::make_shared<Plane>(center, material); }},
                 };
                 return factoryMap;
             };
