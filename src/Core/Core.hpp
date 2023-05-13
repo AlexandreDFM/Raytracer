@@ -32,6 +32,7 @@ namespace RayTracer {
             void loadDisplayModule(const std::string &libPath);
         private:
             bool _isPaused = false;
+            bool _isRendering = false;
             Factory *_factory;
             bool haveGraphicalLib;
             LibConfig *_configHelper;

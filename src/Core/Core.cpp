@@ -175,7 +175,7 @@ namespace RayTracer {
     void Core::graphicalLoop()
     {
         while (this->_displayModule->isOpen()) {
-            if (!this->_isPaused) break;
+            if (!this->_isPaused && _isRendering) break;
             this->_displayModule->display();
             Core::checkEvents(this->_displayModule->getEvent());
             this->_displayModule->update();
@@ -187,6 +187,7 @@ namespace RayTracer {
     {
         int width, height;
         const int max_depth = 50;
+        this->_isRendering = true;
         const int samples_per_pixel = 100;
         this->_camera->getResolution(width, height);
         std::cout << "P3\n" << width << ' ' << height << "\n255\n";
@@ -209,8 +210,9 @@ namespace RayTracer {
             this->_displayModule->update();
             this->_displayModule->clear();
         }
+        std::cerr << "\nDone.\n";
+        this->_isRendering = false;
         this->graphicalLoop();
         this->_displayModule->close();
-        std::cerr << "\nDone.\n";
     }
 }
