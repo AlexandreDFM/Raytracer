@@ -89,13 +89,7 @@ namespace RayTracer {
                 Vector3D(radius, y1, radius)
         );
 
-        // Expand the bounding box to include the top cap
-        double kEpsilon = 0.0001;
-        output_box = surrounding_box(output_box, AxisAlignedBoundBox(
-                Vector3D(-radius, y1 - kEpsilon, -radius),
-                Vector3D(radius, y1 + kEpsilon, radius)
-        ));
-
+        return true;
     }
 }
 

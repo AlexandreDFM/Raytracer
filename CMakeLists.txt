@@ -40,6 +40,10 @@ set_target_properties("rectangle" PROPERTIES PREFIX "raytracer_")
 add_library("cylinder" SHARED src/Abstract/AShape.cpp src/Abstract/AShape.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Math/AxisAlignement.hpp src/Primitives/Cylinder.cpp src/Primitives/Cylinder.hpp)
 set_target_properties("cylinder" PROPERTIES PREFIX "raytracer_")
 
+# Cone
+add_library("cone" SHARED src/Abstract/AShape.cpp src/Abstract/AShape.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Math/AxisAlignement.hpp src/Primitives/Cone.cpp src/Primitives/Cone.hpp)
+set_target_properties("cone" PROPERTIES PREFIX "raytracer_")
+
 
 #Materials libraries
 # Lambertian

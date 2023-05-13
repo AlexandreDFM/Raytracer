@@ -81,6 +81,18 @@ namespace RayTracer {
             this->_world.add(this->_factory->createPrimitive("cylinder", point3(0, 0, 0), std::vector<double>({r, y0, y1}), materialComponent));
         }
 
+        for (int i = 0, length = this->_configHelper->getLength("primitives.cones"); i < length; i++) {
+            auto r = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "r", i);
+            auto h = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "h", i);
+            auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.cones", "material", i);
+            auto colorR = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "color.r", i);
+            auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "color.g", i);
+            auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "color.b", i);
+            auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "fuzz", i);
+            auto materialComponent = this->_factory->createMaterial(materialType, color(colorR, colorG, colorB), fuzz);
+            this->_world.add(this->_factory->createPrimitive("cone", point3(0, 0, 0), std::vector<double>({r, h}), materialComponent));
+        }
+
         // Créer les plans
 
         for (int i = 0, length = this->_configHelper->getLength("primitives.planes"); i < length; i++) {
