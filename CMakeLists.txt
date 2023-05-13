@@ -98,4 +98,4 @@ add_executable(
         src/Core/Core.cpp
         src/Interface/ILight.hpp)
 
-target_link_libraries(raytracer sfml-graphics sfml-window sfml-system sfml-audio "dl" config++)
+target_link_libraries(raytracer -Ofast sfml-graphics sfml-window sfml-system sfml-audio "dl" config++)

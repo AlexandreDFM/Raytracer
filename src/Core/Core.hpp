@@ -15,6 +15,7 @@
     #include "IMaterial.hpp"
     #include "IPrimitive.hpp"
     #include "HittableList.hpp"
+    #include "Thread/IThread.hpp"
     #include "Factory/Factory.hpp"
     #include "Config/LibConfig.hpp"
 
@@ -30,6 +31,7 @@ namespace RayTracer {
             void standardRender();
             void graphicalRender();
             void loadDisplayModule(const std::string &libPath);
+            void render(int index, int start, int end, int width, int height, int samples_per_pixel, int max_depth);
         private:
             bool _isPaused = false;
             bool _isRendering = false;
@@ -38,7 +40,9 @@ namespace RayTracer {
             LibConfig *_configHelper;
             RayTracer::HittableList _world;
             std::unique_ptr<Camera> _camera;
+            std::vector<std::thread> _threads;
             std::vector<IPrimitive *> _primitives;
+            std::vector<std::vector<color>> _colors;
             std::shared_ptr<IDisplay> _displayModule;
     };
 }

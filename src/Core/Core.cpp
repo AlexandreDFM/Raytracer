@@ -142,16 +142,10 @@ namespace RayTracer {
         }
     }
 
-    void Core::standardRender()
+    void Core::render(int index, int start, int end, int width, int height, int samples_per_pixel, int max_depth)
     {
-        int width, height;
-        const int max_depth = 50;
-        const int samples_per_pixel = 100;
-        this->_camera->getResolution(width, height);
-        std::cout << "P3\n" << width << ' ' << height << "\n255\n";
-        for (int j = height - 1; j >= 0; --j) {
-            std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
-            for (int i = 0; i < width; ++i) {
+        for (int j = start; j < end; j++) {
+            for (int i = 0; i < width; i++) {
                 color pixel_color(0, 0, 0);
                 for (int s = 0; s < samples_per_pixel; ++s) {
                     auto u = (i + Math::random_double()) / (width - 1);
@@ -159,9 +153,54 @@ namespace RayTracer {
                     RayTracer::Ray r = this->_camera->getRay(u, v);
                     pixel_color += RayColor(r, this->_world, max_depth);
                 }
-                Color::write_color(std::cout, pixel_color, samples_per_pixel);
+                this->_colors[index].push_back(pixel_color);
+                if (this->haveGraphicalLib) {
+                    this->_displayModule->addPixel(i, height - j - 1, pixel_color.x(), pixel_color.y(), pixel_color.z(), samples_per_pixel);
+                }
             }
         }
+    }
+
+    void Core::standardRender()
+    {
+        int width, height;
+        const int max_depth = 50;
+        const int samples_per_pixel = 100;
+        this->_camera->getResolution(width, height);
+        std::cout << "P3\n" << width << ' ' << height << "\n255\n";
+        auto processor_count = std::thread::hardware_concurrency();
+        if (processor_count == 0) processor_count = 1;
+
+        // Split the work
+        int work = height / processor_count;
+        int rest = height % processor_count;
+        int start = 0;
+        int end = work;
+        for (int index = 0; index < processor_count; index++) {
+            if (rest > 0) {
+                end++;
+                rest--;
+            }
+            this->_colors.push_back(std::vector<color>());
+            this->_threads.push_back(std::thread(&Core::render, this, index, start, end, width, height, samples_per_pixel, max_depth));
+            start = end;
+            end += work;
+        }
+
+        for (auto &thread : this->_threads) thread.join();
+
+        for (auto &color : this->_colors) {
+            for (auto &pixel : color) {
+                Color::writeColor(std::cout, pixel, samples_per_pixel);
+            }
+        }
+
+//        for (auto color = this->_colors.rbegin(); color != this->_colors.rend(); color++) {
+//            // Iterate over color vector from the end
+//            for (auto pixel = color->rbegin(); pixel != color->rend(); pixel++) {
+//                Color::writeColor(std::cout, *pixel, samples_per_pixel);
+//            }
+//        }
         std::cerr << "\nDone.\n";
     }
 
@@ -175,7 +214,7 @@ namespace RayTracer {
     void Core::graphicalLoop()
     {
         while (this->_displayModule->isOpen()) {
-            if (!this->_isPaused && _isRendering) break;
+            if (this->_isPaused) continue;
             this->_displayModule->display();
             Core::checkEvents(this->_displayModule->getEvent());
             this->_displayModule->update();
@@ -187,32 +226,36 @@ namespace RayTracer {
     {
         int width, height;
         const int max_depth = 50;
-        this->_isRendering = true;
         const int samples_per_pixel = 100;
         this->_camera->getResolution(width, height);
         std::cout << "P3\n" << width << ' ' << height << "\n255\n";
-        for (int j = height - 1; j >= 0; --j) {
-            std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
-            for (int i = 0; i < width; ++i) {
-                this->_displayModule->display();
-                Core::checkEvents(this->_displayModule->getEvent());
-                if (this->_isPaused) this->graphicalLoop();
-                color pixel_color(0, 0, 0);
-                for (int s = 0; s < samples_per_pixel; ++s) {
-                    auto u = (i + Math::random_double()) / (width - 1);
-                    auto v = (j + Math::random_double()) / (height - 1);
-                    RayTracer::Ray r = this->_camera->getRay(u, v);
-                    pixel_color += RayColor(r, this->_world, max_depth);
-                }
-                Color::write_color(std::cout, pixel_color, samples_per_pixel);
-                this->_displayModule->addPixel(i, height - j - 1, pixel_color.x(), pixel_color.y(), pixel_color.z(), samples_per_pixel);
+        auto processor_count = std::thread::hardware_concurrency();
+        if (processor_count == 0) processor_count = 3;
+
+        // Split the work
+
+        this->_threads.push_back(std::thread(&Core::graphicalLoop, this));
+
+         processor_count -= 1;
+
+        int work = height / (int) processor_count;
+        int rest = height % (int) processor_count;
+        int start = 0; int end = work;
+
+        for (int index = 0; index < processor_count; index++) {
+            if (rest > 0) {
+                end++; rest--;
             }
-            this->_displayModule->update();
-            this->_displayModule->clear();
+            this->_colors.push_back(std::vector<color>());
+            this->_threads.push_back(std::thread(&Core::render, this, index, start, end, width, height, samples_per_pixel, max_depth));
+            start = end; end += work;
         }
+
+        for (auto &thread : this->_threads) thread.join();
+        for (auto &color : this->_colors) {
+            for (auto &pixel : color) Color::writeColor(std::cout, pixel, samples_per_pixel);
+        }
+
         std::cerr << "\nDone.\n";
-        this->_isRendering = false;
-        this->graphicalLoop();
-        this->_displayModule->close();
     }
 }

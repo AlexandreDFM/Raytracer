@@ -14,7 +14,7 @@
 namespace RayTracer {
     class Color {
         public:
-            static void write_color(std::ostream &out, color pixel_color, int samples_per_pixel)
+            static void writeColor(std::ostream &out, color pixel_color, int samples_per_pixel)
             {
                 auto r = pixel_color.x();
                 auto g = pixel_color.y();
