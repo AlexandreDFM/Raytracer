@@ -233,12 +233,6 @@ namespace RayTracer {
             }
         }
 
-//        for (auto color = this->_colors.rbegin(); color != this->_colors.rend(); color++) {
-//            // Iterate over color vector from the end
-//            for (auto pixel = color->rbegin(); pixel != color->rend(); pixel++) {
-//                Color::writeColor(std::cout, *pixel, samples_per_pixel);
-//            }
-//        }
         std::cerr << "\nDone.\n";
     }
 

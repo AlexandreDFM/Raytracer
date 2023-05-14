@@ -61,13 +61,12 @@ namespace RayTracer {
     }
 
     bool Cone::bounding_box(double time0, double time1, AxisAlignedBoundBox& output_box) {
-        // Calculate the bounding box of the cone + its base
-        auto radius_vec = Vector3D(radius, 0, radius);
-        auto min = position - radius_vec;
-        auto max = position + radius_vec + Vector3D(0, height, 0);
-
-        output_box = AxisAlignedBoundBox(min, max);
-
+        (void) time0;
+        (void) time1;
+        output_box = AxisAlignedBoundBox(
+                position - Vector3D(radius, height, radius),
+                position + Vector3D(radius, 0, radius)
+        );
         return true;
     }
 }
