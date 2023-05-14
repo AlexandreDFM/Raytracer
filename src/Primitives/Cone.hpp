@@ -15,16 +15,17 @@
 namespace RayTracer {
     class Cone : public IPrimitive {
     public:
-        Cone(double _radius, double _height, std::shared_ptr<IMaterial> _mat);
+        Cone(double _radius, double _height, const Vector3D& _position, std::shared_ptr<IMaterial> _mat);
 
         virtual bool hit(const RayTracer::Ray& r, double t_min, double t_max, hit_record& rec) const override;
 
         virtual bool bounding_box(double time0, double time1, AxisAlignedBoundBox& output_box);
 
     private:
-        double radius;               // Radius of the cone
-        double height;               // Height of the cone
-        std::shared_ptr<IMaterial> mat_ptr;   // Material of the cone
+        Vector3D position;
+        double radius;
+        double height;
+        std::shared_ptr<IMaterial> mat_ptr;
     };
 }
 

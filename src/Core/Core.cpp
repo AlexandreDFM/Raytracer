@@ -69,6 +69,9 @@ namespace RayTracer {
         }
 
         for (int i = 0, length = this->_configHelper->getLength("primitives.cylinders"); i < length; i++) {
+            auto x = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "x", i);
+            auto y = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "y", i);
+            auto z = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "z", i);
             auto r = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "r", i);
             auto y0 = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "y0", i);
             auto y1 = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "y1", i);
@@ -78,10 +81,13 @@ namespace RayTracer {
             auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "color.b", i);
             auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "fuzz", i);
             auto materialComponent = this->_factory->createMaterial(materialType, color(colorR, colorG, colorB), fuzz);
-            this->_world.add(this->_factory->createPrimitive("cylinder", point3(0, 0, 0), std::vector<double>({r, y0, y1}), materialComponent));
+            this->_world.add(this->_factory->createPrimitive("cylinder", point3(x, y, z), std::vector<double>({r, y0, y1}), materialComponent));
         }
 
         for (int i = 0, length = this->_configHelper->getLength("primitives.cones"); i < length; i++) {
+            auto x = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "x", i);
+            auto y = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "y", i);
+            auto z = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "z", i);
             auto r = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "r", i);
             auto h = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "h", i);
             auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.cones", "material", i);
@@ -90,7 +96,7 @@ namespace RayTracer {
             auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "color.b", i);
             auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "fuzz", i);
             auto materialComponent = this->_factory->createMaterial(materialType, color(colorR, colorG, colorB), fuzz);
-            this->_world.add(this->_factory->createPrimitive("cone", point3(0, 0, 0), std::vector<double>({r, h}), materialComponent));
+            this->_world.add(this->_factory->createPrimitive("cone", point3(x, y, z), std::vector<double>({r, h}), materialComponent));
         }
 
         // Créer les plans

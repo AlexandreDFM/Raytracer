@@ -18,7 +18,7 @@ class Vector3D {
 
         double x() const;
         double y() const;
-        double z() const ;
+        double z() const;
 
         Vector3D operator-() const;
         double operator[](int i) const;
