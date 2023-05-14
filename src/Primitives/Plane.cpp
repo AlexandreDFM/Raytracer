@@ -41,3 +41,15 @@ namespace RayTracer {
         return true;
     }
 }
+
+extern "C" {
+    RayTracer::IPrimitive *entryPoint(std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> mat_ptr)
+    {
+        return new RayTracer::Plane(variables[0], variables[1], variables[2], variables[3], variables[4], mat_ptr);
+    }
+
+    char *getType()
+    {
+        return (char *)"primitive_plane";
+    }
+}

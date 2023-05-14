@@ -26,4 +26,9 @@ namespace RayTracer {
             double x0, x1, z0, z1, k;
     };
 }
+
+extern "C" {
+    RayTracer::IPrimitive *entryPoint(std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> mat_ptr);
+    char *getType();
+}
 #endif /*PLANE_HPP_*/
