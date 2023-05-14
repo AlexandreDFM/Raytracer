@@ -8,11 +8,9 @@
 #include "Point.hpp"
 
 namespace RayTracer {
-    Point::Point(Vector3D position, Vector3D direction, double intensity) {
-        _position = position;
-        _direction = direction;
-        _intensity = intensity;
-    }
+    Point::Point(Vector3D position, Vector3D direction, color color)
+            : _position(position), _direction(direction), _color(color)
+    {}
 
     Vector3D Point::getPosition() const {
         return _position;
@@ -22,14 +20,14 @@ namespace RayTracer {
         return -_direction;
     }
 
-    double Point::getIntensity(const point3 &point) const {
-        return _intensity;
+    color Point::getColor() const {
+        return _color;
     }
 }
 
 extern "C" {
-    RayTracer::Point *entryPoint(Vector3D position, Vector3D direction, double intensity) {
-        return new RayTracer::Point(position, direction, intensity);
+    RayTracer::Point *entryPoint(Vector3D position, Vector3D direction, color color) {
+        return new RayTracer::Point(position, direction, color);
     }
 
     char *getType() {

@@ -68,15 +68,15 @@ namespace RayTracer {
                 return std::shared_ptr<IMaterial>(entryPoint(point3(c.x(), c.y(), c.z()), fuzz));
             };
 
-            std::shared_ptr<ILight> createLight(const std::string &type, point3 pos, point3 direction, double intensity) {
+            std::shared_ptr<ILight> createLight(const std::string &type, point3 pos, point3 direction, color clr) {
                 if (_lightsLibraries.find(type) == _lightsLibraries.end())
                     throw new FactoryUnknownComponent("Unknown light: " + type);
                 this->_lightWrappers.push_back(Wrapper());
                 this->_lightWrappers.back().loadLib(this->_lightsLibraries[type]);
-                auto entryPoint = this->_lightWrappers.back().getFunction<ILight *(point3, point3, double)>("entryPoint");
+                auto entryPoint = this->_lightWrappers.back().getFunction<ILight *(point3, point3, color)>("entryPoint");
                 if (!entryPoint)
                     throw new FactoryUnknownComponent("Invalid library: " + this->_lightsLibraries[type]);
-                return std::shared_ptr<ILight>(entryPoint(pos, direction, intensity));
+                return std::shared_ptr<ILight>(entryPoint(pos, direction, clr));
             };
 
             std::shared_ptr<IDisplay> createDisplay(const std::string &type, int width, int height, int cameraResolutionWidth, int cameraResolutionHeight, int fps, std::string &title) {

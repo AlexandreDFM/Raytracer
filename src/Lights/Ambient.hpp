@@ -13,23 +13,23 @@
 namespace RayTracer {
     class Ambient : public ILight {
     public:
-        Ambient(Vector3D position, Vector3D direction, double intensity);
+        Ambient(Vector3D position, Vector3D direction, color color);
 
         Vector3D getPosition() const override;
 
         Vector3D getDirection(const point3& point) const override;
 
-        double getIntensity(const point3& point) const override;
+        color getColor() const override;
 
     private:
         Vector3D _position;
         Vector3D _direction;
-        double _intensity;
+        color _color;
     };
 }
 
 extern "C" {
-    RayTracer::Ambient *entryPoint(Vector3D position, Vector3D direction, double intensity);
+    RayTracer::Ambient *entryPoint(Vector3D position, Vector3D direction, color color);
     char *getType();
 }
 

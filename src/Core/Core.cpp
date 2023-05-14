@@ -118,22 +118,26 @@ namespace RayTracer {
         // Créer les lumières
 
         for (int i = 0, length = this->_configHelper->getLength("lights.point"); i < length; i++) {
-            auto x = this->_configHelper->getLineValueFromArray<double>("lights.point", "x", i);
-            auto y = this->_configHelper->getLineValueFromArray<double>("lights.point", "y", i);
-            auto z = this->_configHelper->getLineValueFromArray<double>("lights.point", "z", i);
-            auto intensity = this->_configHelper->getLineValueFromArray<double>("lights.point", "intensity", i);
-            this->_world.add(this->_factory->createLight("point", point3(x, y, z), point3(0, 0, 0), intensity));
+            auto x = this->_configHelper->getLineValueFromArray<double>("lights.point", "position.x", i);
+            auto y = this->_configHelper->getLineValueFromArray<double>("lights.point", "position.y", i);
+            auto z = this->_configHelper->getLineValueFromArray<double>("lights.point", "position.z", i);
+            auto colorR = this->_configHelper->getLineValueFromArray<double>("lights.point", "color.r", i);
+            auto colorG = this->_configHelper->getLineValueFromArray<double>("lights.point", "color.g", i);
+            auto colorB = this->_configHelper->getLineValueFromArray<double>("lights.point", "color.b", i);
+            this->_world.add(this->_factory->createLight("point", point3(x, y, z), point3({0, 0, 0}), color(colorR, colorG, colorB)));
         }
 
         for (int i = 0, length = this->_configHelper->getLength("lights.directional"); i < length; i++) {
-            auto x = this->_configHelper->getLineValueFromArray<double>("lights.directional", "x", i);
-            auto y = this->_configHelper->getLineValueFromArray<double>("lights.directional", "y", i);
-            auto z = this->_configHelper->getLineValueFromArray<double>("lights.directional", "z", i);
+            auto x = this->_configHelper->getLineValueFromArray<double>("lights.directional", "position.x", i);
+            auto y = this->_configHelper->getLineValueFromArray<double>("lights.directional", "position.y", i);
+            auto z = this->_configHelper->getLineValueFromArray<double>("lights.directional", "position.z", i);
             auto directionX = this->_configHelper->getLineValueFromArray<double>("lights.directional", "direction.x", i);
             auto directionY = this->_configHelper->getLineValueFromArray<double>("lights.directional", "direction.y", i);
             auto directionZ = this->_configHelper->getLineValueFromArray<double>("lights.directional", "direction.z", i);
-            auto intensity = this->_configHelper->getLineValueFromArray<double>("lights.directional", "intensity", i);
-            this->_world.add(this->_factory->createLight("directional", point3(x, y, z), point3(directionX, directionY, directionZ), intensity));
+            auto colorR = this->_configHelper->getLineValueFromArray<double>("lights.directional", "color.r", i);
+            auto colorG = this->_configHelper->getLineValueFromArray<double>("lights.directional", "color.g", i);
+            auto colorB = this->_configHelper->getLineValueFromArray<double>("lights.directional", "color.b", i);
+            this->_world.add(this->_factory->createLight("directional", point3(x, y, z), point3(directionX, directionY, directionZ), color(colorR, colorG, colorB)));
         }
     }
 
