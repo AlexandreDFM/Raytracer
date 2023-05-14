@@ -8,10 +8,10 @@
 #ifndef LAMBERTIAN_HPP_
 	#define LAMBERTIAN_HPP_
 
-    #include "IMaterial.hpp"
+    #include "AMaterial.hpp"
 
 namespace RayTracer {
-    class Lambertian : public IMaterial {
+    class Lambertian : public AMaterial {
         public:
             Lambertian(const color &a);
             virtual bool scatter(const RayTracer::Ray &r_in, const hitRecord &rec, color &attenuation, RayTracer::Ray &scattered) const override;

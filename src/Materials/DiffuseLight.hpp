@@ -7,10 +7,10 @@
 #ifndef DIFFUSELIGHT_HPP_
 	#define DIFFUSELIGHT_HPP_
 
-    #include "IMaterial.hpp"
+    #include "AMaterial.hpp"
 
 namespace RayTracer {
-    class DiffuseLight : public IMaterial {
+    class DiffuseLight : public AMaterial {
         public:
             color emit;
 

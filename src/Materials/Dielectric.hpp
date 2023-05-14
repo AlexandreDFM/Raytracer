@@ -9,10 +9,10 @@
 	#define DIELECTRIC
 
     #include "Math/Math.hpp"
-    #include "IMaterial.hpp"
+    #include "AMaterial.hpp"
 
 namespace RayTracer {
-    class Dielectric : public IMaterial {
+    class Dielectric : public AMaterial {
         public:
             Dielectric(double index_of_refraction);
 

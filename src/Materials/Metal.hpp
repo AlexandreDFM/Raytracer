@@ -8,10 +8,10 @@
 #ifndef METAL_
 	#define METAL_
 
-    #include "IMaterial.hpp"
+    #include "AMaterial.hpp"
 
 namespace RayTracer {
-    class Metal : public IMaterial {
+    class Metal : public AMaterial {
         public:
             Metal(const color& a, double f);
 
