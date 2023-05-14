@@ -11,14 +11,21 @@ namespace RayTracer {
     Core::Core(const std::string &configPath, const std::string &libPath) {
         this->_factory = new Factory(libPath);
         this->_configHelper = new LibConfig(configPath);
+
         if (this->_configHelper->isSet("graphical")) {
             this->haveGraphicalLib = true;
-            this->loadDisplayModule(libPath);
+            this->loadDisplayModule();
         } else {
             this->haveGraphicalLib = false;
         }
-        // Créer la Caméra
 
+        this->createCamera();
+        this->createObjects();
+        this->createLights();
+    }
+
+    void Core::createCamera()
+    {
         auto cameraResolutionWidth = this->_configHelper->get<int>("camera.resolution.width");
         auto cameraResolutionHeight = this->_configHelper->get<int>("camera.resolution.height");
         auto cameraFov = this->_configHelper->get<float>("camera.fieldOfView");
@@ -36,9 +43,19 @@ namespace RayTracer {
         point3 cameraRotation = point3(cameraRotX, cameraRotY, cameraRotZ);
         Vector3D cameraVectorUp = Vector3D(cameraVUpX, cameraVUpY, cameraVUpZ);
         this->_camera = std::make_unique<Camera>(cameraResolutionWidth, cameraResolutionHeight, cameraPosition, cameraRotation, cameraVectorUp, cameraFov, aspectRatio);
+    }
 
-        // Créer les objets
+    void Core::createObjects()
+    {
+        this->createSpheres();
+        this->createPlanes();
+        this->createRectangles();
+        this->createCylinders();
+        this->createCones();
+    }
 
+    void Core::createSpheres()
+    {
         for (int i = 0, length = this->_configHelper->getLength("primitives.spheres"); i < length; i++) {
             auto x = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "position.x", i);
             auto y = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "position.y", i);
@@ -52,7 +69,10 @@ namespace RayTracer {
             auto materialComponent = this->_factory->createMaterial(materialType, color(colorR, colorG, colorB), fuzz);
             this->_world.add(this->_factory->createPrimitive("sphere", point3(x, y, z), std::vector<double>({r}), materialComponent));
         }
+    }
 
+    void Core::createRectangles()
+    {
         for (int i = 0, length = this->_configHelper->getLength("primitives.rectangles"); i < length; i++) {
             auto x = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "position.x", i);
             auto y = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "position.y", i);
@@ -70,7 +90,10 @@ namespace RayTracer {
             auto materialComponent = this->_factory->createMaterial(materialType, color(colorR, colorG, colorB), fuzz);
             this->_world.add(this->_factory->createPrimitive("rectangle", point3(x, y, z), std::vector<double>({x0, x1, y0, y1, k}), materialComponent));
         }
+    }
 
+    void Core::createCylinders()
+    {
         for (int i = 0, length = this->_configHelper->getLength("primitives.cylinders"); i < length; i++) {
             auto x = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "position.x", i);
             auto y = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "position.y", i);
@@ -86,7 +109,10 @@ namespace RayTracer {
             auto materialComponent = this->_factory->createMaterial(materialType, color(colorR, colorG, colorB), fuzz);
             this->_world.add(this->_factory->createPrimitive("cylinder", point3(x, y, z), std::vector<double>({r, y0, y1}), materialComponent));
         }
+    }
 
+    void Core::createCones()
+    {
         for (int i = 0, length = this->_configHelper->getLength("primitives.cones"); i < length; i++) {
             auto x = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "position.x", i);
             auto y = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "position.y", i);
@@ -101,9 +127,10 @@ namespace RayTracer {
             auto materialComponent = this->_factory->createMaterial(materialType, color(colorR, colorG, colorB), fuzz);
             this->_world.add(this->_factory->createPrimitive("cone", point3(x, y, z), std::vector<double>({r, h}), materialComponent));
         }
+    }
 
-        // Créer les plans
-
+    void Core::createPlanes()
+    {
         for (int i = 0, length = this->_configHelper->getLength("primitives.planes"); i < length; i++) {
             auto position = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "position", i);
             auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.planes", "material", i);
@@ -112,11 +139,18 @@ namespace RayTracer {
             auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.b", i);
             auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "fuzz", i);
             auto materialComponent = this->_factory->createMaterial(materialType, color(colorR, colorG, colorB), fuzz);
-            this->_world.add(this->_factory->createPrimitive("plane", point3(0, position, 0), std::vector<double>({0}), materialComponent));
+            this->_world.add(this->_factory->createPrimitive("plane", point3(0, 0, 0), std::vector<double>({1, 1, 1, 1, 1}), materialComponent));
         }
+    }
 
-        // Créer les lumières
+    void Core::createLights()
+    {
+        this->createPointLights();
+        this->createDirectionalLights();
+    }
 
+    void Core::createPointLights()
+    {
         for (int i = 0, length = this->_configHelper->getLength("lights.point"); i < length; i++) {
             auto x = this->_configHelper->getLineValueFromArray<double>("lights.point", "position.x", i);
             auto y = this->_configHelper->getLineValueFromArray<double>("lights.point", "position.y", i);
@@ -126,7 +160,10 @@ namespace RayTracer {
             auto colorB = this->_configHelper->getLineValueFromArray<double>("lights.point", "color.b", i);
             this->_world.add(this->_factory->createLight("point", point3(x, y, z), point3({0, 0, 0}), color(colorR, colorG, colorB)));
         }
+    }
 
+    void Core::createDirectionalLights()
+    {
         for (int i = 0, length = this->_configHelper->getLength("lights.directional"); i < length; i++) {
             auto x = this->_configHelper->getLineValueFromArray<double>("lights.directional", "position.x", i);
             auto y = this->_configHelper->getLineValueFromArray<double>("lights.directional", "position.y", i);
@@ -141,7 +178,7 @@ namespace RayTracer {
         }
     }
 
-    void Core::loadDisplayModule(const std::string &libPath)
+    void Core::loadDisplayModule()
     {
         auto cameraResolutionWidth = this->_configHelper->get<int>("camera.resolution.width");
         auto cameraResolutionHeight = this->_configHelper->get<int>("camera.resolution.height");
@@ -156,7 +193,7 @@ namespace RayTracer {
 
     color Core::RayColor(const RayTracer::Ray& r, const RayTracer::IPrimitive& world, int depth)
     {
-        hit_record rec;
+        hitRecord rec;
         // If we've exceeded the ray bounce limit, no more light is gathered.
         if (depth <= 0)
             return {0,0,0};
@@ -168,16 +205,6 @@ namespace RayTracer {
         if (!rec.mat_ptr->scatter(r, rec, attenuation, scattered))
             return emmited;
         return emmited + attenuation * RayColor(scattered, world, depth-1);
-    }
-
-
-    void Core::run()
-    {
-        if (this->haveGraphicalLib) {
-            this->graphicalRender();
-        } else {
-            this->standardRender();
-        }
     }
 
     void Core::render(int index, int start, int end, int width, int height, int samples_per_pixel, int max_depth)
@@ -199,43 +226,6 @@ namespace RayTracer {
         }
     }
 
-    void Core::standardRender()
-    {
-        int width, height;
-        const int max_depth = 50;
-        const int samples_per_pixel = 100;
-        this->_camera->getResolution(width, height);
-        std::cout << "P3\n" << width << ' ' << height << "\n255\n";
-        auto processor_count = std::thread::hardware_concurrency();
-        if (processor_count == 0) processor_count = 1;
-
-        // Split the work
-        int work = height / processor_count;
-        int rest = height % processor_count;
-        int start = 0;
-        int end = work;
-        for (int index = 0; index < processor_count; index++) {
-            if (rest > 0) {
-                end++;
-                rest--;
-            }
-            this->_colors.push_back(std::vector<color>());
-            this->_threads.push_back(std::thread(&Core::render, this, index, start, end, width, height, samples_per_pixel, max_depth));
-            start = end;
-            end += work;
-        }
-
-        for (auto &thread : this->_threads) thread.join();
-
-        for (auto &color : this->_colors) {
-            for (auto &pixel : color) {
-                Color::writeColor(std::cout, pixel, samples_per_pixel);
-            }
-        }
-
-        std::cerr << "\nDone.\n";
-    }
-
     void Core::checkEvents(EventType type)
     {
         if (type == EventType::PAUSE) {
@@ -243,7 +233,7 @@ namespace RayTracer {
         }
     }
 
-    void Core::graphicalLoop()
+    void Core::displayLoop()
     {
         while (this->_displayModule->isOpen()) {
             if (this->_isPaused) continue;
@@ -254,21 +244,22 @@ namespace RayTracer {
         }
     }
 
-    void Core::graphicalRender()
+    void Core::run()
     {
         int width, height;
         const int max_depth = 50;
         const int samples_per_pixel = 100;
         this->_camera->getResolution(width, height);
-        std::cout << "P3\n" << width << ' ' << height << "\n255\n";
+
         auto processor_count = std::thread::hardware_concurrency();
         if (processor_count == 0) processor_count = 3;
 
         // Split the work
+        if (this->haveGraphicalLib) {
+            this->_threads.push_back(std::thread(&Core::displayLoop, this));
+        }
 
-        this->_threads.push_back(std::thread(&Core::graphicalLoop, this));
-
-         processor_count -= 1;
+        processor_count -= 1;
 
         int work = height / (int) processor_count;
         int rest = height % (int) processor_count;
@@ -284,10 +275,20 @@ namespace RayTracer {
         }
 
         for (auto &thread : this->_threads) thread.join();
-        for (auto &color : this->_colors) {
-            for (auto &pixel : color) Color::writeColor(std::cout, pixel, samples_per_pixel);
-        }
 
+        std::ofstream file("image.ppm");
+        if (!file.is_open()) {
+            std::cerr << "Error: cannot open file image.ppm\n";
+            return;
+        }
+        file << "P3\n" << width << ' ' << height << "\n255\n";
+        for (auto &color : this->_colors) {
+            for (auto &pixel : color) {
+                Color::writeColor(file, pixel, samples_per_pixel);
+            }
+        }
+        file.close();
         std::cerr << "\nDone.\n";
+
     }
 }

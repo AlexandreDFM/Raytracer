@@ -16,7 +16,7 @@ namespace RayTracer {
 
             DiffuseLight(const color& a);
 
-            virtual bool scatter(const Ray& r_in, const hit_record& rec, color& attenuation, Ray& scattered) const override;
+            virtual bool scatter(const Ray& r_in, const hitRecord& rec, color& attenuation, Ray& scattered) const override;
 
             virtual color emitted(double u, double v, const point3& p) const override;
     };

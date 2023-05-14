@@ -16,7 +16,7 @@ namespace RayTracer {
         public:
             Dielectric(double index_of_refraction);
 
-            virtual bool scatter(const Ray& r_in, const hit_record& rec, color& attenuation, Ray& scattered) const override;
+            virtual bool scatter(const Ray& r_in, const hitRecord& rec, color& attenuation, Ray& scattered) const override;
 
         public:
             double ir; // Index of Refraction

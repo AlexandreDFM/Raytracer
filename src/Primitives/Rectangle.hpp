@@ -9,17 +9,17 @@
 	#define Rectangle_HPP_
 
 #include "Ray.hpp"
-#include "IPrimitive.hpp"
+#include "APrimitive.hpp"
 #include "../Math/AxisAlignement.hpp"
 
 namespace RayTracer {
-    class Rectangle : public IPrimitive {
+    class Rectangle : public APrimitive {
     public:
-        Rectangle(double _x0, double _x1, double _y0, double _y1, double _k, const Vector3D &_position, std::shared_ptr<IMaterial> mat);
+        Rectangle(double _x0, double _x1, double _y0, double _y1, double _k, const Vector3D &_position, std::shared_ptr<IMaterial> &mat);
 
-        virtual bool hit(const RayTracer::Ray& r, double t_min, double t_max, hit_record& rec) const override;
+        virtual bool hit(const RayTracer::Ray& r, double t_min, double t_max, hitRecord& rec) const override;
 
-        virtual bool bounding_box(double time0, double time1, AxisAlignedBoundBox& output_box);
+        virtual bool boundingBox(double time0, double time1, AxisAlignedBoundBox& output_box);
 
         std::shared_ptr<IMaterial> mp;
         double x0, x1, y0, y1, k;
@@ -31,9 +31,9 @@ namespace RayTracer {
         public:
             xz_rect(double _x0, double _x1, double _z0, double _z1, double _k, std::shared_ptr<IMaterial> mat);
 
-            virtual bool hit(const RayTracer::Ray& r, double t_min, double t_max, hit_record& rec) const override;
+            virtual bool hit(const RayTracer::Ray& r, double t_min, double t_max, hitRecord& rec) const override;
 
-            virtual bool bounding_box(double time0, double time1, AxisAlignedBoundBox& output_box);
+            virtual bool boundingBox(double time0, double time1, AxisAlignedBoundBox& output_box);
 
         public:
             std::shared_ptr<IMaterial> mp;
@@ -44,9 +44,9 @@ namespace RayTracer {
         public:
             yz_rect(double _y0, double _y1, double _z0, double _z1, double _k, std::shared_ptr<IMaterial> mat);
 
-            virtual bool hit(const RayTracer::Ray& r, double t_min, double t_max, hit_record& rec) const override;
+            virtual bool hit(const RayTracer::Ray& r, double t_min, double t_max, hitRecord& rec) const override;
 
-            virtual bool bounding_box(double time0, double time1, AxisAlignedBoundBox& output_box);
+            virtual bool boundingBox(double time0, double time1, AxisAlignedBoundBox& output_box);
 
         public:
             std::shared_ptr<IMaterial> mp;

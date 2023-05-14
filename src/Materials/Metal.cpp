@@ -12,13 +12,13 @@ namespace RayTracer {
     {
     }
 
-    bool Metal::scatter(const RayTracer::Ray &r_in, const hit_record &rec, color &attenuation,
+    bool Metal::scatter(const RayTracer::Ray &r_in, const hitRecord &rec, color &attenuation,
                         RayTracer::Ray &scattered) const
     {
-        Vector3D reflected = reflect(unit_vector(r_in.direction()), rec.normal);
-        scattered = RayTracer::Ray(rec.p, reflected + fuzz * random_in_unit_sphere());
+        Vector3D reflected = Vector3D::reflect(Vector3D::unitVector(r_in.direction()), rec.normal);
+        scattered = RayTracer::Ray(rec.p, reflected + fuzz * Vector3D::randomInUnitSphere());
         attenuation = albedo;
-        return (dot(scattered.direction(), rec.normal) > 0);
+        return (Vector3D::dot(scattered.direction(), rec.normal) > 0);
     }
 
     extern "C" {

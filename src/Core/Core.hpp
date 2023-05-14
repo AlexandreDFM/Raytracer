@@ -8,6 +8,7 @@
 #ifndef CORE_HPP_
     #define CORE_HPP_
 
+    #include <fstream>
     #include "Color.hpp"
     #include "Camera.hpp"
     #include "Vector3D.hpp"
@@ -15,7 +16,7 @@
     #include "IMaterial.hpp"
     #include "IPrimitive.hpp"
     #include "HittableList.hpp"
-    #include "Thread/IThread.hpp"
+    #include "Interface/IThread.hpp"
     #include "Factory/Factory.hpp"
     #include "Config/LibConfig.hpp"
 
@@ -27,10 +28,22 @@ namespace RayTracer {
             ~Core() = default;
             void run();
             void checkEvents(EventType type);
-            void graphicalLoop();
-            void standardRender();
-            void graphicalRender();
-            void loadDisplayModule(const std::string &libPath);
+
+            void createCamera();
+
+            void createObjects();
+            void createSpheres();
+            void createPlanes();
+            void createRectangles();
+            void createCylinders();
+            void createCones();
+
+            void createLights();
+            void createPointLights();
+            void createDirectionalLights();
+
+            void displayLoop();
+            void loadDisplayModule();
             void render(int index, int start, int end, int width, int height, int samples_per_pixel, int max_depth);
         private:
             bool _isPaused = false;

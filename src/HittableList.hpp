@@ -10,11 +10,11 @@
 
     #include <memory>
     #include <vector>
-    #include "Interface/IPrimitive.hpp"
+    #include "APrimitive.hpp"
     #include "Interface/ILight.hpp"
 
 namespace RayTracer {
-    class HittableList : public IPrimitive {
+    class HittableList : public APrimitive {
         public:
             HittableList() = default;
 
@@ -38,15 +38,15 @@ namespace RayTracer {
                 lights.push_back(object);
             }
 
-            virtual bool hit(const Ray &r, double t_min, double t_max, hit_record &rec) const override;
+            virtual bool hit(const Ray &r, double t_min, double t_max, hitRecord &rec) const override;
 
         public:
             std::vector<std::shared_ptr<IPrimitive>> objects;
             std::vector<std::shared_ptr<ILight>> lights;
     };
 
-    inline bool HittableList::hit(const Ray &r, double t_min, double t_max, hit_record &rec) const {
-        hit_record temp_rec;
+    inline bool HittableList::hit(const Ray &r, double t_min, double t_max, hitRecord &rec) const {
+        hitRecord temp_rec;
         bool hit_anything = false;
         auto closest_so_far = t_max;
 

@@ -26,22 +26,22 @@ target_link_libraries("sfml" sfml-graphics sfml-window sfml-system sfml-audio)
 
 # Primitives libraries
 # Sphere
-add_library("sphere" SHARED src/Abstract/AShape.cpp src/Abstract/AShape.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Primitives/Sphere.cpp src/Primitives/Sphere.hpp)
+add_library("sphere" SHARED src/Ray.cpp src/Ray.hpp src/Abstract/APrimitive.cpp src/Abstract/APrimitive.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Primitives/Sphere.cpp src/Primitives/Sphere.hpp)
 set_target_properties("sphere" PROPERTIES PREFIX "raytracer_")
 
-add_library("plane" SHARED src/Abstract/AShape.cpp src/Abstract/AShape.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Primitives/Plane.cpp src/Primitives/Plane.hpp)
+add_library("plane" SHARED src/Ray.cpp src/Ray.hpp src/Abstract/APrimitive.cpp src/Abstract/APrimitive.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Primitives/Plane.cpp src/Primitives/Plane.hpp)
 set_target_properties("plane" PROPERTIES PREFIX "raytracer_")
 
 # Rectangle
-add_library("rectangle" SHARED src/Abstract/AShape.cpp src/Abstract/AShape.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Math/AxisAlignement.hpp src/Primitives/Rectangle.cpp src/Primitives/Rectangle.hpp)
+add_library("rectangle" SHARED src/Ray.cpp src/Ray.hpp src/Abstract/APrimitive.cpp src/Abstract/APrimitive.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Math/AxisAlignement.hpp src/Primitives/Rectangle.cpp src/Primitives/Rectangle.hpp)
 set_target_properties("rectangle" PROPERTIES PREFIX "raytracer_")
 
 # Cylinder
-add_library("cylinder" SHARED src/Abstract/AShape.cpp src/Abstract/AShape.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Math/AxisAlignement.hpp src/Primitives/Cylinder.cpp src/Primitives/Cylinder.hpp)
+add_library("cylinder" SHARED src/Ray.cpp src/Ray.hpp src/Abstract/APrimitive.cpp src/Abstract/APrimitive.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Math/AxisAlignement.hpp src/Primitives/Cylinder.cpp src/Primitives/Cylinder.hpp)
 set_target_properties("cylinder" PROPERTIES PREFIX "raytracer_")
 
 # Cone
-add_library("cone" SHARED src/Abstract/AShape.cpp src/Abstract/AShape.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Math/AxisAlignement.hpp src/Primitives/Cone.cpp src/Primitives/Cone.hpp)
+add_library("cone" SHARED src/Ray.cpp src/Ray.hpp src/Abstract/APrimitive.cpp src/Abstract/APrimitive.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Math/AxisAlignement.hpp src/Primitives/Cone.cpp src/Primitives/Cone.hpp)
 set_target_properties("cone" PROPERTIES PREFIX "raytracer_")
 
 
@@ -80,12 +80,13 @@ add_executable(
         raytracer
         src/Main.cpp
         src/Interface/IPrimitive.hpp
-        src/Abstract/AShape.cpp
-        src/Abstract/AShape.hpp
+        src/Abstract/APrimitive.cpp
+        src/Abstract/APrimitive.hpp
         src/Exception/Usage/Usage.cpp
         src/Exception/Usage/Usage.hpp
         src/Camera.cpp
         src/Camera.hpp
+        src/Ray.cpp
         src/Ray.hpp
         src/Color.hpp
         src/Rectangle3D.cpp

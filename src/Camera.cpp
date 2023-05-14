@@ -15,9 +15,9 @@ namespace RayTracer {
         auto viewport_height = 2.0 * h;
         auto viewport_width = aspect_ratio * viewport_height;
 
-        auto w = unit_vector(lookFrom - lookAt);
-        auto u = unit_vector(cross(vectorUp, w));
-        auto v = cross(w, u);
+        auto w = Vector3D::unitVector(lookFrom - lookAt);
+        auto u = Vector3D::unitVector(Vector3D::cross(vectorUp, w));
+        auto v = Vector3D::cross(w, u);
 
         this->_width = width;
         this->_height = height;
@@ -28,7 +28,7 @@ namespace RayTracer {
     }
 
     Ray Camera::getRay(double u, double v) const {
-        return Ray(this->_origin, this->_lower_left_corner + u * this->_horizontal + v * this->_vertical - this->_origin);
+        return {this->_origin, this->_lower_left_corner + u * this->_horizontal + v * this->_vertical - this->_origin};
     }
 
     void Camera::getResolution(int &width, int &height) const

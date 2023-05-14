@@ -10,7 +10,8 @@
 namespace RayTracer {
     Point::Point(Vector3D position, Vector3D direction, color color)
             : _position(position), _direction(direction), _color(color)
-    {}
+    {
+    }
 
     Vector3D Point::getPosition() const {
         return _position;

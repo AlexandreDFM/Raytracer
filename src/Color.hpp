@@ -27,6 +27,7 @@ namespace RayTracer {
                 b = std::sqrt(scale * b);
 
                 // Write the translated [0,255] value of each color component.
+
                 out << static_cast<int>(256 * Math::clamp(r, 0.0, 0.999)) << ' '
                     << static_cast<int>(256 * Math::clamp(g, 0.0, 0.999)) << ' '
                     << static_cast<int>(256 * Math::clamp(b, 0.0, 0.999)) << '\n';

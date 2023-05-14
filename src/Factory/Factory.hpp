@@ -38,6 +38,8 @@ namespace RayTracer {
                             _lightsLibraries[type.substr(6)] = entry.path().string();
                         else if (strncmp(type.c_str(), "display", 7) == 0)
                             _displaysLibraries[type.substr(8)] = entry.path().string();
+                        else if (strncmp(type.c_str(), "thread", 6) == 0)
+                            std::cout << "thread" << std::endl;
                         else
                             throw new FactoryUnknownComponent("Invalid library: " + entry.path().string());
                     }

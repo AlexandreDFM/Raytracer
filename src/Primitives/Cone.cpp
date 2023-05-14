@@ -8,11 +8,11 @@
 #include "Cone.hpp"
 
 namespace RayTracer {
-    Cone::Cone(double _radius, double _height, const Vector3D& _position, std::shared_ptr<IMaterial> _mat)
+    Cone::Cone(double _radius, double _height, const Vector3D& _position, std::shared_ptr<IMaterial> &_mat)
             : position(_position), radius(_radius), height(_height), mat_ptr(_mat)
     {}
 
-    bool Cone::hit(const RayTracer::Ray& r, double t_min, double t_max, hit_record& rec) const {
+    bool Cone::hit(const RayTracer::Ray& r, double t_min, double t_max, hitRecord& rec) const {
         auto oc = r.origin() - position;
         auto dir = r.direction();
 
@@ -60,7 +60,7 @@ namespace RayTracer {
         return true;
     }
 
-    bool Cone::bounding_box(double time0, double time1, AxisAlignedBoundBox& output_box) {
+    bool Cone::boundingBox(double time0, double time1, AxisAlignedBoundBox& output_box) {
         (void) time0;
         (void) time1;
         output_box = AxisAlignedBoundBox(
@@ -69,15 +69,15 @@ namespace RayTracer {
         );
         return true;
     }
-}
 
-extern "C" RayTracer::IPrimitive *entryPoint(point3 center, std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> mat_ptr)
-{
-    (void) center;
-    return new RayTracer::Cone(variables[0], variables[1], center, mat_ptr);
-}
+    extern "C" RayTracer::IPrimitive *entryPoint(point3 center, std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> &mat_ptr)
+    {
+        (void) center;
+        return new RayTracer::Cone(variables[0], variables[1], center, mat_ptr);
+    }
 
-extern "C" char *getType()
-{
-    return (char *)"primitive_cone";
+    extern "C" char *getType()
+    {
+        return (char *)"primitive_cone";
+    }
 }

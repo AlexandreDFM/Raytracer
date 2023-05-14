@@ -12,23 +12,23 @@ namespace RayTracer {
     {
     }
 
-    bool Dielectric::scatter(const RayTracer::Ray &r_in, const RayTracer::hit_record &rec, color &attenuation,
+    bool Dielectric::scatter(const RayTracer::Ray &r_in, const RayTracer::hitRecord &rec, color &attenuation,
                              RayTracer::Ray &scattered) const
     {
         attenuation = color(1.0, 1.0, 1.0);
         double refraction_ratio = rec.front_face ? (1.0 / ir) : ir;
 
-        Vector3D unit_direction = unit_vector(r_in.direction());
-        double cos_theta = fmin(dot(-unit_direction, rec.normal), 1.0);
+        Vector3D unit_direction = Vector3D::unitVector(r_in.direction());
+        double cos_theta = fmin(Vector3D::dot(-unit_direction, rec.normal), 1.0);
         double sin_theta = sqrt(1.0 - cos_theta*cos_theta);
 
         bool cannot_refract = refraction_ratio * sin_theta > 1.0;
         Vector3D direction;
 
         if (cannot_refract || reflectance(cos_theta, refraction_ratio) > Math::random_double())
-            direction = reflect(unit_direction, rec.normal);
+            direction = Vector3D::reflect(unit_direction, rec.normal);
         else
-            direction = refract(unit_direction, rec.normal, refraction_ratio);
+            direction = Vector3D::refract(unit_direction, rec.normal, refraction_ratio);
 
         scattered = Ray(rec.p, direction);
         return true;

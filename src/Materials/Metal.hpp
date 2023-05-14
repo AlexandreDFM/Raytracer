@@ -15,7 +15,7 @@ namespace RayTracer {
         public:
             Metal(const color& a, double f);
 
-            virtual bool scatter(const RayTracer::Ray& r_in, const hit_record& rec, color& attenuation, RayTracer::Ray& scattered) const override;
+            virtual bool scatter(const RayTracer::Ray& r_in, const hitRecord& rec, color& attenuation, RayTracer::Ray& scattered) const override;
 
         public:
             color albedo;

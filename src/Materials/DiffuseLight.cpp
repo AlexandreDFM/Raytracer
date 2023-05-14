@@ -10,7 +10,7 @@
 namespace RayTracer {
     DiffuseLight::DiffuseLight(const color &a) : emit(a) {}
 
-    bool DiffuseLight::scatter(const Ray &r_in, const hit_record &rec, color &attenuation, Ray &scattered) const {
+    bool DiffuseLight::scatter(const Ray &r_in, const hitRecord &rec, color &attenuation, Ray &scattered) const {
         return false;
     }
 

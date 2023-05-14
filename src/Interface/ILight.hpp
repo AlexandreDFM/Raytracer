@@ -7,9 +7,9 @@
 #ifndef ILIGHT_HPP_
 	#define ILIGHT_HPP_
 
-#include "Math/Math.hpp"
-#include "Ray.hpp"
-#include "Vector3D.hpp"
+    #include "Ray.hpp"
+    #include "Vector3D.hpp"
+    #include "Math/Math.hpp"
 
 namespace RayTracer {
     class ILight {

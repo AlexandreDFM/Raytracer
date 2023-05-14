@@ -8,11 +8,12 @@
 #include "Rectangle.hpp"
 
 namespace RayTracer {
-    Rectangle::Rectangle(double _x0, double _x1, double _y0, double _y1, double _k, const Vector3D &_position, std::shared_ptr<IMaterial> mat)
+    Rectangle::Rectangle(double _x0, double _x1, double _y0, double _y1, double _k, const Vector3D &_position, std::shared_ptr<IMaterial> &mat)
             : x0(_x0), x1(_x1), y0(_y0), y1(_y1), k(_k), position(_position), mp(mat)
-    {}
+    {
+    }
 
-    bool Rectangle::bounding_box(double time0, double time1, AxisAlignedBoundBox& output_box) {
+    bool Rectangle::boundingBox(double time0, double time1, AxisAlignedBoundBox& output_box) {
         // The bounding box must have non-zero width in each dimension, so pad the Z
         // dimension a small amount.
         output_box = AxisAlignedBoundBox(
@@ -22,7 +23,7 @@ namespace RayTracer {
         return true;
     }
 
-    bool Rectangle::hit(const RayTracer::Ray& r, double t_min, double t_max, hit_record& rec) const {
+    bool Rectangle::hit(const RayTracer::Ray& r, double t_min, double t_max, hitRecord& rec) const {
         auto t = (k - (r.origin().z() - position.z())) / r.direction().z();
         if (t < t_min || t > t_max)
             return false;
@@ -52,14 +53,14 @@ namespace RayTracer {
         mp = mat;
     }
 
-    bool xz_rect::bounding_box(double time0, double time1, AxisAlignedBoundBox &output_box) {
+    bool xz_rect::boundingBox(double time0, double time1, AxisAlignedBoundBox &output_box) {
         // The bounding box must have non-zero width in each dimension, so pad the Z
         // dimension a small amount.
         output_box = AxisAlignedBoundBox(point3(x0,k-0.0001,z0), point3(x1, k+0.0001, z1));
         return true;
     }
 
-    bool xz_rect::hit(const RayTracer::Ray& r, double t_min, double t_max, hit_record& rec) const {
+    bool xz_rect::hit(const RayTracer::Ray& r, double t_min, double t_max, hitRecord& rec) const {
         auto t = (k-r.origin().y()) / r.direction().y();
         if (t < t_min || t > t_max)
             return false;
@@ -89,14 +90,14 @@ namespace RayTracer {
         mp = mat;
     }
 
-    bool yz_rect::bounding_box(double time0, double time1, AxisAlignedBoundBox &output_box) {
+    bool yz_rect::boundingBox(double time0, double time1, AxisAlignedBoundBox &output_box) {
         // The bounding box must have non-zero width in each dimension, so pad the Z
         // dimension a small amount.
         output_box = AxisAlignedBoundBox(point3(k-0.0001,y0,z0), point3(k+0.0001, y1, z1));
         return true;
     }
 
-    bool yz_rect::hit(const RayTracer::Ray& r, double t_min, double t_max, hit_record& rec) const {
+    bool yz_rect::hit(const RayTracer::Ray& r, double t_min, double t_max, hitRecord& rec) const {
         auto t = (k-r.origin().x()) / r.direction().x();
         if (t < t_min || t > t_max)
             return false;
