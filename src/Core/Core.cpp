@@ -198,8 +198,8 @@ namespace RayTracer {
     void Core::standardRender()
     {
         int width, height;
-        const int max_depth = 100;
-        const int samples_per_pixel = 200;
+        const int max_depth = 50;
+        const int samples_per_pixel = 100;
         this->_camera->getResolution(width, height);
         std::cout << "P3\n" << width << ' ' << height << "\n255\n";
         auto processor_count = std::thread::hardware_concurrency();
