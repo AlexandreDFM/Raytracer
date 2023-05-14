@@ -15,7 +15,7 @@
 namespace RayTracer {
     class Rectangle : public IPrimitive {
     public:
-        Rectangle(double _x0, double _x1, double _y0, double _y1, double _k, std::shared_ptr<IMaterial> mat);
+        Rectangle(double _x0, double _x1, double _y0, double _y1, double _k, const Vector3D &_position, std::shared_ptr<IMaterial> mat);
 
         virtual bool hit(const RayTracer::Ray& r, double t_min, double t_max, hit_record& rec) const override;
 
@@ -23,6 +23,7 @@ namespace RayTracer {
 
         std::shared_ptr<IMaterial> mp;
         double x0, x1, y0, y1, k;
+        Vector3D position;
     };
 }
 

@@ -40,9 +40,9 @@ namespace RayTracer {
         // Créer les objets
 
         for (int i = 0, length = this->_configHelper->getLength("primitives.spheres"); i < length; i++) {
-            auto x = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "x", i);
-            auto y = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "y", i);
-            auto z = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "z", i);
+            auto x = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "position.x", i);
+            auto y = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "position.y", i);
+            auto z = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "position.z", i);
             auto r = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "r", i);
             auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.spheres", "material", i);
             auto colorR = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "color.r", i);
@@ -54,6 +54,9 @@ namespace RayTracer {
         }
 
         for (int i = 0, length = this->_configHelper->getLength("primitives.rectangles"); i < length; i++) {
+            auto x = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "position.x", i);
+            auto y = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "position.y", i);
+            auto z = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "position.z", i);
             auto x0 = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "x0", i);
             auto x1 = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "x1", i);
             auto y0 = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "y0", i);
@@ -65,13 +68,13 @@ namespace RayTracer {
             auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "fuzz", i);
             auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.rectangles", "material", i);
             auto materialComponent = this->_factory->createMaterial(materialType, color(colorR, colorG, colorB), fuzz);
-            this->_world.add(this->_factory->createPrimitive("rectangle", point3(0, 0, 0), std::vector<double>({x0, x1, y0, y1, k}), materialComponent));
+            this->_world.add(this->_factory->createPrimitive("rectangle", point3(x, y, z), std::vector<double>({x0, x1, y0, y1, k}), materialComponent));
         }
 
         for (int i = 0, length = this->_configHelper->getLength("primitives.cylinders"); i < length; i++) {
-            auto x = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "x", i);
-            auto y = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "y", i);
-            auto z = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "z", i);
+            auto x = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "position.x", i);
+            auto y = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "position.y", i);
+            auto z = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "position.z", i);
             auto r = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "r", i);
             auto y0 = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "y0", i);
             auto y1 = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "y1", i);
@@ -85,9 +88,9 @@ namespace RayTracer {
         }
 
         for (int i = 0, length = this->_configHelper->getLength("primitives.cones"); i < length; i++) {
-            auto x = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "x", i);
-            auto y = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "y", i);
-            auto z = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "z", i);
+            auto x = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "position.x", i);
+            auto y = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "position.y", i);
+            auto z = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "position.z", i);
             auto r = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "r", i);
             auto h = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "h", i);
             auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.cones", "material", i);
@@ -195,8 +198,8 @@ namespace RayTracer {
     void Core::standardRender()
     {
         int width, height;
-        const int max_depth = 50;
-        const int samples_per_pixel = 100;
+        const int max_depth = 100;
+        const int samples_per_pixel = 200;
         this->_camera->getResolution(width, height);
         std::cout << "P3\n" << width << ' ' << height << "\n255\n";
         auto processor_count = std::thread::hardware_concurrency();
