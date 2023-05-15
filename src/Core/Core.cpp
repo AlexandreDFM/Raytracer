@@ -27,17 +27,17 @@ namespace RayTracer {
     {
         auto cameraResolutionWidth = this->_configHelper->get<int>("camera.resolution.width", 0);
         auto cameraResolutionHeight = this->_configHelper->get<int>("camera.resolution.height", 0);
-        auto cameraFov = this->_configHelper->get<float>("camera.fieldOfView", 0);
+        auto cameraFov = this->_configHelper->get<double>("camera.fieldOfView", 0);
         float aspectRatio = (float) cameraResolutionWidth / (float) cameraResolutionHeight;
-        auto cameraPosX = this->_configHelper->get<float>("camera.position.x", 0);
-        auto cameraPosY = this->_configHelper->get<float>("camera.position.y", 0);
-        auto cameraPosZ = this->_configHelper->get<float>("camera.position.z", 0);
-        auto cameraRotX = this->_configHelper->get<float>("camera.rotation.x", 0);
-        auto cameraRotY = this->_configHelper->get<float>("camera.rotation.y", 0);
-        auto cameraRotZ = this->_configHelper->get<float>("camera.rotation.z", 0);
-        auto cameraVUpX = this->_configHelper->get<float>("camera.vectorUp.x", 0);
-        auto cameraVUpY = this->_configHelper->get<float>("camera.vectorUp.y", 0);
-        auto cameraVUpZ = this->_configHelper->get<float>("camera.vectorUp.z", 0);
+        auto cameraPosX = this->_configHelper->get<double>("camera.position.x", 0);
+        auto cameraPosY = this->_configHelper->get<double>("camera.position.y", 0);
+        auto cameraPosZ = this->_configHelper->get<double>("camera.position.z", 0);
+        auto cameraRotX = this->_configHelper->get<double>("camera.rotation.x", 0);
+        auto cameraRotY = this->_configHelper->get<double>("camera.rotation.y", 0);
+        auto cameraRotZ = this->_configHelper->get<double>("camera.rotation.z", 0);
+        auto cameraVUpX = this->_configHelper->get<double>("camera.vectorUp.x", 0);
+        auto cameraVUpY = this->_configHelper->get<double>("camera.vectorUp.y", 0);
+        auto cameraVUpZ = this->_configHelper->get<double>("camera.vectorUp.z", 0);
         Point3D cameraPosition = Point3D(cameraPosX, cameraPosY, cameraPosZ);
         Point3D cameraRotation = Point3D(cameraRotX, cameraRotY, cameraRotZ);
         Vector3D cameraVectorUp = Vector3D(cameraVUpX, cameraVUpY, cameraVUpZ);
@@ -145,12 +145,12 @@ namespace RayTracer {
     void Core::createPlanes()
     {
 //        for (int i = 0, length = this->_configHelper->getLength("primitives.planes"); i < length; i++) {
-//            auto position = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "position", i);
-//            auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.planes", "material", i);
-//            auto colorR = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.r", i);
-//            auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.g", i);
-//            auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.b", i);
-//            auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "fuzz", i);
+//            auto position = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "position", i, 0);
+//            auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.planes", "material", i, "");
+//            auto colorR = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.r", i, 0);
+//            auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.g", i, 0);
+//            auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.b", i, 0);
+//            auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "fuzz", i, 0);
 //            auto materialComponent = this->_factory->createMaterial(materialType, Color3D(colorR, colorG, colorB), fuzz);
 //            this->_world.add(this->_factory->createPrimitive("plane", Point3D(0, 0, 0), std::vector<double>({500, 500, position, 500, 500}), materialComponent));
 //        }
@@ -183,31 +183,31 @@ namespace RayTracer {
 
     void Core::createPointLights()
     {
-//        for (int i = 0, length = this->_configHelper->getLength("lights.point"); i < length; i++) {
-//            auto x = this->_configHelper->getLineValueFromArray<double>("lights.point", "position.x", i);
-//            auto y = this->_configHelper->getLineValueFromArray<double>("lights.point", "position.y", i);
-//            auto z = this->_configHelper->getLineValueFromArray<double>("lights.point", "position.z", i);
-//            auto colorR = this->_configHelper->getLineValueFromArray<double>("lights.point", "color.r", i);
-//            auto colorG = this->_configHelper->getLineValueFromArray<double>("lights.point", "color.g", i);
-//            auto colorB = this->_configHelper->getLineValueFromArray<double>("lights.point", "color.b", i);
-//            this->_world.add(this->_factory->createLight("point", Point3D(x, y, z), Point3D({0, 0, 0}), Color3D(colorR, colorG, colorB)));
-//        }
+        for (int i = 0, length = this->_configHelper->getLength("lights.point"); i < length; i++) {
+            auto x = this->_configHelper->getLineValueFromArray<double>("lights.point", "position.x", i, 0);
+            auto y = this->_configHelper->getLineValueFromArray<double>("lights.point", "position.y", i, 0);
+            auto z = this->_configHelper->getLineValueFromArray<double>("lights.point", "position.z", i, 0);
+            auto colorR = this->_configHelper->getLineValueFromArray<double>("lights.point", "color.r", i, 0);
+            auto colorG = this->_configHelper->getLineValueFromArray<double>("lights.point", "color.g", i, 0);
+            auto colorB = this->_configHelper->getLineValueFromArray<double>("lights.point", "color.b", i, 0);
+            this->_world.add(this->_factory->createLight("point", Point3D(x, y, z), Point3D({0, 0, 0}), Color3D(colorR, colorG, colorB)));
+        }
     }
 
     void Core::createDirectionalLights()
     {
-//        for (int i = 0, length = this->_configHelper->getLength("lights.directional"); i < length; i++) {
-//            auto x = this->_configHelper->getLineValueFromArray<double>("lights.directional", "position.x", i);
-//            auto y = this->_configHelper->getLineValueFromArray<double>("lights.directional", "position.y", i);
-//            auto z = this->_configHelper->getLineValueFromArray<double>("lights.directional", "position.z", i);
-//            auto directionX = this->_configHelper->getLineValueFromArray<double>("lights.directional", "direction.x", i);
-//            auto directionY = this->_configHelper->getLineValueFromArray<double>("lights.directional", "direction.y", i);
-//            auto directionZ = this->_configHelper->getLineValueFromArray<double>("lights.directional", "direction.z", i);
-//            auto colorR = this->_configHelper->getLineValueFromArray<double>("lights.directional", "color.r", i);
-//            auto colorG = this->_configHelper->getLineValueFromArray<double>("lights.directional", "color.g", i);
-//            auto colorB = this->_configHelper->getLineValueFromArray<double>("lights.directional", "color.b", i);
-//            this->_world.add(this->_factory->createLight("directional", Point3D(x, y, z), Point3D(directionX, directionY, directionZ), Color3D(colorR, colorG, colorB)));
-//        }
+        for (int i = 0, length = this->_configHelper->getLength("lights.directional"); i < length; i++) {
+            auto x = this->_configHelper->getLineValueFromArray<double>("lights.directional", "position.x", i, 0);
+            auto y = this->_configHelper->getLineValueFromArray<double>("lights.directional", "position.y", i, 0);
+            auto z = this->_configHelper->getLineValueFromArray<double>("lights.directional", "position.z", i, 0);
+            auto directionX = this->_configHelper->getLineValueFromArray<double>("lights.directional", "direction.x", i, 0);
+            auto directionY = this->_configHelper->getLineValueFromArray<double>("lights.directional", "direction.y", i, 0);
+            auto directionZ = this->_configHelper->getLineValueFromArray<double>("lights.directional", "direction.z", i, 0);
+            auto colorR = this->_configHelper->getLineValueFromArray<double>("lights.directional", "color.r", i, 0);
+            auto colorG = this->_configHelper->getLineValueFromArray<double>("lights.directional", "color.g", i, 0);
+            auto colorB = this->_configHelper->getLineValueFromArray<double>("lights.directional", "color.b", i, 0);
+            this->_world.add(this->_factory->createLight("directional", Point3D(x, y, z), Point3D(directionX, directionY, directionZ), Color3D(colorR, colorG, colorB)));
+        }
     }
 
     void Core::loadDisplayModule()
