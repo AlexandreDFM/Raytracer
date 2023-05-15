@@ -112,15 +112,14 @@ namespace RayTracer {
             auto y = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "position.y", i, 0);
             auto z = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "position.z", i, 0);
             auto r = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "r", i, 0);
-            auto y0 = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "y0", i, 0);
-            auto y1 = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "y1", i, 0);
+            auto h = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "h", i, 0);
             auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.cylinders", "material", i, "");
             auto colorR = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "color.r", i, 0);
             auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "color.g", i, 0);
             auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "color.b", i, 0);
             auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "fuzz", i, 0);
             auto materialComponent = this->_factory->createMaterial(materialType, Color3D(colorR, colorG, colorB), fuzz);
-            this->_world.add(this->_factory->createPrimitive("cylinder", Point3D(x, y, z), std::vector<double>({r, y0, y1}), materialComponent));
+            this->_world.add(this->_factory->createPrimitive("cylinder", Point3D(x, y, z), std::vector<double>({r, h}), materialComponent));
         }
     }
 
