@@ -147,7 +147,7 @@ Vector3D Vector3D::cross(const Vector3D &u, const Vector3D &v)
             u.e[0] * v.e[1] - u.e[1] * v.e[0]};
 }
 
-Vector3D Vector3D::unitVector(Vector3D v)
+Vector3D Vector3D::unitVector(Vector3D &v)
 {
     return v / v.length();
 }
@@ -163,7 +163,8 @@ Vector3D Vector3D::randomInUnitSphere()
 
 Vector3D Vector3D::randomUnitVector()
 {
-    return unitVector(randomInUnitSphere());
+    Vector3D v = randomInUnitSphere();
+    return unitVector(v);
 }
 
 Vector3D Vector3D::reflect(const Vector3D &v, const Vector3D &n)
@@ -175,6 +176,6 @@ Vector3D Vector3D::refract(const Vector3D &uv, const Vector3D &n, double etaiOve
 {
     auto cosTheta = fmin(dot(-uv, n), 1.0);
     Vector3D r_out_perp = (uv + n * cosTheta) * etaiOverEtat;
-    Vector3D r_out_parallel = n * -sqrt(fabs(1.0 - r_out_perp.lengthSquared()));
+    Vector3D r_out_parallel = n * - std::sqrt(fabs(1.0 - r_out_perp.lengthSquared()));
     return r_out_perp + r_out_parallel;
 }

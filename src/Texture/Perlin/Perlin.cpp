@@ -2,8 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** raytracer
 ** File description:
-** Math.cpp
+** Perlin.cpp
 */
 
-#include "Math.hpp"
-
+#include "Perlin.hpp"

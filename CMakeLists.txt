@@ -51,7 +51,7 @@ set_target_properties("cone" PROPERTIES PREFIX "raytracer_")
 
 #Materials libraries
 # Lambertian
-add_library("lambertian" SHARED src/Ray.cpp src/Ray.hpp src/Abstract/AMaterial.cpp src/Abstract/AMaterial.hpp src/Interface/IPrimitive.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Color.hpp src/Materials/Lambertian.cpp src/Materials/Lambertian.hpp)
+add_library("lambertian" SHARED src/Ray.cpp src/Ray.hpp src/Abstract/AMaterial.cpp src/Abstract/AMaterial.hpp src/Interface/IPrimitive.hpp src/Interface/IMaterial.hpp src/Vector3D.hpp src/Vector3D.cpp src/Color.hpp src/Materials/Lambertian.cpp src/Materials/Lambertian.hpp src/Texture/SolidColorTexture.cpp src/Texture/SolidColorTexture.hpp)
 set_target_properties("lambertian" PROPERTIES PREFIX "raytracer_")
 
 # Metal
@@ -79,6 +79,21 @@ set_target_properties("directional" PROPERTIES PREFIX "raytracer_")
 # Ambient
 add_library("ambient" SHARED src/Abstract/ALight.cpp src/Abstract/ALight.hpp src/Interface/ILight.hpp src/Vector3D.hpp src/Vector3D.cpp src/Color.hpp src/Lights/Ambient.hpp src/Lights/Ambient.cpp)
 set_target_properties("ambient" PROPERTIES PREFIX "raytracer_")
+
+
+# Textures libraries
+# Solid Color
+#add_library("solid_color" SHARED src/Interface/ITexture.hpp src/Vector3D.hpp src/Vector3D.cpp src/Color.hpp src/Texture/SolidColorTexture.cpp src/Texture/SolidColorTexture.hpp)
+#set_target_properties("solid_color" PROPERTIES PREFIX "raytracer_")
+
+# Checker
+add_library("checker" SHARED src/Texture/SolidColorTexture.hpp src/Texture/SolidColorTexture.cpp src/Interface/ITexture.hpp src/Vector3D.hpp src/Vector3D.cpp src/Color.hpp src/Texture/CheckerTexture.cpp src/Texture/CheckerTexture.hpp)
+set_target_properties("checker" PROPERTIES PREFIX "raytracer_")
+
+# Noise
+add_library("noise" SHARED src/Texture/SolidColorTexture.hpp src/Texture/SolidColorTexture.cpp src/Interface/ITexture.hpp src/Vector3D.hpp src/Vector3D.cpp src/Color.hpp src/Texture/NoiseTexture.cpp src/Texture/NoiseTexture.hpp)
+set_target_properties("noise" PROPERTIES PREFIX "raytracer_")
+
 
 add_executable(
         raytracer

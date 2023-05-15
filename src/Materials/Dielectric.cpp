@@ -18,7 +18,8 @@ namespace RayTracer {
         attenuation = Color3D(1.0, 1.0, 1.0);
         double refractionRatio = rec.front_face ? (1.0 / ir) : ir;
 
-        Vector3D unitDirection = Vector3D::unitVector(r_in.direction());
+        Vector3D v = r_in.direction();
+        Vector3D unitDirection = Vector3D::unitVector(v);
         double cosTheta = fmin(Vector3D::dot(-unitDirection, rec.normal), 1.0);
         double sinTheta = sqrt(1.0 - cosTheta * cosTheta);
 

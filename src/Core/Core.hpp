@@ -48,9 +48,8 @@ namespace RayTracer {
             void render(int index, int start, int end, int width, int height, int samples_per_pixel, int max_depth);
         private:
             bool _isPaused = false;
-            bool _isRendering = false;
             Factory *_factory;
-            bool haveGraphicalLib;
+            bool _haveGraphicalLib;
             Color3D _background;
             LibConfig *_configHelper;
             RayTracer::HittableList _world;

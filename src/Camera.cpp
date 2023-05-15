@@ -15,8 +15,10 @@ namespace RayTracer {
         auto viewportHeight = 2.0 * h;
         auto viewportWidth = aspectRatio * viewportHeight;
 
-        auto w = Vector3D::unitVector(lookFrom - lookAt);
-        auto u = Vector3D::unitVector(Vector3D::cross(vectorUp, w));
+        Vector3D vectorW = lookFrom - lookAt;
+        auto w = Vector3D::unitVector(vectorW);
+        Vector3D vectorU = Vector3D::cross(vectorUp, w);
+        auto u = Vector3D::unitVector(vectorU);
         auto v = Vector3D::cross(w, u);
 
         this->_width = width;

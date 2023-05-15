@@ -8,7 +8,11 @@
 #include "Lambertian.hpp"
 
 namespace RayTracer {
-    Lambertian::Lambertian(const Color3D &a) : albedo(a)
+    Lambertian::Lambertian(const Color3D &a) : albedo(std::make_shared<SolidColorTexture>(a))
+    {
+    }
+
+    Lambertian::Lambertian(std::shared_ptr<ITexture> a) : albedo(a)
     {
     }
 
@@ -22,10 +26,16 @@ namespace RayTracer {
         scatter_direction = rec.normal;
 
         scattered = RayTracer::Ray(rec.p, scatter_direction);
-        attenuation = this->albedo;
+        attenuation = this->albedo->value(rec.u, rec.v, rec.p);
         return true;
     }
+
     extern "C" {
+        Lambertian *textureEntryPoint(std::shared_ptr<ITexture> a)
+        {
+            return new Lambertian(a);
+        }
+
         Lambertian *entryPoint(const Color3D &a, double f)
         {
             (void) f;

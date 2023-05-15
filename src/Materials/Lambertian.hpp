@@ -9,14 +9,16 @@
 	#define LAMBERTIAN_HPP_
 
     #include "AMaterial.hpp"
+    #include "Texture/SolidColorTexture.hpp"
 
 namespace RayTracer {
     class Lambertian : public AMaterial {
         public:
-            Lambertian(const Color3D &a);
+            explicit Lambertian(const Color3D &a);
+            explicit Lambertian(std::shared_ptr<ITexture> a);
             bool scatter(const RayTracer::Ray &r_in, const hitRecord &rec, Color3D &attenuation, RayTracer::Ray &scattered) const override;
         public:
-            Color3D albedo;
+            std::shared_ptr<ITexture> albedo;
     };
 
     extern "C" {

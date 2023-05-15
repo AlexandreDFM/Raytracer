@@ -42,7 +42,7 @@ class Vector3D {
         static Vector3D random(double min, double max);
         static double dot(const Vector3D &u, const Vector3D &v);
         static Vector3D cross(const Vector3D &u, const Vector3D &v);
-        static Vector3D unitVector(Vector3D v);
+        static Vector3D unitVector(Vector3D &v);
         static Vector3D randomInUnitSphere();
         static Vector3D randomUnitVector();
         static Vector3D reflect(const Vector3D &v, const Vector3D &n);

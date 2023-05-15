@@ -13,9 +13,7 @@
 namespace RayTracer {
     class IThread {
         public:
-            virtual void lock() = 0;
-            virtual void unlock() = 0;
-            virtual void trylock() = 0;
+            virtual ~IThread() = default;
     };
 }
 

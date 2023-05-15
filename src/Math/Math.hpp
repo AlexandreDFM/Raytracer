@@ -34,6 +34,10 @@ class Math {
             if (x > max) return max;
             return x;
         }
+        static int randomInt(int min, int max) {
+            // Returns a random integer in [min,max].
+            return static_cast<int>(random_double(min, max+1));
+        }
 };
 
 #endif /*MATH_HPP_*/
