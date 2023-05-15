@@ -139,14 +139,33 @@ namespace RayTracer {
             auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.b", i);
             auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "fuzz", i);
             auto materialComponent = this->_factory->createMaterial(materialType, Color3D(colorR, colorG, colorB), fuzz);
-            this->_world.add(this->_factory->createPrimitive("plane", Point3D(0, 0, 0), std::vector<double>({1, 1, 1, 1, 1}), materialComponent));
+            this->_world.add(this->_factory->createPrimitive("plane", Point3D(0, 0, 0), std::vector<double>({500, 500, 1, 500, 500}), materialComponent));
         }
     }
 
     void Core::createLights()
     {
-        this->createPointLights();
-        this->createDirectionalLights();
+        if (this->_configHelper->getLength("lights.ambient") > 0) {
+            this->createAmbientLights();
+        }
+        if (this->_configHelper->getLength("lights.point") > 0) {
+            this->createPointLights();
+        }
+        if (this->_configHelper->getLength("lights.directional") > 0) {
+            this->createDirectionalLights();
+        }
+    }
+
+    void Core::createAmbientLights()
+    {
+        if (this->_configHelper->isSet("lights.ambient.color.r")) {
+            auto colorR = this->_configHelper->get<double>("lights.ambient.color.r");
+            auto colorG = this->_configHelper->get<double>("lights.ambient.color.g");
+            auto colorB = this->_configHelper->get<double>("lights.ambient.color.b");
+            this->_background = Color3D(colorR, colorG, colorB);
+        } else {
+            this->_background = Color3D(0, 0, 0);
+        }
     }
 
     void Core::createPointLights()
@@ -191,20 +210,20 @@ namespace RayTracer {
     }
 
 
-    Color3D Core::RayColor(const RayTracer::Ray& r, const RayTracer::IPrimitive& world, int depth)
+    Color3D Core::RayColor(const RayTracer::Ray& r, const Color3D &background, const RayTracer::IPrimitive& world, int depth)
     {
         hitRecord rec;
         // If we've exceeded the ray bounce limit, no more light is gathered.
         if (depth <= 0)
-            return {0,0,0};
+            return {0, 0, 0};
         if (!world.hit(r, 0.001, Math::infinity, rec))
-            return {0,0,0};
+            return background;
         RayTracer::Ray scattered;
         Color3D attenuation;
-        Color3D emmited = rec.matPtr->emitted(rec.u, rec.v, rec.p);
+        Color3D emitted = rec.matPtr->emitted(rec.u, rec.v, rec.p);
         if (!rec.matPtr->scatter(r, rec, attenuation, scattered))
-            return emmited;
-        return emmited + attenuation * RayColor(scattered, world, depth-1);
+            return emitted;
+        return emitted + attenuation * RayColor(scattered, background, world, depth - 1);
     }
 
     void Core::render(int index, int start, int end, int width, int height, int samples_per_pixel, int max_depth)
@@ -216,7 +235,7 @@ namespace RayTracer {
                     auto u = (i + Math::random_double()) / (width - 1);
                     auto v = (j + Math::random_double()) / (height - 1);
                     RayTracer::Ray r = this->_camera->getRay(u, v);
-                    pixelColor += RayColor(r, this->_world, max_depth);
+                    pixelColor += RayColor(r, this->_background, this->_world, max_depth);
                 }
                 this->_colors[index].push_back(pixelColor);
                 if (this->haveGraphicalLib) {

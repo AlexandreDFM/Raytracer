@@ -24,7 +24,7 @@ namespace RayTracer {
     class Core {
         public:
             Core(const std::string &configPath, const std::string &libPath);
-            Color3D RayColor(const RayTracer::Ray& r, const RayTracer::IPrimitive& world, int depth);
+            Color3D RayColor(const RayTracer::Ray& r, const Color3D &background, const RayTracer::IPrimitive& world, int depth);
             ~Core() = default;
             void run();
             void checkEvents(EventType type);
@@ -40,6 +40,7 @@ namespace RayTracer {
 
             void createLights();
             void createPointLights();
+            void createAmbientLights();
             void createDirectionalLights();
 
             void displayLoop();
@@ -50,6 +51,7 @@ namespace RayTracer {
             bool _isRendering = false;
             Factory *_factory;
             bool haveGraphicalLib;
+            Color3D _background;
             LibConfig *_configHelper;
             RayTracer::HittableList _world;
             std::unique_ptr<Camera> _camera;
