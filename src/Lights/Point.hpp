@@ -12,23 +12,23 @@
 namespace RayTracer {
     class Point : public ILight {
     public:
-        Point(Vector3D position, Vector3D direction, double intensity);
+        Point(Vector3D position, Vector3D direction, Color3D color);
 
         Vector3D getPosition() const override;
 
-        Vector3D getDirection(const point3& point) const override;
+        Vector3D getDirection(const Point3D& point) const override;
 
-        double getIntensity(const point3& point) const override;
+        Color3D getColor() const override;
 
     private:
         Vector3D _position;
         Vector3D _direction;
-        double _intensity;
+        Color3D _color;
     };
 }
 
 extern "C" {
-    RayTracer::Point *entryPoint(Vector3D position, Vector3D direction, double intensity);
+    RayTracer::Point *entryPoint(Vector3D &position, Vector3D &direction, Color3D &color);
     char *getType();
 }
 

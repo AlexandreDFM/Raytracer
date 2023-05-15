@@ -8,28 +8,26 @@
 #include "Ambient.hpp"
 
 namespace RayTracer {
-    Ambient::Ambient(Vector3D position, Vector3D direction, double intensity) {
-        _position = position;
-        _direction = direction;
-        _intensity = intensity;
-    }
+    Ambient::Ambient(Vector3D &position, Vector3D &direction, Color3D &color)
+            : _position(position), _direction(direction), _color(color)
+    {}
 
     Vector3D Ambient::getPosition() const {
         return _position;
     }
 
-    Vector3D Ambient::getDirection(const point3 &point) const {
-        return Vector3D(0, 0, 0);
+    Vector3D Ambient::getDirection(const Point3D &point) const {
+        return {0, 0, 0};
     }
 
-    double Ambient::getIntensity(const point3 &point) const {
-        return _intensity;
+    Color3D Ambient::getColor() const {
+        return _color;
     }
 }
 
 extern "C" {
-    RayTracer::Ambient *entryPoint(Vector3D position, Vector3D direction, double intensity) {
-        return new RayTracer::Ambient(position, direction, intensity);
+    RayTracer::Ambient *entryPoint(Vector3D position, Vector3D direction, Color3D color) {
+        return new RayTracer::Ambient(position, direction, color);
     }
 
     char *getType() {

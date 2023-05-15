@@ -55,14 +55,12 @@ namespace RayTracer {
     {
         while (this->_window->pollEvent(this->_event)) {
             if (this->_event.type == sf::Event::Closed) {
-                this->_window->close();
                 this->isOpenWindow = false;
                 return EventType::CLOSE;
             }
             if (this->_event.type == sf::Event::KeyPressed) {
                 switch (this->_event.key.code) {
                     case sf::Keyboard::Escape:
-                        this->_window->close();
                         this->isOpenWindow = false;
                         return EventType::CLOSE;
                     case sf::Keyboard::Space:  return EventType::PAUSE;

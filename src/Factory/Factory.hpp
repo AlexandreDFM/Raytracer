@@ -8,12 +8,13 @@
 #ifndef FACTORY_HPP_
 	#define FACTORY_HPP_
 
-    #include "IPrimitive.hpp"
-    #include "IMaterial.hpp"
+    #include "Color.hpp"
     #include "ILight.hpp"
+    #include "ITexture.hpp"
+    #include "IMaterial.hpp"
+    #include "IPrimitive.hpp"
     #include "Wrapper/Wrapper.hpp"
     #include "Exception/FactoryException.hpp"
-    #include "Color.hpp"
 
 namespace RayTracer {
     class Factory {
@@ -38,6 +39,10 @@ namespace RayTracer {
                             _lightsLibraries[type.substr(6)] = entry.path().string();
                         else if (strncmp(type.c_str(), "display", 7) == 0)
                             _displaysLibraries[type.substr(8)] = entry.path().string();
+                        else if (strncmp(type.c_str(), "texture", 7) == 0)
+                            _texturesLibraries[type.substr(8)] = entry.path().string();
+                        else if (strncmp(type.c_str(), "thread", 6) == 0)
+                            std::cout << "thread" << std::endl;
                         else
                             throw new FactoryUnknownComponent("Invalid library: " + entry.path().string());
                     }
@@ -46,37 +51,59 @@ namespace RayTracer {
 
             ~Factory() = default;
 
-            std::shared_ptr<IPrimitive> createPrimitive(const std::string &type, point3 center, std::vector<double> variables, std::shared_ptr<IMaterial> &material) {
+            std::shared_ptr<IPrimitive> createPrimitive(const std::string &type, Point3D center, std::vector<double> variables, std::shared_ptr<IMaterial> &material) {
                 if (_primitivesLibraries.find(type) == _primitivesLibraries.end())
                     throw new FactoryUnknownComponent("Unknown primitive: " + type);
                 this->_primitiveWrappers.push_back(Wrapper());
                 this->_primitiveWrappers.back().loadLib(this->_primitivesLibraries[type]);
-                auto entryPoint = this->_primitiveWrappers.back().getFunction<IPrimitive *(point3, std::vector<double>, std::shared_ptr<IMaterial>)>("entryPoint");
+                auto entryPoint = this->_primitiveWrappers.back().getFunction<IPrimitive *(Point3D, std::vector<double>, std::shared_ptr<IMaterial>)>("entryPoint");
                 if (!entryPoint)
                     throw new FactoryUnknownComponent("Invalid library: " + this->_primitivesLibraries[type]);
                 return std::shared_ptr<IPrimitive>(entryPoint(center, variables, material));
             };
 
-            std::shared_ptr<IMaterial> createMaterial(const std::string &type, color c, double fuzz) {
+            std::shared_ptr<IMaterial> createMaterial(const std::string &type, Color3D c, double fuzz) {
                 if (_materialsLibraries.find(type) == _materialsLibraries.end())
                     throw new FactoryUnknownComponent("Unknown material: " + type);
                 this->_materialWrappers.push_back(Wrapper());
                 this->_materialWrappers.back().loadLib(this->_materialsLibraries[type]);
-                auto entryPoint = this->_materialWrappers.back().getFunction<IMaterial *(color, double)>("entryPoint");
+                auto entryPoint = this->_materialWrappers.back().getFunction<IMaterial *(Color3D, double)>("entryPoint");
                 if (!entryPoint)
                     throw new FactoryUnknownComponent("Invalid library: " + this->_materialsLibraries[type]);
-                return std::shared_ptr<IMaterial>(entryPoint(point3(c.x(), c.y(), c.z()), fuzz));
+                return std::shared_ptr<IMaterial>(entryPoint(Point3D(c.x(), c.y(), c.z()), fuzz));
             };
 
-            std::shared_ptr<ILight> createLight(const std::string &type, point3 pos, point3 direction, double intensity) {
+            std::shared_ptr<IMaterial> createTextureMaterial(const std::string &type, std::shared_ptr<ITexture> &texture, double fuzz) {
+                if (_materialsLibraries.find(type) == _materialsLibraries.end())
+                    throw new FactoryUnknownComponent("Unknown material: " + type);
+                this->_materialWrappers.push_back(Wrapper());
+                this->_materialWrappers.back().loadLib(this->_materialsLibraries[type]);
+                auto textureEntryPoint = this->_materialWrappers.back().getFunction<IMaterial *(std::shared_ptr<ITexture>, double)>("textureEntryPoint");
+                if (!textureEntryPoint)
+                    throw new FactoryUnknownComponent("Invalid library: " + this->_materialsLibraries[type]);
+                return std::shared_ptr<IMaterial>(textureEntryPoint(texture, fuzz));
+            };
+
+            std::shared_ptr<ILight> createLight(const std::string &type, Point3D pos, Point3D direction, Color3D clr) {
                 if (_lightsLibraries.find(type) == _lightsLibraries.end())
                     throw new FactoryUnknownComponent("Unknown light: " + type);
                 this->_lightWrappers.push_back(Wrapper());
                 this->_lightWrappers.back().loadLib(this->_lightsLibraries[type]);
-                auto entryPoint = this->_lightWrappers.back().getFunction<ILight *(point3, point3, double)>("entryPoint");
+                auto entryPoint = this->_lightWrappers.back().getFunction<ILight *(Point3D, Point3D, Color3D)>("entryPoint");
                 if (!entryPoint)
                     throw new FactoryUnknownComponent("Invalid library: " + this->_lightsLibraries[type]);
-                return std::shared_ptr<ILight>(entryPoint(pos, direction, intensity));
+                return std::shared_ptr<ILight>(entryPoint(pos, direction, clr));
+            };
+
+            std::shared_ptr<ITexture> createTexture(const std::string &type, std::vector<double> variables) {
+                if (_texturesLibraries.find(type) == _texturesLibraries.end())
+                    throw new FactoryUnknownComponent("Unknown texture: " + type);
+                this->_textureWrappers.push_back(Wrapper());
+                this->_textureWrappers.back().loadLib(this->_texturesLibraries[type]);
+                auto entryPoint = this->_textureWrappers.back().getFunction<ITexture *(std::vector<double>)>("entryPoint");
+                if (!entryPoint)
+                    throw new FactoryUnknownComponent("Invalid library: " + this->_texturesLibraries[type]);
+                return std::shared_ptr<ITexture>(entryPoint(variables));
             };
 
             std::shared_ptr<IDisplay> createDisplay(const std::string &type, int width, int height, int cameraResolutionWidth, int cameraResolutionHeight, int fps, std::string &title) {
@@ -94,10 +121,12 @@ namespace RayTracer {
             std::string _libPath;
             std::map<std::string, std::string> _primitivesLibraries;
             std::map<std::string, std::string> _materialsLibraries;
+            std::map<std::string, std::string> _texturesLibraries;
             std::map<std::string, std::string> _displaysLibraries;
             std::map<std::string, std::string> _lightsLibraries;
             std::list<Wrapper> _primitiveWrappers;
             std::list<Wrapper> _materialWrappers;
+            std::list<Wrapper> _textureWrappers;
             std::list<Wrapper> _displayWrappers;
             std::list<Wrapper> _lightWrappers;
     };

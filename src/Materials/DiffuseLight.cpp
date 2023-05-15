@@ -8,19 +8,21 @@
 #include "DiffuseLight.hpp"
 
 namespace RayTracer {
-    DiffuseLight::DiffuseLight(const color &a) : emit(a) {}
+    DiffuseLight::DiffuseLight(const Color3D &a) : emit(a)
+    {
+    }
 
-    bool DiffuseLight::scatter(const Ray &r_in, const hit_record &rec, color &attenuation, Ray &scattered) const {
+    bool DiffuseLight::scatter(const Ray &r_in, const hitRecord &rec, Color3D &attenuation, Ray &scattered) const {
         return false;
     }
 
-    color DiffuseLight::emitted(double u, double v, const point3 &p) const {
+    Color3D DiffuseLight::emitted(double u, double v, const Point3D &p) const {
         return emit;
     }
 }
 
 extern "C" {
-    RayTracer::DiffuseLight *entryPoint(const color &a, double f) {
+    RayTracer::DiffuseLight *entryPoint(const Color3D &a, double f) {
         return new RayTracer::DiffuseLight(a);
     }
 

@@ -9,25 +9,47 @@
 	#define Rectangle_HPP_
 
 #include "Ray.hpp"
-#include "IPrimitive.hpp"
+#include "APrimitive.hpp"
 #include "../Math/AxisAlignement.hpp"
 
 namespace RayTracer {
-    class Rectangle : public IPrimitive {
+    class Rectangle : public APrimitive {
     public:
-        Rectangle(double _x0, double _x1, double _y0, double _y1, double _k, std::shared_ptr<IMaterial> mat);
-
-        virtual bool hit(const RayTracer::Ray& r, double t_min, double t_max, hit_record& rec) const override;
-
-        virtual bool bounding_box(double time0, double time1, AxisAlignedBoundBox& output_box);
+        Rectangle(double _x0, double _x1, double _y0, double _y1, double _k, const Vector3D &_position, std::shared_ptr<IMaterial> &mat);
+        bool hit(const RayTracer::Ray& r, double tMin, double tMax, hitRecord& rec) const override;
+        bool boundingBox(double time0, double time1, AxisAlignedBoundBox& outputBox);
 
         std::shared_ptr<IMaterial> mp;
         double x0, x1, y0, y1, k;
+        Vector3D position;
     };
-}
 
+
+    class xzRect : public IPrimitive {
+        public:
+            xzRect(double _x0, double _x1, double _z0, double _z1, double _k, std::shared_ptr<IMaterial> &mat);
+            bool hit(const RayTracer::Ray& r, double tMin, double tMax, hitRecord& rec) const override;
+            bool boundingBox(double time0, double time1, AxisAlignedBoundBox& outputBox);
+
+        public:
+            std::shared_ptr<IMaterial> mp;
+            double x0, x1, z0, z1, k;
+    };
+
+    class yzRect : public IPrimitive {
+        public:
+            yzRect(double _y0, double _y1, double _z0, double _z1, double _k, std::shared_ptr<IMaterial> &mat);
+            bool hit(const RayTracer::Ray& r, double tMin, double tMax, hitRecord& rec) const override;
+            bool boundingBox(double time0, double time1, AxisAlignedBoundBox& outputBox);
+
+        public:
+            std::shared_ptr<IMaterial> mp;
+            double y0, y1, z0, z1, k;
+    };
+
+}
 extern "C" {
-    RayTracer::IPrimitive *entryPoint(point3 center, std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> mat_ptr);
+    RayTracer::IPrimitive *entryPoint(Point3D &center, std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> matPtr);
     char *getType();
 }
 

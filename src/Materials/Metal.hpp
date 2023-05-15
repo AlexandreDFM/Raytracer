@@ -8,22 +8,21 @@
 #ifndef METAL_
 	#define METAL_
 
-    #include "IMaterial.hpp"
+    #include "AMaterial.hpp"
 
 namespace RayTracer {
-    class Metal : public IMaterial {
+    class Metal : public AMaterial {
         public:
-            Metal(const color& a, double f);
-
-            virtual bool scatter(const RayTracer::Ray& r_in, const hit_record& rec, color& attenuation, RayTracer::Ray& scattered) const override;
+            Metal(const Color3D& a, double f);
+            bool scatter(const RayTracer::Ray& r_in, const hitRecord& rec, Color3D& attenuation, RayTracer::Ray& scattered) const override;
 
         public:
-            color albedo;
+            Color3D albedo;
             double fuzz;
     };
 
     extern "C" {
-        Metal *entryPoint(const color &a, double f);
+        Metal *entryPoint(const Color3D &a, double f);
         char *getType();
     }
 }

@@ -26,8 +26,19 @@ namespace RayTracer {
                 }
                 return false;
             }
+            bool isSetFromArray(const std::string& pathArray, const std::string& path, int index) {
+                try {
+                    const libconfig::Setting& array = this->_cfg.lookup(pathArray);
+                    const libconfig::Setting& line = array[index];
+                    line.lookup(path);
+                    return true;
+                } catch (const libconfig::SettingNotFoundException& nfex) {
+                    std::cerr << "No '" << path << "' setting in configuration file." << std::endl;
+                }
+                return false;
+            }
             template<typename T>
-            T get(const std::string &path) {
+            T get(const std::string &path, T defaultValue) {
                 T value;
                 try {
                     this->_cfg.lookupValue(path, value);
@@ -35,7 +46,7 @@ namespace RayTracer {
                 } catch (const libconfig::SettingNotFoundException &nfex) {
                     std::cerr << "No '" << path << "' setting in configuration file." << std::endl;
                 }
-                return T();
+                return defaultValue;
             }
             int getLength(const std::string &path) {
                 try {
@@ -47,17 +58,18 @@ namespace RayTracer {
                 return 0;
             }
             template<typename T>
-            T getLineValueFromArray(const std::string& pathArray, const std::string& path, int index) {
+            T getLineValueFromArray(const std::string& pathArray, const std::string& path, int index, T defaultValue) {
                 T value;
                 try {
                     const libconfig::Setting& array = this->_cfg.lookup(pathArray);
                     const libconfig::Setting& line = array[index];
                     const libconfig::Setting& valueSetting = line.lookup(path);
                     value = static_cast<T>(valueSetting);
+                    return value;
                 } catch (const libconfig::SettingNotFoundException& nfex) {
                     std::cerr << "No '" << path << "' setting in configuration file." << std::endl;
                 }
-                return value;
+                return defaultValue;
             }
 
     private:
