@@ -144,16 +144,33 @@ namespace RayTracer {
 
     void Core::createPlanes()
     {
-//        for (int i = 0, length = this->_configHelper->getLength("primitives.planes"); i < length; i++) {
-//            auto position = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "position", i, 0);
-//            auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.planes", "material", i, "");
-//            auto colorR = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.r", i, 0);
-//            auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.g", i, 0);
-//            auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.b", i, 0);
-//            auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "fuzz", i, 0);
-//            auto materialComponent = this->_factory->createMaterial(materialType, Color3D(colorR, colorG, colorB), fuzz);
-//            this->_world.add(this->_factory->createPrimitive("plane", Point3D(0, 0, 0), std::vector<double>({500, 500, position, 500, 500}), materialComponent));
-//        }
+        for (int i = 0, length = this->_configHelper->getLength("primitives.planes"); i < length; i++) {
+            auto normalX = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "normal.x", i, 0);
+            auto normalY = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "normal.y", i, 0);
+            auto normalZ = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "normal.z", i, 0);
+            auto distance = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "distance", i, 0);
+            auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.planes", "material", i, "");
+            auto colorR = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.r", i, 0);
+            auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.g", i, 0);
+            auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.b", i, 0);
+            auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "fuzz", i, 0);
+            if (this->_configHelper->isSetFromArray("primitives.planes", "texture", i)) {
+                auto texturePath = this->_configHelper->getLineValueFromArray<std::string>("primitives.planes", "texture", i, "");
+                auto value1 = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "value1", i, 0);
+                auto value2 = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "value2", i, 0);
+                auto value3 = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "value3", i, 0);
+                auto value4 = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "value4", i, 0);
+                auto value5 = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "value5", i, 0);
+                auto value6 = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "value6", i, 0);
+                std::vector<double> values = {value1, value2, value3, value4, value5, value6};
+                std::shared_ptr<ITexture> texture = this->_factory->createTexture(texturePath, values);
+                auto materialComponent = this->_factory->createTextureMaterial(materialType, texture, fuzz);
+                this->_world.add(this->_factory->createPrimitive("plane", Point3D(normalX, normalY, normalZ), std::vector<double>({distance}), materialComponent));
+            } else {
+                auto materialComponent = this->_factory->createMaterial(materialType, Color3D(colorR, colorG, colorB), fuzz);
+                this->_world.add(this->_factory->createPrimitive("plane", Point3D(normalX, normalY, normalZ), std::vector<double>({distance}), materialComponent));
+            }
+        }
     }
 
     void Core::createLights()
