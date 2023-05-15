@@ -55,91 +55,91 @@ namespace RayTracer {
 
     void Core::createSpheres()
     {
-        for (int i = 0, length = this->_configHelper->getLength("primitives.spheres"); i < length; i++) {
-            auto x = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "position.x", i, 0);
-            auto y = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "position.y", i, 0);
-            auto z = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "position.z", i, 0);
-            auto r = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "r", i, 0);
-            auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.spheres", "material", i, "");
-            auto colorR = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "color.r", i, 0);
-            auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "color.g", i, 0);
-            auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "color.b", i, 0);
-            auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "fuzz", i, 0);
-            if (this->_configHelper->isSetFromArray("primitives.spheres", "texture", i)) {
-                auto texturePath = this->_configHelper->getLineValueFromArray<std::string>("primitives.spheres", "texture", i, "");
-                auto value1 = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "value1", i, 0);
-                auto value2 = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "value2", i, 0);
-                auto value3 = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "value3", i, 0);
-                auto value4 = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "value4", i, 0);
-                auto value5 = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "value5", i, 0);
-                auto value6 = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "value6", i, 0);
-                std::vector<double> values = {value1, value2, value3, value4, value5, value6};
-                std::shared_ptr<ITexture> texture = this->_factory->createTexture(texturePath, values);
-                auto materialComponent = this->_factory->createTextureMaterial(materialType, texture, fuzz);
-                this->_world.add(this->_factory->createPrimitive("sphere", Point3D(x, y, z), std::vector<double>({r}), materialComponent));
-            } else {
-                auto materialComponent = this->_factory->createMaterial(materialType, Color3D(colorR, colorG, colorB), fuzz);
-               this->_world.add(this->_factory->createPrimitive("sphere", Point3D(x, y, z), std::vector<double>({r}), materialComponent));
-            }
-        }
+//        for (int i = 0, length = this->_configHelper->getLength("primitives.spheres"); i < length; i++) {
+//            auto x = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "position.x", i, 0);
+//            auto y = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "position.y", i, 0);
+//            auto z = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "position.z", i, 0);
+//            auto r = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "r", i, 0);
+//            auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.spheres", "material", i, "");
+//            auto colorR = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "color.r", i, 0);
+//            auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "color.g", i, 0);
+//            auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "color.b", i, 0);
+//            auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "fuzz", i, 0);
+//            if (this->_configHelper->isSetFromArray("primitives.spheres", "texture", i)) {
+//                auto texturePath = this->_configHelper->getLineValueFromArray<std::string>("primitives.spheres", "texture", i, "");
+//                auto value1 = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "value1", i, 0);
+//                auto value2 = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "value2", i, 0);
+//                auto value3 = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "value3", i, 0);
+//                auto value4 = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "value4", i, 0);
+//                auto value5 = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "value5", i, 0);
+//                auto value6 = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "value6", i, 0);
+//                std::vector<double> values = {value1, value2, value3, value4, value5, value6};
+//                std::shared_ptr<ITexture> texture = this->_factory->createTexture(texturePath, values);
+//                auto materialComponent = this->_factory->createTextureMaterial(materialType, texture, fuzz);
+//                this->_world.add(this->_factory->createPrimitive("sphere", Point3D(x, y, z), std::vector<double>({r}), materialComponent));
+//            } else {
+//                auto materialComponent = this->_factory->createMaterial(materialType, Color3D(colorR, colorG, colorB), fuzz);
+//               this->_world.add(this->_factory->createPrimitive("sphere", Point3D(x, y, z), std::vector<double>({r}), materialComponent));
+//            }
+//        }
     }
 
     void Core::createRectangles()
     {
-        for (int i = 0, length = this->_configHelper->getLength("primitives.rectangles"); i < length; i++) {
-            auto x = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "position.x", i, 0);
-            auto y = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "position.y", i, 0);
-            auto z = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "position.z", i, 0);
-            auto x0 = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "x0", i, 0);
-            auto x1 = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "x1", i, 0);
-            auto y0 = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "y0", i, 0);
-            auto y1 = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "y1", i, 0);
-            auto k = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "k", i, 0);
-            auto colorR = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "color.r", i, 0);
-            auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "color.g", i, 0);
-            auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "color.b", i, 0);
-            auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "fuzz", i, 0);
-            auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.rectangles", "material", i, "");
-            auto materialComponent = this->_factory->createMaterial(materialType, Color3D(colorR, colorG, colorB), fuzz);
-            this->_world.add(this->_factory->createPrimitive("rectangle", Point3D(x, y, z), std::vector<double>({x0, x1, y0, y1, k}), materialComponent));
-        }
+//        for (int i = 0, length = this->_configHelper->getLength("primitives.rectangles"); i < length; i++) {
+//            auto x = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "position.x", i, 0);
+//            auto y = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "position.y", i, 0);
+//            auto z = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "position.z", i, 0);
+//            auto x0 = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "x0", i, 0);
+//            auto x1 = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "x1", i, 0);
+//            auto y0 = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "y0", i, 0);
+//            auto y1 = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "y1", i, 0);
+//            auto k = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "k", i, 0);
+//            auto colorR = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "color.r", i, 0);
+//            auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "color.g", i, 0);
+//            auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "color.b", i, 0);
+//            auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "fuzz", i, 0);
+//            auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.rectangles", "material", i, "");
+//            auto materialComponent = this->_factory->createMaterial(materialType, Color3D(colorR, colorG, colorB), fuzz);
+//            this->_world.add(this->_factory->createPrimitive("rectangle", Point3D(x, y, z), std::vector<double>({x0, x1, y0, y1, k}), materialComponent));
+//        }
     }
 
     void Core::createCylinders()
     {
-        for (int i = 0, length = this->_configHelper->getLength("primitives.cylinders"); i < length; i++) {
-            auto x = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "position.x", i, 0);
-            auto y = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "position.y", i, 0);
-            auto z = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "position.z", i, 0);
-            auto r = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "r", i, 0);
-            auto y0 = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "y0", i, 0);
-            auto y1 = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "y1", i, 0);
-            auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.cylinders", "material", i, "");
-            auto colorR = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "color.r", i, 0);
-            auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "color.g", i, 0);
-            auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "color.b", i, 0);
-            auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "fuzz", i, 0);
-            auto materialComponent = this->_factory->createMaterial(materialType, Color3D(colorR, colorG, colorB), fuzz);
-            this->_world.add(this->_factory->createPrimitive("cylinder", Point3D(x, y, z), std::vector<double>({r, y0, y1}), materialComponent));
-        }
+//        for (int i = 0, length = this->_configHelper->getLength("primitives.cylinders"); i < length; i++) {
+//            auto x = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "position.x", i, 0);
+//            auto y = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "position.y", i, 0);
+//            auto z = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "position.z", i, 0);
+//            auto r = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "r", i, 0);
+//            auto y0 = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "y0", i, 0);
+//            auto y1 = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "y1", i, 0);
+//            auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.cylinders", "material", i, "");
+//            auto colorR = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "color.r", i, 0);
+//            auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "color.g", i, 0);
+//            auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "color.b", i, 0);
+//            auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "fuzz", i, 0);
+//            auto materialComponent = this->_factory->createMaterial(materialType, Color3D(colorR, colorG, colorB), fuzz);
+//            this->_world.add(this->_factory->createPrimitive("cylinder", Point3D(x, y, z), std::vector<double>({r, y0, y1}), materialComponent));
+//        }
     }
 
     void Core::createCones()
     {
-        for (int i = 0, length = this->_configHelper->getLength("primitives.cones"); i < length; i++) {
-            auto x = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "position.x", i, 0);
-            auto y = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "position.y", i, 0);
-            auto z = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "position.z", i, 0);
-            auto r = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "r", i, 0);
-            auto h = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "h", i, 0);
-            auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.cones", "material", i, "");
-            auto colorR = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "color.r", i, 0);
-            auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "color.g", i, 0);
-            auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "color.b", i, 0);
-            auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "fuzz", i, 0);
-            auto materialComponent = this->_factory->createMaterial(materialType, Color3D(colorR, colorG, colorB), fuzz);
-            this->_world.add(this->_factory->createPrimitive("cone", Point3D(x, y, z), std::vector<double>({r, h}), materialComponent));
-        }
+//        for (int i = 0, length = this->_configHelper->getLength("primitives.cones"); i < length; i++) {
+//            auto x = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "position.x", i, 0);
+//            auto y = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "position.y", i, 0);
+//            auto z = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "position.z", i, 0);
+//            auto r = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "r", i, 0);
+//            auto h = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "h", i, 0);
+//            auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.cones", "material", i, "");
+//            auto colorR = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "color.r", i, 0);
+//            auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "color.g", i, 0);
+//            auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "color.b", i, 0);
+//            auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "fuzz", i, 0);
+//            auto materialComponent = this->_factory->createMaterial(materialType, Color3D(colorR, colorG, colorB), fuzz);
+//            this->_world.add(this->_factory->createPrimitive("cone", Point3D(x, y, z), std::vector<double>({r, h}), materialComponent));
+//        }
     }
 
     void Core::createPlanes()
@@ -241,8 +241,8 @@ namespace RayTracer {
 
     void Core::render(int index, int start, int end, int width, int height, int samples_per_pixel, int max_depth)
     {
-        for (int j = start; j < end; j++) {
-            for (int i = 0; i < width; i++) {
+        for (int j = start; j < end && this->_isRunning; j++) {
+            for (int i = 0; i < width && this->_isRunning; i++) {
                 Color3D pixelColor(0, 0, 0);
                 for (int s = 0; s < samples_per_pixel; ++s) {
                     auto u = (i + Math::random_double()) / (width - 1);
@@ -263,6 +263,9 @@ namespace RayTracer {
         if (type == EventType::PAUSE) {
             this->_isPaused = !this->_isPaused;
         }
+        if (type == EventType::CLOSE) {
+            this->_isRunning = false;
+        }
     }
 
     void Core::displayLoop()
@@ -274,16 +277,15 @@ namespace RayTracer {
             this->_displayModule->update();
             this->_displayModule->clear();
         }
-        this->_displayModule->close();
     }
 
     void Core::run()
     {
         int width, height;
+        this->_isRunning = true;
         const int max_depth = 50;
         const int samples_per_pixel = 100;
         this->_camera->getResolution(width, height);
-
         auto processor_count = std::thread::hardware_concurrency();
         if (processor_count == 0) processor_count = 2;
 
@@ -319,6 +321,5 @@ namespace RayTracer {
         }
         file.close();
         std::cerr << "\nDone.\n";
-
     }
 }
