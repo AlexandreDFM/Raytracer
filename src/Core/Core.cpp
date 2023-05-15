@@ -39,8 +39,8 @@ namespace RayTracer {
         auto cameraVUpX = this->_configHelper->get<float>("camera.vectorUp.x");
         auto cameraVUpY = this->_configHelper->get<float>("camera.vectorUp.y");
         auto cameraVUpZ = this->_configHelper->get<float>("camera.vectorUp.z");
-        point3 cameraPosition = point3(cameraPosX, cameraPosY, cameraPosZ);
-        point3 cameraRotation = point3(cameraRotX, cameraRotY, cameraRotZ);
+        Point3D cameraPosition = Point3D(cameraPosX, cameraPosY, cameraPosZ);
+        Point3D cameraRotation = Point3D(cameraRotX, cameraRotY, cameraRotZ);
         Vector3D cameraVectorUp = Vector3D(cameraVUpX, cameraVUpY, cameraVUpZ);
         this->_camera = std::make_unique<Camera>(cameraResolutionWidth, cameraResolutionHeight, cameraPosition, cameraRotation, cameraVectorUp, cameraFov, aspectRatio);
     }
@@ -66,8 +66,8 @@ namespace RayTracer {
             auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "color.g", i);
             auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "color.b", i);
             auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.spheres", "fuzz", i);
-            auto materialComponent = this->_factory->createMaterial(materialType, color(colorR, colorG, colorB), fuzz);
-            this->_world.add(this->_factory->createPrimitive("sphere", point3(x, y, z), std::vector<double>({r}), materialComponent));
+            auto materialComponent = this->_factory->createMaterial(materialType, Color3D(colorR, colorG, colorB), fuzz);
+            this->_world.add(this->_factory->createPrimitive("sphere", Point3D(x, y, z), std::vector<double>({r}), materialComponent));
         }
     }
 
@@ -87,8 +87,8 @@ namespace RayTracer {
             auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "color.b", i);
             auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.rectangles", "fuzz", i);
             auto materialType = this->_configHelper->getLineValueFromArray<std::string>("primitives.rectangles", "material", i);
-            auto materialComponent = this->_factory->createMaterial(materialType, color(colorR, colorG, colorB), fuzz);
-            this->_world.add(this->_factory->createPrimitive("rectangle", point3(x, y, z), std::vector<double>({x0, x1, y0, y1, k}), materialComponent));
+            auto materialComponent = this->_factory->createMaterial(materialType, Color3D(colorR, colorG, colorB), fuzz);
+            this->_world.add(this->_factory->createPrimitive("rectangle", Point3D(x, y, z), std::vector<double>({x0, x1, y0, y1, k}), materialComponent));
         }
     }
 
@@ -106,8 +106,8 @@ namespace RayTracer {
             auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "color.g", i);
             auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "color.b", i);
             auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.cylinders", "fuzz", i);
-            auto materialComponent = this->_factory->createMaterial(materialType, color(colorR, colorG, colorB), fuzz);
-            this->_world.add(this->_factory->createPrimitive("cylinder", point3(x, y, z), std::vector<double>({r, y0, y1}), materialComponent));
+            auto materialComponent = this->_factory->createMaterial(materialType, Color3D(colorR, colorG, colorB), fuzz);
+            this->_world.add(this->_factory->createPrimitive("cylinder", Point3D(x, y, z), std::vector<double>({r, y0, y1}), materialComponent));
         }
     }
 
@@ -124,8 +124,8 @@ namespace RayTracer {
             auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "color.g", i);
             auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "color.b", i);
             auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.cones", "fuzz", i);
-            auto materialComponent = this->_factory->createMaterial(materialType, color(colorR, colorG, colorB), fuzz);
-            this->_world.add(this->_factory->createPrimitive("cone", point3(x, y, z), std::vector<double>({r, h}), materialComponent));
+            auto materialComponent = this->_factory->createMaterial(materialType, Color3D(colorR, colorG, colorB), fuzz);
+            this->_world.add(this->_factory->createPrimitive("cone", Point3D(x, y, z), std::vector<double>({r, h}), materialComponent));
         }
     }
 
@@ -138,8 +138,8 @@ namespace RayTracer {
             auto colorG = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.g", i);
             auto colorB = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "color.b", i);
             auto fuzz = this->_configHelper->getLineValueFromArray<double>("primitives.planes", "fuzz", i);
-            auto materialComponent = this->_factory->createMaterial(materialType, color(colorR, colorG, colorB), fuzz);
-            this->_world.add(this->_factory->createPrimitive("plane", point3(0, 0, 0), std::vector<double>({1, 1, 1, 1, 1}), materialComponent));
+            auto materialComponent = this->_factory->createMaterial(materialType, Color3D(colorR, colorG, colorB), fuzz);
+            this->_world.add(this->_factory->createPrimitive("plane", Point3D(0, 0, 0), std::vector<double>({1, 1, 1, 1, 1}), materialComponent));
         }
     }
 
@@ -158,7 +158,7 @@ namespace RayTracer {
             auto colorR = this->_configHelper->getLineValueFromArray<double>("lights.point", "color.r", i);
             auto colorG = this->_configHelper->getLineValueFromArray<double>("lights.point", "color.g", i);
             auto colorB = this->_configHelper->getLineValueFromArray<double>("lights.point", "color.b", i);
-            this->_world.add(this->_factory->createLight("point", point3(x, y, z), point3({0, 0, 0}), color(colorR, colorG, colorB)));
+            this->_world.add(this->_factory->createLight("point", Point3D(x, y, z), Point3D({0, 0, 0}), Color3D(colorR, colorG, colorB)));
         }
     }
 
@@ -174,7 +174,7 @@ namespace RayTracer {
             auto colorR = this->_configHelper->getLineValueFromArray<double>("lights.directional", "color.r", i);
             auto colorG = this->_configHelper->getLineValueFromArray<double>("lights.directional", "color.g", i);
             auto colorB = this->_configHelper->getLineValueFromArray<double>("lights.directional", "color.b", i);
-            this->_world.add(this->_factory->createLight("directional", point3(x, y, z), point3(directionX, directionY, directionZ), color(colorR, colorG, colorB)));
+            this->_world.add(this->_factory->createLight("directional", Point3D(x, y, z), Point3D(directionX, directionY, directionZ), Color3D(colorR, colorG, colorB)));
         }
     }
 
@@ -191,7 +191,7 @@ namespace RayTracer {
     }
 
 
-    color Core::RayColor(const RayTracer::Ray& r, const RayTracer::IPrimitive& world, int depth)
+    Color3D Core::RayColor(const RayTracer::Ray& r, const RayTracer::IPrimitive& world, int depth)
     {
         hitRecord rec;
         // If we've exceeded the ray bounce limit, no more light is gathered.
@@ -200,9 +200,9 @@ namespace RayTracer {
         if (!world.hit(r, 0.001, Math::infinity, rec))
             return {0,0,0};
         RayTracer::Ray scattered;
-        color attenuation;
-        color emmited = rec.mat_ptr->emitted(rec.u, rec.v, rec.p);
-        if (!rec.mat_ptr->scatter(r, rec, attenuation, scattered))
+        Color3D attenuation;
+        Color3D emmited = rec.matPtr->emitted(rec.u, rec.v, rec.p);
+        if (!rec.matPtr->scatter(r, rec, attenuation, scattered))
             return emmited;
         return emmited + attenuation * RayColor(scattered, world, depth-1);
     }
@@ -211,16 +211,16 @@ namespace RayTracer {
     {
         for (int j = start; j < end; j++) {
             for (int i = 0; i < width; i++) {
-                color pixel_color(0, 0, 0);
+                Color3D pixelColor(0, 0, 0);
                 for (int s = 0; s < samples_per_pixel; ++s) {
                     auto u = (i + Math::random_double()) / (width - 1);
                     auto v = (j + Math::random_double()) / (height - 1);
                     RayTracer::Ray r = this->_camera->getRay(u, v);
-                    pixel_color += RayColor(r, this->_world, max_depth);
+                    pixelColor += RayColor(r, this->_world, max_depth);
                 }
-                this->_colors[index].push_back(pixel_color);
+                this->_colors[index].push_back(pixelColor);
                 if (this->haveGraphicalLib) {
-                    this->_displayModule->addPixel(i, height - j - 1, pixel_color.x(), pixel_color.y(), pixel_color.z(), samples_per_pixel);
+                    this->_displayModule->addPixel(i, height - j - 1, pixelColor.x(), pixelColor.y(), pixelColor.z(), samples_per_pixel);
                 }
             }
         }
@@ -255,9 +255,7 @@ namespace RayTracer {
         if (processor_count == 0) processor_count = 3;
 
         // Split the work
-        if (this->haveGraphicalLib) {
-            this->_threads.push_back(std::thread(&Core::displayLoop, this));
-        }
+        if (this->haveGraphicalLib) this->_threads.push_back(std::thread(&Core::displayLoop, this));
 
         processor_count -= 1;
 
@@ -269,7 +267,7 @@ namespace RayTracer {
             if (rest > 0) {
                 end++; rest--;
             }
-            this->_colors.push_back(std::vector<color>());
+            this->_colors.push_back(std::vector<Color3D>());
             this->_threads.push_back(std::thread(&Core::render, this, index, start, end, width, height, samples_per_pixel, max_depth));
             start = end; end += work;
         }

@@ -13,8 +13,8 @@
 namespace RayTracer {
     class AMaterial : public IMaterial {
         public:
-            bool scatter(const RayTracer::Ray & r_in, const RayTracer::hitRecord& rec, color& attenuation, RayTracer::Ray& scattered) const override;
-            color emitted(double u, double v, const point3& p) const override;
+            bool scatter(const RayTracer::Ray & r_in, const RayTracer::hitRecord& rec, Color3D& attenuation, RayTracer::Ray& scattered) const override;
+            [[nodiscard]] Color3D emitted(double u, double v, const Point3D& p) const override;
     };
 }
 

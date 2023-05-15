@@ -16,7 +16,7 @@ namespace RayTracer {
     class Plane : public APrimitive {
         public:
             Plane(double _x0, double _x1, double _z0, double _z1, double _k, std::shared_ptr<IMaterial> &mat);
-            bool hit(const RayTracer::Ray& r, double t_min, double t_max, hitRecord& rec) const override;
+            bool hit(const RayTracer::Ray& r, double tMin, double tMax, hitRecord& rec) const override;
 
         public:
             std::shared_ptr<IMaterial> mp;
@@ -24,7 +24,7 @@ namespace RayTracer {
     };
 
     extern "C" {
-        RayTracer::IPrimitive *entryPoint(std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> &mat_ptr);
+        RayTracer::IPrimitive *entryPoint(std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> &matPtr);
 
         char *getType();
     }

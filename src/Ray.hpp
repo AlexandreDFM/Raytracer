@@ -14,13 +14,13 @@ namespace RayTracer {
     class Ray {
         public:
             Ray() = default;
-            Ray(const point3& origin, const Vector3D& direction);
-            point3 origin() const;
-            Vector3D direction() const;
-            point3 at(double t) const;
+            Ray(const Point3D& origin, const Vector3D& direction);
+            [[nodiscard]] Point3D origin() const;
+            [[nodiscard]] Vector3D direction() const;
+            [[nodiscard]] Point3D at(double t) const;
 
         public:
-            point3 orig;
+            Point3D orig;
             Vector3D dir;
     };
 }

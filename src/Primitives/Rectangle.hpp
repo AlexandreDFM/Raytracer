@@ -16,10 +16,8 @@ namespace RayTracer {
     class Rectangle : public APrimitive {
     public:
         Rectangle(double _x0, double _x1, double _y0, double _y1, double _k, const Vector3D &_position, std::shared_ptr<IMaterial> &mat);
-
-        virtual bool hit(const RayTracer::Ray& r, double t_min, double t_max, hitRecord& rec) const override;
-
-        virtual bool boundingBox(double time0, double time1, AxisAlignedBoundBox& output_box);
+        bool hit(const RayTracer::Ray& r, double tMin, double tMax, hitRecord& rec) const override;
+        bool boundingBox(double time0, double time1, AxisAlignedBoundBox& outputBox);
 
         std::shared_ptr<IMaterial> mp;
         double x0, x1, y0, y1, k;
@@ -27,26 +25,22 @@ namespace RayTracer {
     };
 
 
-    class xz_rect : public IPrimitive {
+    class xzRect : public IPrimitive {
         public:
-            xz_rect(double _x0, double _x1, double _z0, double _z1, double _k, std::shared_ptr<IMaterial> mat);
-
-            virtual bool hit(const RayTracer::Ray& r, double t_min, double t_max, hitRecord& rec) const override;
-
-            virtual bool boundingBox(double time0, double time1, AxisAlignedBoundBox& output_box);
+            xzRect(double _x0, double _x1, double _z0, double _z1, double _k, std::shared_ptr<IMaterial> &mat);
+            bool hit(const RayTracer::Ray& r, double tMin, double tMax, hitRecord& rec) const override;
+            bool boundingBox(double time0, double time1, AxisAlignedBoundBox& outputBox);
 
         public:
             std::shared_ptr<IMaterial> mp;
             double x0, x1, z0, z1, k;
     };
 
-    class yz_rect : public IPrimitive {
+    class yzRect : public IPrimitive {
         public:
-            yz_rect(double _y0, double _y1, double _z0, double _z1, double _k, std::shared_ptr<IMaterial> mat);
-
-            virtual bool hit(const RayTracer::Ray& r, double t_min, double t_max, hitRecord& rec) const override;
-
-            virtual bool boundingBox(double time0, double time1, AxisAlignedBoundBox& output_box);
+            yzRect(double _y0, double _y1, double _z0, double _z1, double _k, std::shared_ptr<IMaterial> &mat);
+            bool hit(const RayTracer::Ray& r, double tMin, double tMax, hitRecord& rec) const override;
+            bool boundingBox(double time0, double time1, AxisAlignedBoundBox& outputBox);
 
         public:
             std::shared_ptr<IMaterial> mp;
@@ -55,7 +49,7 @@ namespace RayTracer {
 
 }
 extern "C" {
-    RayTracer::IPrimitive *entryPoint(point3 center, std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> mat_ptr);
+    RayTracer::IPrimitive *entryPoint(Point3D &center, std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> matPtr);
     char *getType();
 }
 

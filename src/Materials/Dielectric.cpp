@@ -8,27 +8,27 @@
 #include "Dielectric.hpp"
 
 namespace RayTracer {
-    Dielectric::Dielectric(double index_of_refraction) : ir(index_of_refraction)
+    Dielectric::Dielectric(double indexOfRefraction) : ir(indexOfRefraction)
     {
     }
 
-    bool Dielectric::scatter(const RayTracer::Ray &r_in, const RayTracer::hitRecord &rec, color &attenuation,
+    bool Dielectric::scatter(const RayTracer::Ray &r_in, const RayTracer::hitRecord &rec, Color3D &attenuation,
                              RayTracer::Ray &scattered) const
     {
-        attenuation = color(1.0, 1.0, 1.0);
-        double refraction_ratio = rec.front_face ? (1.0 / ir) : ir;
+        attenuation = Color3D(1.0, 1.0, 1.0);
+        double refractionRatio = rec.front_face ? (1.0 / ir) : ir;
 
-        Vector3D unit_direction = Vector3D::unitVector(r_in.direction());
-        double cos_theta = fmin(Vector3D::dot(-unit_direction, rec.normal), 1.0);
-        double sin_theta = sqrt(1.0 - cos_theta*cos_theta);
+        Vector3D unitDirection = Vector3D::unitVector(r_in.direction());
+        double cosTheta = fmin(Vector3D::dot(-unitDirection, rec.normal), 1.0);
+        double sinTheta = sqrt(1.0 - cosTheta * cosTheta);
 
-        bool cannot_refract = refraction_ratio * sin_theta > 1.0;
+        bool cannot_refract = refractionRatio * sinTheta > 1.0;
         Vector3D direction;
 
-        if (cannot_refract || reflectance(cos_theta, refraction_ratio) > Math::random_double())
-            direction = Vector3D::reflect(unit_direction, rec.normal);
+        if (cannot_refract || reflectance(cosTheta, refractionRatio) > Math::random_double())
+            direction = Vector3D::reflect(unitDirection, rec.normal);
         else
-            direction = Vector3D::refract(unit_direction, rec.normal, refraction_ratio);
+            direction = Vector3D::refract(unitDirection, rec.normal, refractionRatio);
 
         scattered = Ray(rec.p, direction);
         return true;
@@ -43,7 +43,7 @@ namespace RayTracer {
     }
 
     extern "C" {
-        Dielectric *entryPoint(const color &a, double f)
+        Dielectric *entryPoint(const Color3D &a, double f)
         {
             (void) a;
              return new Dielectric(f);

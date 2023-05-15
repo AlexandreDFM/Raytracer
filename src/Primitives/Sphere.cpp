@@ -8,15 +8,15 @@
 #include "Sphere.hpp"
 
 namespace RayTracer {
-    Sphere::Sphere(point3 cen, double r, std::shared_ptr<IMaterial> &m) : center(cen), radius(r), mat_ptr(m)
+    Sphere::Sphere(Point3D cen, double r, std::shared_ptr<IMaterial> &m) : center(cen), radius(r), matPtr(m)
     {
     };
 
-    bool Sphere::hit(const RayTracer::Ray &r, double t_min, double t_max, hitRecord &rec) const {
+    bool Sphere::hit(const RayTracer::Ray &r, double tMin, double tMax, hitRecord &rec) const {
         Vector3D oc = r.origin() - center;
-        auto a = r.direction().length_squared();
+        auto a = r.direction().lengthSquared();
         auto half_b = Vector3D::dot(oc, r.direction());
-        auto c = oc.length_squared() - radius * radius;
+        auto c = oc.lengthSquared() - radius * radius;
 
         auto discriminant = half_b * half_b - a * c;
         if (discriminant < 0) return false;
@@ -24,9 +24,9 @@ namespace RayTracer {
 
         // Find the nearest root that lies in the acceptable range.
         auto root = (-half_b - sqrtd) / a;
-        if (root < t_min || t_max < root) {
+        if (root < tMin || tMax < root) {
             root = (-half_b + sqrtd) / a;
-            if (root < t_min || t_max < root)
+            if (root < tMin || tMax < root)
                 return false;
         }
 
@@ -34,14 +34,14 @@ namespace RayTracer {
         rec.p = r.at(rec.t);
         Vector3D outward_normal = (rec.p - center) / radius;
         rec.set_face_normal(r, outward_normal);
-        rec.mat_ptr = mat_ptr;
+        rec.matPtr = matPtr;
         return true;
     }
 
     extern "C" {
-        IPrimitive *entryPoint(point3 center, std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> &mat_ptr)
+        IPrimitive *entryPoint(Point3D center, std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> &matPtr)
         {
-            return new RayTracer::Sphere(center, variables[0], mat_ptr);
+            return new RayTracer::Sphere(center, variables[0], matPtr);
         }
 
         char *getType()

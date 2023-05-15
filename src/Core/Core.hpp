@@ -24,7 +24,7 @@ namespace RayTracer {
     class Core {
         public:
             Core(const std::string &configPath, const std::string &libPath);
-            color RayColor(const RayTracer::Ray& r, const RayTracer::IPrimitive& world, int depth);
+            Color3D RayColor(const RayTracer::Ray& r, const RayTracer::IPrimitive& world, int depth);
             ~Core() = default;
             void run();
             void checkEvents(EventType type);
@@ -55,7 +55,7 @@ namespace RayTracer {
             std::unique_ptr<Camera> _camera;
             std::vector<std::thread> _threads;
             std::vector<IPrimitive *> _primitives;
-            std::vector<std::vector<color>> _colors;
+            std::vector<std::vector<Color3D>> _colors;
             std::shared_ptr<IDisplay> _displayModule;
     };
 }

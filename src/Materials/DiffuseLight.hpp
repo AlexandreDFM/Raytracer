@@ -12,18 +12,17 @@
 namespace RayTracer {
     class DiffuseLight : public AMaterial {
         public:
-            color emit;
+            DiffuseLight(const Color3D& a);
+            bool scatter(const Ray& r_in, const hitRecord& rec, Color3D& attenuation, Ray& scattered) const override;
+            [[nodiscard]] Color3D emitted(double u, double v, const Point3D& p) const override;
 
-            DiffuseLight(const color& a);
-
-            virtual bool scatter(const Ray& r_in, const hitRecord& rec, color& attenuation, Ray& scattered) const override;
-
-            virtual color emitted(double u, double v, const point3& p) const override;
+        public:
+            Color3D emit;
     };
 }
 
 extern "C" {
-    RayTracer::DiffuseLight *entryPoint(const color &a, double f);
+    RayTracer::DiffuseLight *entryPoint(const Color3D &a, double f);
     char *getType();
 }
 

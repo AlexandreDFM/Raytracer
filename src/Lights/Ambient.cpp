@@ -8,7 +8,7 @@
 #include "Ambient.hpp"
 
 namespace RayTracer {
-    Ambient::Ambient(Vector3D position, Vector3D direction, color color)
+    Ambient::Ambient(Vector3D &position, Vector3D &direction, Color3D &color)
             : _position(position), _direction(direction), _color(color)
     {}
 
@@ -16,17 +16,17 @@ namespace RayTracer {
         return _position;
     }
 
-    Vector3D Ambient::getDirection(const point3 &point) const {
-        return Vector3D(0, 0, 0);
+    Vector3D Ambient::getDirection(const Point3D &point) const {
+        return {0, 0, 0};
     }
 
-    color Ambient::getColor() const {
+    Color3D Ambient::getColor() const {
         return _color;
     }
 }
 
 extern "C" {
-    RayTracer::Ambient *entryPoint(Vector3D position, Vector3D direction, color color) {
+    RayTracer::Ambient *entryPoint(Vector3D position, Vector3D direction, Color3D color) {
         return new RayTracer::Ambient(position, direction, color);
     }
 

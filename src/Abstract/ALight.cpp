@@ -13,12 +13,12 @@ namespace RayTracer {
         return {0, 0, 0};
     }
 
-    Vector3D ALight::getDirection(const point3 &point) const
+    Vector3D ALight::getDirection(const Point3D &point) const
     {
         return {0, 0, 0};
     }
 
-    color ALight::getColor() const
+    Color3D ALight::getColor() const
     {
         return {0, 0, 0};
     }

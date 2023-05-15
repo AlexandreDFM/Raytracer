@@ -8,12 +8,12 @@
 #include "APrimitive.hpp"
 
 namespace RayTracer {
-    bool APrimitive::hit(const RayTracer::Ray &r, double t_min, double t_max, RayTracer::hitRecord &rec) const
+    bool APrimitive::hit(const RayTracer::Ray &r, double tMin, double tMax, RayTracer::hitRecord &rec) const
     {
         return false;
     }
 
-    bool APrimitive::boundingBox(double time0, double time1, AxisAlignedBoundBox& output_box) const
+    bool APrimitive::boundingBox(double time0, double time1, AxisAlignedBoundBox& outputBox) const
     {
         return false;
     }

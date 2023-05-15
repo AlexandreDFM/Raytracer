@@ -16,8 +16,8 @@ namespace RayTracer {
         public:
             virtual ~ILight() = default;
             virtual Vector3D getPosition() const = 0;
-            virtual Vector3D getDirection(const point3& point) const = 0;
-            virtual color getColor() const = 0;
+            virtual Vector3D getDirection(const Point3D& point) const = 0;
+            virtual Color3D getColor() const = 0;
     };
 }
 

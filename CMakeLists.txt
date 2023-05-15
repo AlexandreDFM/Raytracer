@@ -18,7 +18,7 @@ set(CMAKE_SHARED_LIBRARY_PREFIX "raytracer_")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g3")
 
 #Threads
-add_library("threads" SHARED src/Abstract/AThread.cpp src/Abstract/AThread.hpp src/Interface/IThread.cpp src/Interface/IThread.hpp)
+add_library("threads" SHARED src/Abstract/AThread.cpp src/Abstract/AThread.hpp src/Interface/IThread.hpp)
 set_target_properties("threads" PROPERTIES PREFIX "raytracer_")
 
 # Graphics libraries
@@ -93,8 +93,6 @@ add_executable(
         src/Ray.cpp
         src/Ray.hpp
         src/Color.hpp
-        src/Rectangle3D.cpp
-        src/Rectangle3D.hpp
         src/Vector3D.cpp
         src/Vector3D.hpp
         src/Primitives/Sphere.hpp

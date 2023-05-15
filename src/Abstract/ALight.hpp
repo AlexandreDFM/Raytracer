@@ -13,9 +13,9 @@
 namespace RayTracer {
     class ALight : public ILight {
         public:
-            Vector3D getPosition() const override;
-            Vector3D getDirection(const point3& point) const override;
-            color getColor() const override;
+            [[nodiscard]] Vector3D getPosition() const override;
+            [[nodiscard]] Vector3D getDirection(const Point3D& point) const override;
+            [[nodiscard]] Color3D getColor() const override;
     };
 }
 

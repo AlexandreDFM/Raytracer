@@ -13,14 +13,14 @@
 namespace RayTracer {
     class Lambertian : public AMaterial {
         public:
-            Lambertian(const color &a);
-            virtual bool scatter(const RayTracer::Ray &r_in, const hitRecord &rec, color &attenuation, RayTracer::Ray &scattered) const override;
+            Lambertian(const Color3D &a);
+            bool scatter(const RayTracer::Ray &r_in, const hitRecord &rec, Color3D &attenuation, RayTracer::Ray &scattered) const override;
         public:
-            color albedo;
+            Color3D albedo;
     };
 
     extern "C" {
-        Lambertian *entryPoint(const color &a, double f);
+        Lambertian *entryPoint(const Color3D &a, double f);
         char *getType();
     }
 }

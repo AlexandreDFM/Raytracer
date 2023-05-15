@@ -14,9 +14,8 @@
 namespace RayTracer {
     class Dielectric : public AMaterial {
         public:
-            Dielectric(double index_of_refraction);
-
-            virtual bool scatter(const Ray& r_in, const hitRecord& rec, color& attenuation, Ray& scattered) const override;
+            Dielectric(double indexOfRefraction);
+            bool scatter(const Ray& r_in, const hitRecord& rec, Color3D& attenuation, Ray& scattered) const override;
 
         public:
             double ir; // Index of Refraction
@@ -26,7 +25,7 @@ namespace RayTracer {
     };
 
     extern "C" {
-        Dielectric *entryPoint(const color &a, double f);
+        Dielectric *entryPoint(const Color3D &a, double f);
         char *getType();
     }
 }

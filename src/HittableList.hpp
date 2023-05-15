@@ -38,20 +38,20 @@ namespace RayTracer {
                 lights.push_back(object);
             }
 
-            virtual bool hit(const Ray &r, double t_min, double t_max, hitRecord &rec) const override;
+            bool hit(const Ray &r, double tMin, double tMax, hitRecord &rec) const override;
 
         public:
             std::vector<std::shared_ptr<IPrimitive>> objects;
             std::vector<std::shared_ptr<ILight>> lights;
     };
 
-    inline bool HittableList::hit(const Ray &r, double t_min, double t_max, hitRecord &rec) const {
+    inline bool HittableList::hit(const Ray &r, double tMin, double tMax, hitRecord &rec) const {
         hitRecord temp_rec;
         bool hit_anything = false;
-        auto closest_so_far = t_max;
+        auto closest_so_far = tMax;
 
         for (const auto &object: objects) {
-            if (object->hit(r, t_min, closest_so_far, temp_rec)) {
+            if (object->hit(r, tMin, closest_so_far, temp_rec)) {
                 hit_anything = true;
                 closest_so_far = temp_rec.t;
                 rec = temp_rec;

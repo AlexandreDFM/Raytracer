@@ -13,8 +13,8 @@
 namespace RayTracer {
     class APrimitive : public IPrimitive {
         public:
-            bool hit(const RayTracer::Ray& r, double t_min, double t_max, hitRecord& rec) const override;
-            bool boundingBox(double time0, double time1, AxisAlignedBoundBox& output_box) const override;
+            bool hit(const RayTracer::Ray& r, double tMin, double tMax, hitRecord& rec) const override;
+            bool boundingBox(double time0, double time1, AxisAlignedBoundBox& outputBox) const override;
     };
 }
 

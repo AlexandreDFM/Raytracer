@@ -16,28 +16,27 @@ class Vector3D {
         Vector3D();
         Vector3D(double x, double y, double z);
 
-        [[nodiscard]] virtual double x() const;
-        [[nodiscard]] virtual double y() const;
-        [[nodiscard]] virtual double z() const;
+        [[nodiscard]] double x() const ;
+        [[nodiscard]] double y() const ;
+        [[nodiscard]] double z() const ;
 
-        virtual Vector3D operator-() const;
-        virtual double operator[](int i) const;
-        virtual double &operator[](int i);
-        virtual Vector3D &operator+=(const Vector3D &v);
-        virtual Vector3D &operator/=(double t);
-        virtual Vector3D &operator*=(double t);
+        Vector3D operator-() const ;
+        double operator[](int i) const ;
+        double &operator[](int i) ;
+        Vector3D &operator+=(const Vector3D &v);
+        Vector3D &operator/=(double t) ;
+        Vector3D &operator*=(double t) ;
 
         [[nodiscard]] virtual double length() const;
-        [[nodiscard]] virtual double length_squared() const;
-        [[nodiscard]] virtual bool near_zero() const;
+        [[nodiscard]] virtual double lengthSquared() const;
+        [[nodiscard]] virtual bool nearZero() const;
 
         friend std::ostream &operator<<(std::ostream &out, const Vector3D &v);
-        friend Vector3D operator+(const Vector3D &u, const Vector3D &v);
-        friend Vector3D operator-(const Vector3D &u, const Vector3D &v);
-        friend Vector3D operator*(const Vector3D &u, const Vector3D &v);
-        friend Vector3D operator*(double t, const Vector3D &v);
-        friend Vector3D operator*(const Vector3D &v, double t);
-        friend Vector3D operator/(Vector3D v, double t);
+        Vector3D operator+(const Vector3D &other) const;
+        Vector3D operator-(const Vector3D &other) const;
+        Vector3D operator*(const Vector3D &other) const;
+        Vector3D operator*(double t) const;
+        Vector3D operator/(double t) const;
 
         static Vector3D random();
         static Vector3D random(double min, double max);
@@ -53,7 +52,7 @@ class Vector3D {
         double e[3];
 };
 
-using point3 = Vector3D;   // 3D point
-using color = Vector3D;    // RGB color
+typedef Vector3D Point3D;
+typedef Vector3D Color3D;
 
 #endif

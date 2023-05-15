@@ -18,10 +18,10 @@ namespace RayTracer {
         mp = mat;
     }
 
-    bool Plane::hit(const RayTracer::Ray& r, double t_min, double t_max, hitRecord& rec) const
+    bool Plane::hit(const RayTracer::Ray& r, double tMin, double tMax, hitRecord& rec) const
     {
         auto t = (k - r.origin().y()) / r.direction().y();
-        if (t < t_min || t > t_max)
+        if (t < tMin || t > tMax)
             return false;
         auto x = r.origin().x() + t * r.direction().x();
         auto z = r.origin().z() + t * r.direction().z();
@@ -32,15 +32,15 @@ namespace RayTracer {
         rec.t = t;
         auto outward_normal = Vector3D(0, 1, 0);
         rec.set_face_normal(r, outward_normal);
-        rec.mat_ptr = mp;
+        rec.matPtr = mp;
         rec.p = r.at(t);
         return true;
     }
 
     extern "C" {
-        RayTracer::IPrimitive *entryPoint(std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> &mat_ptr)
+        RayTracer::IPrimitive *entryPoint(std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> &matPtr)
         {
-            return new RayTracer::Plane(variables[0], variables[1], variables[2], variables[3], variables[4], mat_ptr);
+            return new RayTracer::Plane(variables[0], variables[1], variables[2], variables[3], variables[4], matPtr);
         }
 
         char *getType()

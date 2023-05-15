@@ -13,19 +13,19 @@ namespace RayTracer {
     {
     }
 
-    bool Rectangle::boundingBox(double time0, double time1, AxisAlignedBoundBox& output_box) {
+    bool Rectangle::boundingBox(double time0, double time1, AxisAlignedBoundBox& outputBox) {
         // The bounding box must have non-zero width in each dimension, so pad the Z
         // dimension a small amount.
-        output_box = AxisAlignedBoundBox(
-                point3(x0, y0, k - 0.0001) + position,
-                point3(x1, y1, k + 0.0001) + position
+        outputBox = AxisAlignedBoundBox(
+                Point3D(x0, y0, k - 0.0001) + position,
+                Point3D(x1, y1, k + 0.0001) + position
         );
         return true;
     }
 
-    bool Rectangle::hit(const RayTracer::Ray& r, double t_min, double t_max, hitRecord& rec) const {
+    bool Rectangle::hit(const RayTracer::Ray& r, double tMin, double tMax, hitRecord& rec) const {
         auto t = (k - (r.origin().z() - position.z())) / r.direction().z();
-        if (t < t_min || t > t_max)
+        if (t < tMin || t > tMax)
             return false;
         auto x = r.origin().x() + t * r.direction().x() - position.x();
         auto y = r.origin().y() + t * r.direction().y() - position.y();
@@ -36,14 +36,14 @@ namespace RayTracer {
         rec.t = t;
         auto outward_normal = Vector3D(0, 0, 1);
         rec.set_face_normal(r, outward_normal);
-        rec.mat_ptr = mp;
+        rec.matPtr = mp;
         rec.p = r.at(t);
         return true;
     }
 
     /////////////////////////// XZ Rectangle
 
-    xz_rect::xz_rect(double _x0, double _x1, double _z0, double _z1, double _k, std::shared_ptr<IMaterial> mat)
+    xzRect::xzRect(double _x0, double _x1, double _z0, double _z1, double _k, std::shared_ptr<IMaterial> &mat)
     {
         x0 = _x0;
         x1 = _x1;
@@ -53,34 +53,34 @@ namespace RayTracer {
         mp = mat;
     }
 
-    bool xz_rect::boundingBox(double time0, double time1, AxisAlignedBoundBox &output_box) {
+    bool xzRect::boundingBox(double time0, double time1, AxisAlignedBoundBox &outputBox) {
         // The bounding box must have non-zero width in each dimension, so pad the Z
         // dimension a small amount.
-        output_box = AxisAlignedBoundBox(point3(x0,k-0.0001,z0), point3(x1, k+0.0001, z1));
+        outputBox = AxisAlignedBoundBox(Point3D(x0,k-0.0001,z0), Point3D(x1, k+0.0001, z1));
         return true;
     }
 
-    bool xz_rect::hit(const RayTracer::Ray& r, double t_min, double t_max, hitRecord& rec) const {
+    bool xzRect::hit(const RayTracer::Ray& r, double tMin, double tMax, hitRecord& rec) const {
         auto t = (k-r.origin().y()) / r.direction().y();
-        if (t < t_min || t > t_max)
+        if (t < tMin || t > tMax)
             return false;
-        auto x = r.origin().x() + t*r.direction().x();
-        auto z = r.origin().z() + t*r.direction().z();
+        auto x = r.origin().x() + t * r.direction().x();
+        auto z = r.origin().z() + t * r.direction().z();
         if (x < x0 || x > x1 || z < z0 || z > z1)
             return false;
-        rec.u = (x-x0)/(x1-x0);
-        rec.v = (z-z0)/(z1-z0);
+        rec.u = (x - x0) / (x1 - x0);
+        rec.v = (z - z0) / (z1 - z0);
         rec.t = t;
         auto outward_normal = Vector3D(0, 1, 0);
         rec.set_face_normal(r, outward_normal);
-        rec.mat_ptr = mp;
+        rec.matPtr = mp;
         rec.p = r.at(t);
         return true;
     }
 
     /////////////////////////// YZ Rectangle
 
-    yz_rect::yz_rect(double _y0, double _y1, double _z0, double _z1, double _k, std::shared_ptr<IMaterial> mat)
+    yzRect::yzRect(double _y0, double _y1, double _z0, double _z1, double _k, std::shared_ptr<IMaterial> &mat)
     {
         y0 = _y0;
         y1 = _y1;
@@ -90,27 +90,27 @@ namespace RayTracer {
         mp = mat;
     }
 
-    bool yz_rect::boundingBox(double time0, double time1, AxisAlignedBoundBox &output_box) {
+    bool yzRect::boundingBox(double time0, double time1, AxisAlignedBoundBox &outputBox) {
         // The bounding box must have non-zero width in each dimension, so pad the Z
         // dimension a small amount.
-        output_box = AxisAlignedBoundBox(point3(k-0.0001,y0,z0), point3(k+0.0001, y1, z1));
+        outputBox = AxisAlignedBoundBox(Point3D(k-0.0001,y0,z0), Point3D(k+0.0001, y1, z1));
         return true;
     }
 
-    bool yz_rect::hit(const RayTracer::Ray& r, double t_min, double t_max, hitRecord& rec) const {
-        auto t = (k-r.origin().x()) / r.direction().x();
-        if (t < t_min || t > t_max)
+    bool yzRect::hit(const RayTracer::Ray& r, double tMin, double tMax, hitRecord& rec) const {
+        auto t = (k - r.origin().x()) / r.direction().x();
+        if (t < tMin || t > tMax)
             return false;
-        auto y = r.origin().y() + t*r.direction().y();
-        auto z = r.origin().z() + t*r.direction().z();
+        auto y = r.origin().y() + t * r.direction().y();
+        auto z = r.origin().z() + t * r.direction().z();
         if (y < y0 || y > y1 || z < z0 || z > z1)
             return false;
-        rec.u = (y-y0)/(y1-y0);
-        rec.v = (z-z0)/(z1-z0);
+        rec.u = (y - y0) / (y1 - y0);
+        rec.v = (z - z0) / (z1 - z0);
         rec.t = t;
         auto outward_normal = Vector3D(1, 0, 0);
         rec.set_face_normal(r, outward_normal);
-        rec.mat_ptr = mp;
+        rec.matPtr = mp;
         rec.p = r.at(t);
         return true;
     }
@@ -118,10 +118,10 @@ namespace RayTracer {
 }
 
 extern "C" {
-    RayTracer::IPrimitive *entryPoint(point3 center, std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> mat_ptr)
+    RayTracer::IPrimitive *entryPoint(Point3D &center, std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> matPtr)
     {
         (void) center;
-        return new RayTracer::Rectangle(variables[0], variables[1], variables[2], variables[3], variables[4], center, mat_ptr);
+        return new RayTracer::Rectangle(variables[0], variables[1], variables[2], variables[3], variables[4], center, matPtr);
     }
 
     char *getType()

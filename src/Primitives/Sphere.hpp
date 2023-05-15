@@ -14,17 +14,17 @@
 namespace RayTracer {
     class Sphere : public APrimitive {
         public:
-            Sphere(point3 cen, double r, std::shared_ptr<IMaterial> &m);
-            bool hit(const RayTracer::Ray &r, double t_min, double t_max, hitRecord &rec) const override;
+            Sphere(Point3D cen, double r, std::shared_ptr<IMaterial> &m);
+            bool hit(const RayTracer::Ray &r, double tMin, double tMax, hitRecord &rec) const override;
         public:
-                point3 center;
+                Point3D center;
                 double radius;
-                std::shared_ptr<IMaterial> mat_ptr;
+                std::shared_ptr<IMaterial> matPtr;
     };
 
 
     extern "C" {
-        IPrimitive *entryPoint(point3 center, std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> &mat_ptr);
+        IPrimitive *entryPoint(Point3D center, std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> &matPtr);
         char *getType();
     }
 }

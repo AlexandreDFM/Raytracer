@@ -8,10 +8,10 @@
 #include "Cylinder.hpp"
 
 namespace RayTracer {
-    Cylinder::Cylinder(double _radius, double _y0, double _y1, const Vector3D& _position, std::shared_ptr<IMaterial> &_mat)
-            : radius(_radius), y0(_y0), y1(_y1), position(_position), mat_ptr(_mat) {}
+    Cylinder::Cylinder(double _radius, double _y0, double _y1, const Vector3D &_position, std::shared_ptr<IMaterial> &_mat)
+            : radius(_radius), y0(_y0), y1(_y1), position(_position), matPtr(_mat) {}
 
-    bool Cylinder::hit(const RayTracer::Ray& r, double t_min, double t_max, RayTracer::hitRecord& rec) const {
+    bool Cylinder::hit(const RayTracer::Ray& r, double tMin, double tMax, RayTracer::hitRecord& rec) const {
         Vector3D oc = r.origin() - position;
 
         double a = r.direction().x() * r.direction().x() + r.direction().z() * r.direction().z();
@@ -22,9 +22,9 @@ namespace RayTracer {
 
         if (discriminant > 0) {
             double root = (-b - sqrt(discriminant)) / (2.0 * a);
-            if (root < t_min || root > t_max) {
+            if (root < tMin || root > tMax) {
                 root = (-b + sqrt(discriminant)) / (2.0 * a);
-                if (root < t_min || root > t_max) {
+                if (root < tMin || root > tMax) {
                     return false;
                 }
             }
@@ -38,7 +38,7 @@ namespace RayTracer {
             rec.p = r.at(rec.t);
             Vector3D outward_normal = (rec.p - position) / radius;
             rec.set_face_normal(r, outward_normal);
-            rec.mat_ptr = mat_ptr;
+            rec.matPtr = matPtr;
 
             return true;
         }
@@ -46,8 +46,8 @@ namespace RayTracer {
         return false;
     }
 
-    bool Cylinder::boundingBox(double time0, double time1, AxisAlignedBoundBox &output_box) {
-        output_box = AxisAlignedBoundBox(
+    bool Cylinder::boundingBox(double time0, double time1, AxisAlignedBoundBox &outputBox) {
+        outputBox = AxisAlignedBoundBox(
                 position - Vector3D(radius, y0, radius),
                 position + Vector3D(radius, y1, radius)
         );
@@ -55,9 +55,9 @@ namespace RayTracer {
     }
 
     extern "C" {
-        RayTracer::IPrimitive *entryPoint(point3 center, std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> &mat_ptr)
+        RayTracer::IPrimitive *entryPoint(Point3D &center, std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> &matPtr)
         {
-            return new Cylinder(variables[0], variables[1], variables[2], center, mat_ptr);
+            return new Cylinder(variables[0], variables[1], variables[2], center, matPtr);
         }
 
         char *getType()

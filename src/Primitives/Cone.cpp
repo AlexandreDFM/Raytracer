@@ -9,10 +9,10 @@
 
 namespace RayTracer {
     Cone::Cone(double _radius, double _height, const Vector3D& _position, std::shared_ptr<IMaterial> &_mat)
-            : position(_position), radius(_radius), height(_height), mat_ptr(_mat)
+            : position(_position), radius(_radius), height(_height), matPtr(_mat)
     {}
 
-    bool Cone::hit(const RayTracer::Ray& r, double t_min, double t_max, hitRecord& rec) const {
+    bool Cone::hit(const RayTracer::Ray& r, double tMin, double tMax, hitRecord& rec) const {
         auto oc = r.origin() - position;
         auto dir = r.direction();
 
@@ -31,9 +31,9 @@ namespace RayTracer {
 
         // Check for intersection with the cone surface
         auto root = (-b - sqrt_discriminant) / (2.0 * a);
-        if (root < t_min || t_max < root) {
+        if (root < tMin || tMax < root) {
             root = (-b + sqrt_discriminant) / (2.0 * a);
-            if (root < t_min || t_max < root)
+            if (root < tMin || tMax < root)
                 return false;
         }
 
@@ -44,7 +44,7 @@ namespace RayTracer {
 
         rec.t = root;
         rec.p = hit_point;
-        rec.mat_ptr = mat_ptr;
+        rec.matPtr = matPtr;
 
         // Compute the outward normal based on the hit point
         if (hit_point.y() < k * hit_point.x() + height && hit_point.y() < -k * hit_point.x() + height) {
@@ -60,20 +60,20 @@ namespace RayTracer {
         return true;
     }
 
-    bool Cone::boundingBox(double time0, double time1, AxisAlignedBoundBox& output_box) {
+    bool Cone::boundingBox(double time0, double time1, AxisAlignedBoundBox& outputBox) {
         (void) time0;
         (void) time1;
-        output_box = AxisAlignedBoundBox(
+        outputBox = AxisAlignedBoundBox(
                 position - Vector3D(radius, height, radius),
                 position + Vector3D(radius, 0, radius)
         );
         return true;
     }
 
-    extern "C" RayTracer::IPrimitive *entryPoint(point3 center, std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> &mat_ptr)
+    extern "C" RayTracer::IPrimitive *entryPoint(Point3D center, std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> &matPtr)
     {
         (void) center;
-        return new RayTracer::Cone(variables[0], variables[1], center, mat_ptr);
+        return new RayTracer::Cone(variables[0], variables[1], center, matPtr);
     }
 
     extern "C" char *getType()

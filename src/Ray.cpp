@@ -8,11 +8,11 @@
 #include "Ray.hpp"
 
 namespace RayTracer {
-    Ray::Ray(const point3& origin, const Vector3D& direction) : orig(origin), dir(direction)
+    Ray::Ray(const Point3D& origin, const Vector3D& direction) : orig(origin), dir(direction)
     {
     }
 
-    point3 Ray::origin() const
+    Point3D Ray::origin() const
     {
         return orig;
     }
@@ -22,8 +22,8 @@ namespace RayTracer {
         return dir;
     }
 
-    point3 Ray::at(double t) const
+    Point3D Ray::at(double t) const
     {
-        return orig + t * dir;
+        return orig + dir * t;
     }
 }
