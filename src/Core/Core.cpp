@@ -241,8 +241,8 @@ namespace RayTracer {
 
     void Core::render(int index, int start, int end, int width, int height, int samples_per_pixel, int max_depth)
     {
-        for (int j = start; j < end && this->_isRunning; j++) {
-            for (int i = 0; i < width && this->_isRunning; i++) {
+        for (int j = height - 1 - start; j > height - 1 - end; --j) {
+            for (int i = 0; i < width; ++i) {
                 Color3D pixelColor(0, 0, 0);
                 for (int s = 0; s < samples_per_pixel; ++s) {
                     auto u = (i + Math::random_double()) / (width - 1);
