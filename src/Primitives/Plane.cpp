@@ -8,39 +8,41 @@
 #include "Plane.hpp"
 
 namespace RayTracer {
-    Plane::Plane(double _x0, double _x1, double _z0, double _z1, double _k, std::shared_ptr<IMaterial> &mat)
-    {
-        x0 = _x0;
-        x1 = _x1;
-        z0 = _z0;
-        z1 = _z1;
-        k = _k;
-        mp = mat;
+    Plane::Plane(const Vector3D& _normal, double _distance, std::shared_ptr<IMaterial>& _mat)
+            : normal(_normal), distance(_distance), mat(_mat) {}
+
+    bool Plane::boundingBox(double time0, double time1, AxisAlignedBoundBox& outputBox) {
+        // Plane is infinite, so we use large bounding box values
+        outputBox = AxisAlignedBoundBox(Point3D(-INFINITY, -INFINITY, -INFINITY), Point3D(INFINITY, INFINITY, INFINITY));
+        return false;
     }
 
-    bool Plane::hit(const RayTracer::Ray& r, double tMin, double tMax, hitRecord& rec) const
-    {
-        auto t = (k - r.origin().y()) / r.direction().y();
-        if (t < tMin || t > tMax)
+    bool Plane::hit(const RayTracer::Ray& r, double tMin, double tMax, hitRecord& rec) const {
+        double denominator = Vector3D::dot(normal, r.direction());
+        if (denominator == 0) {
+            // Ray is parallel to the plane
             return false;
-        auto x = r.origin().x() + t * r.direction().x();
-        auto z = r.origin().z() + t * r.direction().z();
-        if (x < x0 || x > x1 || z < z0 || z > z1)
+        }
+
+        double t = (distance - Vector3D::dot(normal, r.origin())) / denominator;
+        if (t < tMin || t > tMax) {
+            // The hit point is outside the valid range
             return false;
-        rec.u = (x - x0) / (x1 - x0);
-        rec.v = (z - z0) / (z1 - z0);
+        }
+
         rec.t = t;
-        auto outward_normal = Vector3D(0, 1, 0);
-        rec.set_face_normal(r, outward_normal);
-        rec.matPtr = mp;
+        rec.matPtr = mat;
         rec.p = r.at(t);
+        rec.set_face_normal(r, normal);
+
         return true;
     }
 
+
     extern "C" {
-        RayTracer::IPrimitive *entryPoint(std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> &matPtr)
+        RayTracer::IPrimitive *entryPoint(Vector3D &center, std::vector<double> variables, std::shared_ptr<RayTracer::IMaterial> matPtr)
         {
-            return new RayTracer::Plane(variables[0], variables[1], variables[2], variables[3], variables[4], matPtr);
+            return new Plane(center, variables[0], matPtr);
         }
 
         char *getType()
