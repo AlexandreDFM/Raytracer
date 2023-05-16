@@ -18,9 +18,35 @@ namespace RayTracer {
         } else {
             this->_haveGraphicalLib = false;
         }
+
         this->createCamera();
         this->createObjects();
         this->createLights();
+
+        this->_isRunning = true;
+        this->_isRestarting = false;
+    }
+
+    void Core::restart()
+    {
+        this->_world.clear();
+        this->_threads.clear();
+        this->_camera.reset();
+        this->_displayModule.reset();
+        this->_isRestarting = false;
+        if (this->_configHelper->isSet("graphical")) {
+            this->_haveGraphicalLib = true;
+            this->loadDisplayModule();
+        } else {
+            this->_haveGraphicalLib = false;
+        }
+
+        this->createCamera();
+        this->createObjects();
+        this->createLights();
+
+        this->_isRunning = true;
+        this->_isRestarting = false;
     }
 
     void Core::createCamera()
@@ -238,7 +264,6 @@ namespace RayTracer {
         this->_displayModule = this->_factory->createDisplay(graphicalName, width, height, cameraResolutionWidth, cameraResolutionHeight, fps, title);
     }
 
-
     Color3D Core::RayColor(const RayTracer::Ray& r, const Color3D &background, const RayTracer::IPrimitive& world, int depth)
     {
         hitRecord rec;
@@ -257,10 +282,10 @@ namespace RayTracer {
 
     void Core::render(int index, int start, int end, int width, int height, int samples_per_pixel, int max_depth)
     {
-        for (int j = height - 1 - start; j > height - 1 - end; --j) {
-            for (int i = 0; i < width; ++i) {
+        for (int j = height - 1 - start; j > height - 1 - end && this->_isRunning; --j) {
+            for (int i = 0; i < width && this->_isRunning; ++i) {
                 Color3D pixelColor(0, 0, 0);
-                for (int s = 0; s < samples_per_pixel; ++s) {
+                for (int s = 0; s < samples_per_pixel && this->_isRunning; ++s) {
                     auto u = (i + Math::random_double()) / (width - 1);
                     auto v = (j + Math::random_double()) / (height - 1);
                     RayTracer::Ray r = this->_camera->getRay(u, v);
@@ -282,11 +307,16 @@ namespace RayTracer {
         if (type == EventType::CLOSE) {
             this->_isRunning = false;
         }
+        if (type == EventType::RESTART) {
+            this->_isPaused = false;
+            this->_isRunning = false;
+            this->_isRestarting = true;
+        }
     }
 
     void Core::displayLoop()
     {
-        while (this->_displayModule->isOpen()) {
+        while (this->_displayModule->isOpen() && !this->_isRestarting) {
             if (this->_isPaused) continue;
             this->_displayModule->display();
             Core::checkEvents(this->_displayModule->getEvent());
@@ -295,10 +325,9 @@ namespace RayTracer {
         }
     }
 
-    void Core::run()
+    bool Core::run()
     {
         int width, height;
-        this->_isRunning = true;
         const int max_depth = 50;
         const int samples_per_pixel = 100;
         this->_camera->getResolution(width, height);
@@ -327,7 +356,7 @@ namespace RayTracer {
         std::ofstream file("image.ppm");
         if (!file.is_open()) {
             std::cerr << "Error: cannot open file image.ppm\n";
-            return;
+            return false;
         }
         file << "P3\n" << width << ' ' << height << "\n255\n";
         for (auto &color : this->_colors) {
@@ -337,5 +366,7 @@ namespace RayTracer {
         }
         file.close();
         std::cerr << "\nDone.\n";
+        if (this->_isRestarting) return true;
+        return false;
     }
 }

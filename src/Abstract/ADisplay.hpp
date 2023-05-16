@@ -14,7 +14,7 @@ namespace RayTracer {
     class ADisplay : public IDisplay {
         public:
             //////////////////////// Functions ////////////////////////
-            void init(const std::map<char, std::string>& gameAssets) override;
+            void init(int width, int height, int cameraResolutionWidth, int cameraResolutionHeight, int fps, std::string &title) override;
             void update() override;
             void clear() override;
             void close() override;

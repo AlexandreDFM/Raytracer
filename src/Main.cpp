@@ -12,5 +12,9 @@ int main(int argc, char **argv)
 {
     Usage::CheckUsage(argc, argv);
     RayTracer::Core core(argv[1], "plugins");
-    core.run();
+    bool restart = core.run();
+    while (restart) {
+        core.restart();
+        restart = core.run();
+    }
 }

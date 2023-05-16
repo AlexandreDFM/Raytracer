@@ -15,7 +15,7 @@ namespace RayTracer {
         public:
             virtual ~IDisplay() = default;
             //////////////////////// Functions ////////////////////////
-            virtual void init(const std::map<char, std::string>& gameAssets) = 0;
+            virtual void init(int width, int height, int cameraResolutionWidth, int cameraResolutionHeight, int fps, std::string &title) = 0;
             virtual void update() = 0;
             virtual void close() = 0;
             virtual void clear() = 0;
