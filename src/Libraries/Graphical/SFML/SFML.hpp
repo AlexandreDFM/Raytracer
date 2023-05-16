@@ -25,9 +25,9 @@ namespace RayTracer {
             //////////////////////// Constructors ////////////////////////
             SFML(int width, int height, int cameraResolutionWidth, int cameraResolutionHeight, int fps, std::string &title);
             //////////////////////// Destructors ////////////////////////
-            ~SFML() override = default;
+            ~SFML() override;
             //////////////////////// Methods ////////////////////////
-            void init(const std::map<char, std::string> &gameAssets) override;
+            void init(int width, int height, int cameraResolutionWidth, int cameraResolutionHeight, int fps, std::string &title) override;
             RayTracer::EventType getEvent() override;
             void addPixel(int x, int y, double r, double g, double b, int samples_per_pixel) override;
             void update() override;

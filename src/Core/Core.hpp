@@ -26,7 +26,8 @@ namespace RayTracer {
             Core(const std::string &configPath, const std::string &libPath);
             Color3D RayColor(const RayTracer::Ray& r, const Color3D &background, const RayTracer::IPrimitive& world, int depth);
             ~Core() = default;
-            void run();
+            bool run();
+            void restart();
             void checkEvents(EventType type);
 
             void createCamera();
@@ -49,6 +50,7 @@ namespace RayTracer {
         private:
             bool _isPaused = false;
             bool _isRunning = true;
+            bool _isRestarting = false;
             Factory *_factory;
             bool _haveGraphicalLib;
             Color3D _background;
@@ -56,7 +58,6 @@ namespace RayTracer {
             RayTracer::HittableList _world;
             std::unique_ptr<Camera> _camera;
             std::vector<std::thread> _threads;
-            std::vector<IPrimitive *> _primitives;
             std::vector<std::vector<Color3D>> _colors;
             std::shared_ptr<IDisplay> _displayModule;
     };

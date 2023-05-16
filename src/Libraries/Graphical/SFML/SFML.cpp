@@ -27,6 +27,12 @@ namespace RayTracer {
         this->_sprite.setPosition(x, y);
     }
 
+    SFML::~SFML()
+    {
+        this->_window->close();
+        delete this->_window;
+    }
+
     /**
      * The function initializes the SFML window and loads game assets such as
      * textures and sprites.
@@ -36,10 +42,18 @@ namespace RayTracer {
      * represent the file paths to the corresponding sprite assets. These sprite
      * assets are loaded into textures and sprites using the SFML library.
      */
-    void SFML::init(const std::map<char, std::string> &gameAssets)
+    void SFML::init(int width, int height, int cameraResolutionWidth, int cameraResolutionHeight, int fps, std::string &title)
     {
-        this->_window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "Raytracer");
-        this->_window->setFramerateLimit(60);
+        this->_window = new sf::RenderWindow(sf::VideoMode(width, height), title);
+        this->_window->setFramerateLimit(fps);
+        this->_event = sf::Event();
+        this->_image.create(cameraResolutionWidth, cameraResolutionHeight, {128, 128, 128});
+        this->_texture.loadFromImage(this->_image);
+        this->_sprite.setTexture(this->_texture);
+
+        float x = (float) width / 2 - (float) cameraResolutionWidth / 2;
+        float y = (float) height / 2 - (float) cameraResolutionHeight / 2;
+        this->_sprite.setPosition(x, y);
     }
 
     /**
@@ -64,6 +78,7 @@ namespace RayTracer {
                         this->isOpenWindow = false;
                         return EventType::CLOSE;
                     case sf::Keyboard::Space:  return EventType::PAUSE;
+                    case sf::Keyboard::R:      return EventType::RESTART;
                     case sf::Keyboard::L:      return EventType::LIBPREV;
                     case sf::Keyboard::M:      return EventType::LIBNEXT;
                     case sf::Keyboard::T:

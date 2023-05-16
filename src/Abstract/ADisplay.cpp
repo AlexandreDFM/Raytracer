@@ -17,9 +17,14 @@ namespace RayTracer {
      * the game. However, in the given code snippet, the parameter is not used and
      * is simply cast to void
      */
-    void ADisplay::init(const std::map<char, std::string>& gameAssets)
+    void ADisplay::init(int width, int height, int cameraResolutionWidth, int cameraResolutionHeight, int fps, std::string &title)
     {
-        (void) gameAssets;
+        (void)width;
+        (void)height;
+        (void)cameraResolutionWidth;
+        (void)cameraResolutionHeight;
+        (void)fps;
+        (void)title;
     }
 
     /**
